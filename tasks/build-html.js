@@ -21,6 +21,7 @@ if (require.main === module) {
  * @param {Object} options Running options.
  */
 function run(options) {
+    var files = [];
     var i = 0;
 
     // normalize call without parameters
@@ -28,17 +29,17 @@ function run(options) {
 
     // no files given, get them from config
     if (options.hasOwnProperty('files') === false) {
-        var files = [];
-
-        config.assets.html.files.forEach(function (file) {
+        config.assets.html.files.forEach(function(file) {
             files = files.concat(glob.sync(path.join(paths.src, file)));
         });
+    } else {
+        files = options.files;
     }
 
     console.log(id, 'Starting task...');
 
     // run the main logic for each file
-    files.forEach(function (file) {
+    files.forEach(function(file) {
         var parsedPath = path.parse(file);
         var outputPath = path.join(paths.dest, parsedPath.dir.replace(paths.src, ''));
         var outputFile = path.format({
@@ -49,7 +50,7 @@ function run(options) {
         // make sure destination path is writable
         fs.ensureDirSync(outputPath);
 
-        fs.copy(file, outputFile, function (error) {
+        fs.copy(file, outputFile, function(error) {
             if (error) {
                 return console.error('Error:'.red.underline, error.message);
             }

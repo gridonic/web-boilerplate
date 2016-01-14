@@ -48,8 +48,8 @@ function render(inputFile, outputFile, options) {
         var duration = result.stats.duration;
 
         // prefix it
-        prefixer.process(result.css.toString()).then(function (result) {
-            result.warnings().forEach(function (warn) {
+        prefixer.process(result.css.toString()).then(function(result) {
+            result.warnings().forEach(function(warn) {
                 console.warn(warn.toString());
             });
 
@@ -79,6 +79,7 @@ function render(inputFile, outputFile, options) {
  * @param {Object} options Running options.
  */
 function run(options) {
+    var files = [];
     var i = 0;
     var done = function(result) {
 
@@ -100,17 +101,17 @@ function run(options) {
 
     // no files given, get them from config
     if (options.hasOwnProperty('files') === false) {
-        var files = [];
-
-        config.assets.styles.files.forEach(function (file) {
+        config.assets.styles.files.forEach(function(file) {
             files = files.concat(glob.sync(path.join(paths.src, file)));
         });
+    } else {
+        files = options.files;
     }
 
     console.log(id, 'Starting task...');
 
     // run the main logic for each file
-    files.forEach(function (file) {
+    files.forEach(function(file) {
         var parsedPath = path.parse(file);
         var outputPath = path.join(paths.dest, parsedPath.dir.replace(paths.src, ''));
         var outputFile = path.format({

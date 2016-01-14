@@ -18,7 +18,7 @@ function run(options) {
     console.log(id, 'Starting task...');
     console.log(id, 'Deleting', config.dest);
 
-    fs.remove(config.dest, function (error) {
+    fs.remove(config.dest, function(error) {
         if (error) {
             return console.error('Error:'.red.underline, error.message);
         }

@@ -40,14 +40,17 @@ function render(inputFile, outputFile, options) {
             presets: ['es2015']
         })
         .bundle(function(error, buffer) {
+            var code = buffer.toString();
 
-            // uglify it
-            var result = uglifyjs.minify(buffer.toString(), {
-                fromString: true
-            });
+            // uglify it in production mode
+            if (config.env === 'prod') {
+                code = uglifyjs.minify(buffer.toString(), {
+                    fromString: true
+                }).code.toString();
+            }
 
             // write code to file
-            fs.writeFile(outputFile, result.code, function(error) {
+            fs.writeFile(outputFile, code, function(error) {
                 if (error) {
                     return console.error('Error:'.red.underline, error.message);
                 }
@@ -62,7 +65,7 @@ function render(inputFile, outputFile, options) {
                 options.done();
             });
 
-        }).on('error', function (error) {
+        }).on('error', function(error) {
             return console.error('Error:'.red.underline, error.message);
         });
 }
@@ -73,6 +76,7 @@ function render(inputFile, outputFile, options) {
  * @param {Object} options Running options.
  */
 function run(options) {
+    var files = [];
     var i = 0;
     var done = function(result) {
 
@@ -94,17 +98,17 @@ function run(options) {
 
     // no files given, get them from config
     if (options.hasOwnProperty('files') === false) {
-        var files = [];
-
-        config.assets.scripts.files.forEach(function (file) {
+        config.assets.scripts.files.forEach(function(file) {
             files = files.concat(glob.sync(path.join(paths.src, file)));
         });
+    } else {
+        files = options.files;
     }
 
     console.log(id, 'Starting task...');
 
     // run the main logic for each file
-    files.forEach(function (file) {
+    files.forEach(function(file) {
         var parsedPath = path.parse(file);
         var outputPath = path.join(paths.dest, parsedPath.dir.replace(paths.src, ''));
         var outputFile = path.format({

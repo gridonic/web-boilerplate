@@ -13,11 +13,16 @@
     "build:styles": "node tasks/build-styles",
     "build:scripts": "node tasks/build-scripts",
     "build:html": "node tasks/build-html",
+    "build:images": "node tasks/build-images",
     "watch": "node tasks/watch",
     "watch:styles": "node tasks/watch-styles",
     "watch:scripts": "node tasks/watch-scripts",
     "watch:html": "node tasks/watch-html",
     "clean": "node tasks/clean"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mzdr/web-boilerplate.git"
   },
   "version": "1.0.0",
   "dependencies": {

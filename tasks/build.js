@@ -3,6 +3,7 @@ var colors  = require('colors');
 var styles  = require('../tasks/build-styles');
 var scripts = require('../tasks/build-scripts');
 var html    = require('../tasks/build-html');
+var images  = require('../tasks/build-images');
 var clean   = require('../tasks/clean');
 
 /**
@@ -35,4 +36,4 @@ function run(tasks) {
 console.log('Running in', (config.env === 'prod' ? 'production' : 'develop').bold.blue, 'mode...\n');
 
 // run in chronological order
-run([ clean, styles, scripts, html ]);
+run([ clean, styles, scripts, html, images ]);

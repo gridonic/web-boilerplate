@@ -24,10 +24,12 @@ That's it. You might want to check the `project.json` for customizing the build 
 `npm run build:styles`  
 `npm run build:scripts`  
 `npm run build:html`  
+`npm run build:images`  
 `npm run watch`  
 `npm run watch:styles`  
 `npm run watch:scripts`  
 `npm run watch:html`  
+`npm run watch:images`  
 `npm run clean`  
 
 ---
