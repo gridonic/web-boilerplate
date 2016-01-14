@@ -1,0 +1,47 @@
+/*!-----------------------------------------------------------------------------
+   Master Stylesheet.
+
+   Project:       Web Boilerplate
+   Version:       1.0.0
+   Contributors:  Sebastian Prein <hi@sebastianprein.com>
+   URL:           http://my-web-app.io
+   -------------------------------------------------------------------------- */
+
+
+/* -----------------------------------------------------------------------------
+   The meta folder holds files which only have functions, mixins, variables and
+   other definitions which do NOT compile to CSS.
+   -------------------------------------------------------------------------- */
+@import "meta/functions";
+@import "meta/mixins";
+@import "meta/config";
+@import "meta/placeholders";
+
+
+/* -----------------------------------------------------------------------------
+   All styles from third party applications, frameworks and libraries.
+   -------------------------------------------------------------------------- */
+@import "../../node_modules/normalize.scss/normalize.scss";
+
+/* -----------------------------------------------------------------------------
+   All styles which are used throughout the whole website get in here.
+   -------------------------------------------------------------------------- */
+@import "shared/debug";
+@import "shared/generic";
+@import "shared/grid";
+@import "shared/typography";
+
+
+/* -----------------------------------------------------------------------------
+   Components are parts which are used among several views. For example those
+   could be buttons, banners, lists, dialogs and so on.
+   -------------------------------------------------------------------------- */
+@import "components/buttons";
+
+/* -----------------------------------------------------------------------------
+   Sections are bigger parts of a specific view which mostly have a semantic
+   meaning as well. A section for example can be a simple container for a list
+   of components and this accumulation can be a specific type of content on the
+   other hand.
+   -------------------------------------------------------------------------- */
+// @import "sections/basket";

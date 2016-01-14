@@ -1,0 +1,89 @@
+/* -----------------------------------------------------------------------------
+   Define your color palette over here.
+   -------------------------------------------------------------------------- */
+$global-colors: (
+    "black": #000000,
+    "blue": #1c65d9,
+    "gray": #3c3c3b,
+    "gray-light": #9c9c9c,
+    "gray-lighter": #c8c8c8,
+    "gray-lightest": #e0e0e0,
+    "green": #006e33,
+    "purple": #673ab7,
+    "red": #ff3333,
+    "white": #fff,
+    "yellow": #fac135
+);
+
+
+/* -----------------------------------------------------------------------------
+   Color associations.
+   -------------------------------------------------------------------------- */
+$global-color-associations: (
+    "background-primary": _color("gray"),
+    "background-secondary": _color("gray-lightest"),
+    "background-tertiary": _color("white"),
+    "button-default-text": _color("black"),
+    "button-default": _color("gray-lighter"),
+    "button-primary": _color("gray"),
+    "button-primary-text": _color("white"),
+    "error-primary": _color("red"),
+    "headline-primary": _color("gray"),
+    "success-primary": _color("green"),
+    "text-primary-disabled": _color("gray-light"),
+    "text-primary-inverted": _color("white"),
+    "text-primary": _color("black"),
+    "warning-primary": _color("yellow")
+);
+
+
+/* -----------------------------------------------------------------------------
+   Resolution relative settings. Excerpt from Google web fundamentals:
+
+   - Create breakpoints based on content, never on specific devices, products,
+     or brands.
+   - Design for the smallest mobile device first, then progressively enhance
+     the experience as more screen real estate becomes available.
+   - Keep lines of text to a maximum of around 70 or 80 characters.
+
+   https://goo.gl/EDZOAH
+   -------------------------------------------------------------------------- */
+$global-breakpoints: (
+    "xsmall": 20rem, // 320px,
+    "small": 40rem, // 640px
+    "medium": 60rem, // 960px
+    "large": 80rem, // 1280px
+    "xlarge": 120rem // 1920px
+);
+
+
+/* -----------------------------------------------------------------------------
+   Global grid.
+   -------------------------------------------------------------------------- */
+$global-grid: (
+    "max-width": 72.5rem, // 1160px
+    "total-columns": 12,
+    "gutter-width": 1.5rem // 24px
+);
+
+
+/* -----------------------------------------------------------------------------
+   Z-index listing.
+   -------------------------------------------------------------------------- */
+$global-z-layers: (
+    "default": 0,
+    "overlay": 100,
+    "debug": 500
+);
+
+
+/* -----------------------------------------------------------------------------
+   Typography.
+   -------------------------------------------------------------------------- */
+$global-fonts: (
+    "primary-font-family": (Lato, Helvetica, sans-serif),
+    "primary-font-size": 16px,
+    "primary-line-height": 1.4,
+    "text-primary-rendering": optimizeLegibility,
+    "secondary-font-family": (EB Garamond, serif)
+);

@@ -1,0 +1,26 @@
+/* -----------------------------------------------------------------------------
+   Define your global mixins in here!
+   -------------------------------------------------------------------------- */
+@mixin appearance-none() {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+}
+
+@mixin font-smoothing($on: true) {
+    @if $value {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    } @else {
+        -webkit-font-smoothing: subpixel-antialiased;
+        -moz-osx-font-smoothing: auto;
+    }
+}
+
+@mixin group {
+    clear: both;
+    content: "";
+    display: table;
+}

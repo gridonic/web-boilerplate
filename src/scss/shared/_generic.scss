@@ -1,0 +1,14 @@
+/* -----------------------------------------------------------------------------
+   Generic styles.
+   -------------------------------------------------------------------------- */
+:root {
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    background-color: inherit;
+    border-color: inherit;
+    box-sizing: inherit;
+}

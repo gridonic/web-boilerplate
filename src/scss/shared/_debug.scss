@@ -1,0 +1,35 @@
+/* -----------------------------------------------------------------------------
+   Global debugging styles.
+   -------------------------------------------------------------------------- */
+.debug {
+    &::before {
+        background: #ffc;
+        color: _color("text-primary");
+        content: #{_max("small")};
+        left: 0;
+        padding: 0.25rem;
+        position: fixed;
+        top: 0;
+        z-index: _z("debug");
+
+        @media #{_max("small")} {
+            content: "small (≤ " _break("small") ")";
+        }
+
+        @media #{_min("small")} and #{_max("medium")} {
+            content: "medium (> " _break("small") " and ≤ " _break("medium") ")";
+        }
+
+        @media #{_min("medium")} and #{_max("large")} {
+            content: "large (> " _break("medium") " and ≤ " _break("large") ")";
+        }
+
+        @media #{_min("large")} and #{_max("xlarge")} {
+            content: "exra large (> " _break("large") " and ≤ " _break("xlarge") ")";
+        }
+
+        @media #{_min("xlarge")} {
+            content: "above extra large (> " _break("xlarge") ")";
+        }
+    }
+}

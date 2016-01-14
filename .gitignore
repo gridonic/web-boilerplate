@@ -1,0 +1,15 @@
+# os generated files
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# dev stuff
+node_modules
+.sass-cache
+bower_components
+
+# build
+build

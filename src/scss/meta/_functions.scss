@@ -1,0 +1,95 @@
+/* -----------------------------------------------------------------------------
+   Define your global functions in here!
+   -------------------------------------------------------------------------- */
+@function _color($color) {
+
+    // check if key exists in $global-colors
+    @if variable-exists(global-colors) and map-has-key($global-colors, $color) {
+        @return map-get($global-colors, $color);
+    }
+
+    // check if key exists in $global-color-associations
+    @if variable-exists(global-color-associations) and map-has-key($global-color-associations, $color) {
+        @return map-get($global-color-associations, $color);
+    }
+
+    @warn "No color found for `#{$color}` in $global-colors and $global-color-associations map. Property omitted.";
+}
+
+@function _font($font) {
+
+    @if not variable-exists(global-fonts) {
+        @warn "Global variable $global-fonts not defined but needed for _font(). Aborting call.";
+    }
+
+    @if not map-has-key($global-fonts, $font) {
+        @warn "No font found for `#{$font}` in $global-fonts map. Property omitted.";
+    }
+
+    @return map-get($global-fonts, $font);
+}
+
+@function _z($layer) {
+
+    @if not variable-exists(global-z-layers) {
+        @warn "Global variable $global-z-layers not defined but needed for _z(). Aborting call.";
+    }
+
+    @if not map-has-key($global-z-layers, $layer) {
+        @warn "No layer found for `#{$layer}` in $global-z-layers map. Property omitted.";
+    }
+
+    @return map-get($global-z-layers, $layer);
+}
+
+@function _grid($setting) {
+
+    @if not variable-exists(global-grid) {
+        @warn "Global variable $global-grid not defined but needed for _z(). Aborting call.";
+    }
+
+    @if not map-has-key($global-grid, $setting) {
+        @warn "No layer found for `#{$setting}` in $global-grid map. Property omitted.";
+    }
+
+    @return map-get($global-grid, $setting);
+}
+
+/* -----------------------------------------------------------------------------
+   Breakpoint and media query related functions.
+   -------------------------------------------------------------------------- */
+@function _break($breakpoint) {
+
+    @if not variable-exists(global-breakpoints) {
+        @warn "Global variable $global-breakpoints not defined but needed for _break(). Aborting call.";
+    }
+
+    @if not map-has-key($global-breakpoints, $breakpoint) {
+        @warn "No breakpoint found for `#{$breakpoint}` in $global-breakpoints map. Property omitted.";
+    }
+
+    @return map-get($global-breakpoints, $breakpoint);
+}
+
+@function _min($breakpoint) {
+    @return "(min-width:" + _break($breakpoint) + ")";
+}
+
+@function _max($breakpoint) {
+    @return "(max-width:" + (_break($breakpoint) - _px2rem(1px))")";
+}
+
+@function _px2rem($pixels) {
+
+    $factorName: "primary-font-size";
+
+    @if not variable-exists(global-fonts) {
+        @warn "Global variable $global-fonts not defined but needed for _px2rem(). Aborting call.";
+    }
+
+    @if not map-has-key($global-fonts, $factorName) {
+        @warn "No `#{$factorName}` in $global-fonts map. Please add this to the map.";
+    }
+
+    @return $pixels / map-get($global-fonts, $factorName) + 0rem;
+}
