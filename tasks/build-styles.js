@@ -8,6 +8,8 @@ var autoprefixer    = require('autoprefixer');
 var postcss         = require('postcss');
 
 var id              = 'Styles\t'.blue.bold;
+var files           = [];
+var index           = 0;
 var prefixer        = postcss([ autoprefixer(config.autoprefixer || {}) ]); // https://github.com/ai/browserslist
 var outputStyle     = config.env === 'prod' ? 'compressed' : 'nested';
 var paths           = {
@@ -19,6 +21,35 @@ var paths           = {
 if (require.main === module) {
     run();
 }
+
+/**
+ * Logs a given error.
+ *
+ * @param {Object} error Error object.
+ */
+function error(error) {
+    return console.error('Error:'.red.underline, error.message);
+}
+
+/**
+ * When this task is done, this function will be executed.
+ *
+ * @param {Function} cb Additional callback to run after being done.
+ */
+function done(cb) {
+
+    // end not yet reached
+    if (++index < files.length) {
+        return;
+    }
+
+    console.log(id, 'Finished.');
+
+    // run callback function after finishing this task
+    if (typeof cb === 'function') {
+        cb();
+    }
+};
 
 /**
  * The rendering function which processes the Sass file.
@@ -41,7 +72,7 @@ function render(inputFile, outputFile, options) {
         outFile: outputFile
     }, function(error, result) {
         if (error) {
-            return console.error('Error:'.red.underline, error.message);
+            return error(error);
         }
 
         // keep duration for later logging
@@ -55,17 +86,14 @@ function render(inputFile, outputFile, options) {
 
             fs.writeFile(outputFile, result.css, function(error) {
                 if (error) {
-                    return console.error('Error:'.red.underline, error.message);
+                    return error(error);
                 }
 
                 console.log(id, 'Rendered', inputFile, '→'.bold.blue, outputFile, '('.blue + duration + 'ms' + ')'.blue);
 
-                if (options.hasOwnProperty('done') === false || typeof options.done !== 'function') {
-                    return;
+                if ('done' in options) {
+                    done(options.done);
                 }
-
-                // run done callback
-                options.done();
             });
 
         });
@@ -79,36 +107,25 @@ function render(inputFile, outputFile, options) {
  * @param {Object} options Running options.
  */
 function run(options) {
-    var files = [];
-    var i = 0;
-    var done = function(result) {
-
-        // reached end not yet
-        if (++i < files.length) {
-            return;
-        }
-
-        console.log(id, 'Finished.');
-
-        // run callback function after finishing this task
-        if (options.hasOwnProperty('done') && typeof options.done === 'function') {
-            options.done();
-        }
-    };
 
     // normalize call without parameters
     options = options || {};
 
-    // no files given, get them from config
-    if (options.hasOwnProperty('files') === false) {
+    // files given, ignore files from config
+    if ('files' in options) {
+        files = options.files;
+    } else {
         config.assets.styles.files.forEach(function(file) {
             files = files.concat(glob.sync(path.join(paths.src, file)));
         });
-    } else {
-        files = options.files;
     }
 
     console.log(id, 'Starting task...');
+
+    // no files to process
+    if (files.length < 1) {
+        return 'done' in options ? done(options.done) : done();
+    }
 
     // run the main logic for each file
     files.forEach(function(file) {
@@ -120,7 +137,7 @@ function run(options) {
         });
 
         render(file, outputFile, {
-            done: done
+            done: 'done' in options ? options.done : null
         });
     });
 }
