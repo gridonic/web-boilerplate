@@ -97,18 +97,18 @@ function render(inputFiles, outputFile, options) {
                 var code = result[mode][type].contents.toString();
 
                 // write code to file
-                fs.writeFile(outputFile, code, function(error) {
-                    if (error) {
-                        return fail(error);
-                    }
-
-                    console.log(id, 'Created sprite', path.parse(outputFile).name.bold.blue, 'with', inputFiles.length, 'images.', '('.blue + (Date.now() - start) + 'ms' + ')'.blue);
-
-                    if ('done' in options) {
-                        done(options.done);
-                    }
-                });
+                try {
+                    fs.writeFileSync(outputFile, code);
+                } catch (e) {
+                    return fail(e);
+                }
             }
+        }
+
+        console.log(id, 'Created sprite', path.parse(outputFile).name.bold.blue, 'with', inputFiles.length, 'images.', '('.blue + (Date.now() - start) + 'ms' + ')'.blue);
+
+        if ('done' in options) {
+            done(options.done);
         }
     });
 }
