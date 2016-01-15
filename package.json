@@ -1,44 +1,48 @@
 {
-  "author": "Sebastian Prein <hi@sebastianprein.com>",
-  "description": "Fast, light and modern web boilerplate.",
-  "keywords": [
-    "fast",
-    "light",
-    "modern"
-  ],
-  "license": "",
-  "name": "web-boilerplate",
-  "scripts": {
-    "build": "node tasks/build",
-    "build:styles": "node tasks/build-styles",
-    "build:scripts": "node tasks/build-scripts",
-    "build:html": "node tasks/build-html",
-    "build:images": "node tasks/build-images",
-    "watch": "node tasks/watch",
-    "watch:styles": "node tasks/watch-styles",
-    "watch:scripts": "node tasks/watch-scripts",
-    "watch:html": "node tasks/watch-html",
-    "clean": "node tasks/clean"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/mzdr/web-boilerplate.git"
-  },
-  "version": "1.0.0",
-  "dependencies": {
-    "normalize.scss": "^0.1.0"
-  },
-  "devDependencies": {
-    "autoprefixer": "^6.2.3",
-    "babel-core": "^6.4.0",
-    "babel-preset-es2015": "^6.3.13",
-    "babelify": "^7.2.0",
-    "browserify": "^13.0.0",
-    "colors": "^1.1.2",
-    "fs-extra": "^0.26.4",
-    "glob": "^6.0.4",
-    "node-sass": "^3.4.2",
-    "postcss": "^5.0.14",
-    "uglify-js": "^2.6.1"
-  }
+    "author": "Sebastian Prein <hi@sebastianprein.com>",
+    "description": "Fast, light and modern web boilerplate.",
+    "keywords": [
+        "fast",
+        "light",
+        "modern"
+    ],
+    "license": "",
+    "name": "web-boilerplate",
+    "scripts": {
+        "build": "node tasks/build",
+        "build:html": "node tasks/build-html",
+        "build:images": "node tasks/build-images",
+        "build:scripts": "node tasks/build-scripts",
+        "build:sprites": "node tasks/build-sprites",
+        "build:styles": "node tasks/build-styles",
+        "clean": "node tasks/clean",
+        "watch": "node tasks/watch",
+        "watch:html": "node tasks/watch-html",
+        "watch:images": "node tasks/watch-images",
+        "watch:scripts": "node tasks/watch-scripts",
+        "watch:sprites": "node tasks/watch-sprites",
+        "watch:styles": "node tasks/watch-styles"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mzdr/web-boilerplate.git"
+    },
+    "version": "1.0.0",
+    "dependencies": {
+        "normalize.scss": "^0.1.0"
+    },
+    "devDependencies": {
+        "autoprefixer": "^6.2.3",
+        "babel-core": "^6.4.0",
+        "babel-preset-es2015": "^6.3.13",
+        "babelify": "^7.2.0",
+        "browserify": "^13.0.0",
+        "colors": "^1.1.2",
+        "fs-extra": "^0.26.4",
+        "glob": "^6.0.4",
+        "node-sass": "^3.4.2",
+        "postcss": "^5.0.14",
+        "svg-sprite": "^1.2.19",
+        "uglify-js": "^2.6.1"
+    }
 }

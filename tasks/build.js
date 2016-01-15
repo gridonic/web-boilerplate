@@ -4,6 +4,7 @@ var styles  = require('../tasks/build-styles');
 var scripts = require('../tasks/build-scripts');
 var html    = require('../tasks/build-html');
 var images  = require('../tasks/build-images');
+var sprites = require('../tasks/build-sprites');
 var clean   = require('../tasks/clean');
 
 /**
@@ -36,4 +37,4 @@ function run(tasks) {
 console.log('Running in', (config.env === 'prod' ? 'production' : 'develop').bold.blue, 'mode...\n');
 
 // run in chronological order
-run([ clean, styles, scripts, html, images ]);
+run([ clean, styles, scripts, html, images, sprites ]);

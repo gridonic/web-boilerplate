@@ -23,7 +23,12 @@
         "html": {
             "src": "html",
             "dest": "",
-            "files": ["**/*.html"]
+            "files": ["**/*.{html,txt,php}"]
+        },
+        "sprites": {
+            "src": "images/sprites",
+            "dest": "assets/images/sprites",
+            "files": ["*/*.svg"]
         }
     },
     "autoprefixer": {

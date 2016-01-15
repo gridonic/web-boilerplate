@@ -23,7 +23,7 @@ if (require.main === module) {
  *
  * @param {Object} error Error object.
  */
-function error(error) {
+function fail(error) {
     return console.error('Error:'.red.underline, error.message);
 }
 
@@ -48,7 +48,7 @@ function done(cb) {
 };
 
 /**
- * The rendering function which processes the Sass file.
+ * The rendering function which processes the image file.
  *
  * @param {String} inputFile The input file.
  * @param {String} outputFile The output file.
@@ -102,7 +102,7 @@ function render(inputFile, outputFile, options) {
                 .use(plugin)
                 .run(function(error, files) {
                     if (error) {
-                        return error(error);
+                        return fail(error);
                     }
 
                     var statsInputFile = fs.statSync(inputFile);
@@ -121,7 +121,7 @@ function render(inputFile, outputFile, options) {
     // in develop mode just copy it
     fs.copy(inputFile, outputFile, function(error) {
         if (error) {
-            return error(error);
+            return fail(error);
         }
 
         console.log(id, 'Copied', inputFile, '→'.bold.blue, outputFile);
@@ -139,6 +139,8 @@ function render(inputFile, outputFile, options) {
  */
 function run(options) {
 
+    console.log(id, 'Starting task...');
+
     // normalize call without parameters
     options = options || {};
 
@@ -150,8 +152,6 @@ function run(options) {
             files = files.concat(glob.sync(path.join(paths.src, file)));
         });
     }
-
-    console.log(id, 'Starting task...');
 
     // no files to process
     if (files.length < 1) {

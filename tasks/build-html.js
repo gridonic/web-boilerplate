@@ -22,7 +22,7 @@ if (require.main === module) {
  *
  * @param {Object} error Error object.
  */
-function error(error) {
+function fail(error) {
     return console.error('Error:'.red.underline, error.message);
 }
 
@@ -53,6 +53,8 @@ function done(cb) {
  */
 function run(options) {
 
+    console.log(id, 'Starting task...');
+
     // normalize call without parameters
     options = options || {};
 
@@ -64,8 +66,6 @@ function run(options) {
             files = files.concat(glob.sync(path.join(paths.src, file)));
         });
     }
-
-    console.log(id, 'Starting task...');
 
     // no files to process
     if (files.length < 1) {
@@ -86,7 +86,7 @@ function run(options) {
 
         fs.copy(file, outputFile, function(error) {
             if (error) {
-                return error(error);
+                return fail(error);
             }
 
             console.log(id, 'Copied', file, '→'.bold.blue, outputFile);
