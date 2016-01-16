@@ -20,7 +20,7 @@ function run(options) {
 
     fs.remove(config.dest, function(error) {
         if (error) {
-            return console.error('Error:'.red.underline, error.message);
+            return console.error('Error:\t'.red.bold.underline, error.message);
         }
 
         console.log(id, 'Finished.');
