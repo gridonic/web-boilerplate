@@ -1,3 +1,4 @@
+import 'picturefill';
 import Person from './Components/Person';
 
 var basti = new Person({
