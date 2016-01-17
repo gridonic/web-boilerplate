@@ -23,7 +23,10 @@
         "html": {
             "src": "html",
             "dest": "",
-            "files": ["**/*.{html,txt,php}"]
+            "files": ["**/*.{html,txt,php}"],
+            "replace": {
+                "@sprite:([^,]+),([^\\s]+)": "<svg class=\"$2\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"$1\"></use></svg>"
+            }
         },
         "sprites": {
             "src": "images/sprites",
@@ -36,5 +39,5 @@
     },
     "src":  "./src",
     "dest": "./build",
-    "env": "dev"
+    "env": "prod"
 }

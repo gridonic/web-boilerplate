@@ -1,12 +1,15 @@
 var config          = require('../project.json');
 var colors          = require('colors');
+var async           = require('async');
 var glob            = require('glob');
 var fs              = require('fs-extra');
 var path            = require('path');
+var replace         = require('replace');
 
-var id              = 'HTML\t'.blue.bold;
+var id              = 'HTML'.blue.bold;
 var files           = [];
 var index           = 0;
+var start;
 var paths           = {
     dest: path.join(config.dest, config.assets.html.dest),
     src: path.join(config.src, config.assets.html.src)
@@ -23,7 +26,7 @@ if (require.main === module) {
  * @param {Object} error Error object.
  */
 function fail(error) {
-    return console.error('Error:\t'.red.bold.underline, error.message);
+    return console.error(`${'Error:'.red.bold.underline}\t${error.message}`);
 }
 
 /**
@@ -38,13 +41,59 @@ function done(cb) {
         return;
     }
 
-    console.log(id, 'Finished.');
+    // get total task time
+    var duration = Date.now() - start;
+
+    console.log(`${id}\tFinished. ${'('.bold.blue}${duration}ms${')'.bold.blue}`);
 
     // run callback function after finishing this task
     if (typeof cb === 'function') {
         cb();
     }
-};
+}
+
+/**
+ * The rendering function which processes the HTML file.
+ *
+ * @param {String} inputFile The input file.
+ * @param {String} outputFile The output file.
+ * @param {Object} options Rendering options.
+ */
+function render(inputFile, outputFile, options) {
+
+    async.series([
+
+        // make sure destination path is writable
+        async.apply(fs.ensureDir, path.dirname(outputFile)),
+
+        // copy input to output file
+        async.apply(fs.copy, inputFile, outputFile),
+
+    ], function(error, result) {
+        if (error) {
+            fail(error)
+        } else {
+
+            // task has replacement orders
+            if ('replace' in config.assets.html) {
+                for (var pattern in config.assets.html.replace) {
+                    replace({
+                        regex: pattern,
+                        replacement: config.assets.html.replace[pattern],
+                        paths: [ outputFile ],
+                        recursive: false,
+                        silent: true
+                    });
+                }
+            }
+
+            console.log(`${id}\tCopied ${inputFile} ${'→'.bold.blue} ${outputFile}`);
+        }
+
+        // task is officially done
+        done('done' in options ? options.done : null);
+    });
+}
 
 /**
  * Function providing logic to run this task.
@@ -53,7 +102,10 @@ function done(cb) {
  */
 function run(options) {
 
-    console.log(id, 'Starting task...');
+    // measure task running time
+    start = Date.now();
+
+    console.log(`${id}\tStarting task...`);
 
     // normalize call without parameters
     options = options || {};
@@ -69,7 +121,7 @@ function run(options) {
 
     // no files to process
     if (files.length < 1) {
-        return 'done' in options ? done(options.done) : done();
+        return done('done' in options ? options.done : null);
     }
 
     // run the main logic for each file
@@ -78,20 +130,11 @@ function run(options) {
         var outputPath = path.join(paths.dest, parsedPath.dir.replace(paths.src, ''));
         var outputFile = path.format({
             dir: outputPath,
-            base: parsedPath.name + '.html'
+            base: parsedPath.base
         });
 
-        // make sure destination path is writable
-        fs.ensureDirSync(outputPath);
-
-        fs.copy(file, outputFile, function(error) {
-            if (error) {
-                return fail(error);
-            }
-
-            console.log(id, 'Copied', file, '→'.bold.blue, outputFile);
-
-            return 'done' in options ? done(options.done) : done();
+        render(file, outputFile, {
+            done: 'done' in options ? options.done : null
         });
     });
 }

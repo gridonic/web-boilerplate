@@ -8,9 +8,41 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        <h1>Yep. It's done.</h1>
-        <img src="assets/images/sprites/brands.svg" alt="">
 
+        <!-- you can remove the example content below :) -->
+
+        <h1>Yep. It's done.</h1>
+        <p>You're now viewing the built html file.</p>
+
+        <h2>Generated SVG sprite example:</h2>
+        <p>The following snippet&hellip;</p>
+        <pre>&#64;sprite:assets/images/sprites/brands.svg#shell,my-class</pre>
+        <p>will be replaced when building with this&hellip;</p>
+        <pre>&lt;svg class="my-class"&gt;&#10;    &lt;use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="assets/images/sprites/brands.svg#shell"&gt;&lt;/use&gt;&#10;&lt;/svg></pre>
+        <p>which then the browser is rendering like this&hellip;</p>
+
+        @sprite:assets/images/sprites/brands.svg#shell,svg-sample
+        @sprite:assets/images/sprites/brands.svg#apple,svg-sample
+        @sprite:assets/images/sprites/brands.svg#dell,svg-sample
+        @sprite:assets/images/sprites/brands.svg#burger-king,svg-sample
+
+        <p>You can customize the replacement in the <code>project.json</code> file.</p>
+
+        <style>
+        :root {
+            padding: 2em;
+        }
+
+        .svg-sample {
+            box-shadow: 0 0 1px #ccc;
+            height: 8em;
+            margin: 0.5em;
+            padding: 0.5em;
+            width: 8em;
+        }
+        </style>
+
+        <!-- include assets below the fold -->
         <link rel="stylesheet" href="assets/styles/styles.css">
         <script src="assets/scripts/App.js"></script>
     </body>
