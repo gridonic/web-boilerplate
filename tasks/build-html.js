@@ -26,7 +26,7 @@ if (require.main === module) {
  * @param {Object} error Error object.
  */
 function fail(error) {
-    return console.error(`${'Error:'.red.bold.underline}\t${error.message}`);
+    return console.error(`${'Error'.red.bold.underline}\t${error.message}`);
 }
 
 /**

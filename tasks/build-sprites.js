@@ -21,19 +21,19 @@ if (require.main === module) {
 }
 
 /**
-* Logs a given error.
-*
-* @param {Object} error Error object.
-*/
+ * Logs a given error.
+ *
+ * @param {Object} error Error object.
+ */
 function fail(error) {
-    return console.error(`${'Error:'.red.bold.underline}\t${error.message}`);
+    return console.error(`${'Error'.red.bold.underline}\t${error.message}`);
 }
 
 /**
-* When this task is done, this function will be executed.
-*
-* @param {Function} cb Additional callback to run after being done.
-*/
+ * When this task is done, this function will be executed.
+ *
+ * @param {Function} cb Additional callback to run after being done.
+ */
 function done(cb) {
 
     // end not yet reached
@@ -53,13 +53,13 @@ function done(cb) {
 };
 
 /**
-* The rendering function which processes the images and creates a sprite out
-* of them.
-*
-* @param {Array} inputFiles The input files.
-* @param {String} outputFile The output file.
-* @param {Object} options Rendering options.
-*/
+ * The rendering function which processes the images and creates a sprite out
+ * of them.
+ *
+ * @param {Array} inputFiles The input files.
+ * @param {String} outputFile The output file.
+ * @param {Object} options Rendering options.
+ */
 function render(inputFiles, outputFile, options) {
     var start = Date.now();
 
@@ -147,10 +147,10 @@ function render(inputFiles, outputFile, options) {
 }
 
 /**
-* Function providing logic to run this task.
-*
-* @param {Object} options Running options.
-*/
+ * Function providing logic to run this task.
+ *
+ * @param {Object} options Running options.
+ */
 function run(options) {
     var files = [];
 
