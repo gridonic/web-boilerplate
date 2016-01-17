@@ -98,7 +98,7 @@ function render(inputFile, outputFile, options) {
                 }
 
             ], function(error, result) {
-                done(error ? error : null);
+                done(error);
             });
         }
 

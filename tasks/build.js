@@ -24,7 +24,7 @@ var tasks = [ clean, styles, scripts, html, images, sprites ].map(function(task)
 });
 
 // function to run once building finished
-var done = function(error, results) {
+var done = function() {
     var hr = String.fromCharCode(8212).repeat(process.stdout.columns * 0.125).bold.green;
     var duration = Date.now() - start;
 
