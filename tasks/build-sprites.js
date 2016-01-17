@@ -3,11 +3,13 @@ var colors          = require('colors');
 var glob            = require('glob');
 var fs              = require('fs-extra');
 var path            = require('path');
+var async           = require('async');
 var SVGSpriter      = require('svg-sprite');
 
-var id              = 'Sprites\t'.blue.bold;
-var sets           = {};
+var id              = 'Sprites'.blue.bold;
+var sets            = {};
 var index           = 0;
+var start;
 var paths           = {
     dest: path.join(config.dest, config.assets.sprites.dest),
     src: path.join(config.src, config.assets.sprites.src)
@@ -24,7 +26,7 @@ if (require.main === module) {
 * @param {Object} error Error object.
 */
 function fail(error) {
-    return console.error('Error:\t'.red.bold.underline, error.message);
+    return console.error(`${'Error:'.red.bold.underline}\t${error.message}`);
 }
 
 /**
@@ -39,7 +41,10 @@ function done(cb) {
         return;
     }
 
-    console.log(id, 'Finished.');
+    // get total task time
+    var duration = Date.now() - start;
+
+    console.log(`${id}\tFinished. ${'('.bold.blue}${duration}ms${')'.bold.blue}`);
 
     // run callback function after finishing this task
     if (typeof cb === 'function') {
@@ -70,46 +75,74 @@ function render(inputFiles, outputFile, options) {
     // normalize call without parameters
     options = options || {};
 
-    // make sure destination path is writable
-    fs.ensureDirSync(path.dirname(outputFile));
-
     // create spriter instance
     var spriter = new SVGSpriter(config);
 
-    // add svg source files
-    inputFiles.forEach(function(file) {
-        spriter.add(path.resolve(file), path.basename(file), fs.readFileSync(path.resolve(file), {
-            encoding: 'utf-8'
-        }));
-    });
+    async.series([
 
-    // compile the sprite
-    spriter.compile(function(error, result) {
-        if (error) {
-            return fail(error);
-        }
+        // make sure destination path is writable
+        async.apply(fs.ensureDir, path.dirname(outputFile)),
 
-        // run through all configured output modes
-        for (var mode in result) {
+        // sprite it
+        function(done) {
 
-            // run through all created resources and write them to disk
-            for (var type in result[mode]) {
-                var code = result[mode][type].contents.toString();
+            // add svg source files
+            inputFiles.forEach(function(file) {
+                spriter.add(path.resolve(file), path.basename(file), fs.readFileSync(path.resolve(file), {
+                    encoding: 'utf-8'
+                }));
+            });
 
-                // write code to file
-                try {
-                    fs.writeFileSync(outputFile, code);
-                } catch (e) {
-                    return fail(e);
+            // compile sprite
+            spriter.compile(function(error, result) {
+                if (error) {
+                    return done(error);
                 }
-            }
+
+                var resources = [];
+                var parsedPath = path.parse(outputFile);
+
+                // run through all configured output modes
+                for (var mode in result) {
+
+                    // run through all created resources and write them to disk
+                    for (var type in result[mode]) {
+                        var item = {
+                            outputFile: path.format({
+                                dir: path.dirname(outputFile),
+                                base: `${parsedPath.name}.${mode}.${type}${parsedPath.ext}`
+                            }),
+                            output: result[mode][type].contents.toString()
+                        };
+
+                        // just one mode and one type
+                        if (Object.keys(result).length === 1 && Object.keys(result[mode]).length === 1) {
+                            item.outputFile = outputFile;
+                        }
+
+                        resources.push(item);
+                    }
+                }
+
+                async.parallel(resources.map(function(item) {
+                    return async.apply(fs.writeFile, item.outputFile, item.output);
+                }), function(error, result) {
+                    done(error);
+                });
+            });
         }
 
-        console.log(id, 'Created sprite', path.parse(outputFile).name.bold.blue, 'with', inputFiles.length, 'images.', '('.blue + (Date.now() - start) + 'ms' + ')'.blue);
+    ], function(error, result) {
+        if (error) {
+            fail(error);
+        } else {
+            var duration = Date.now() - start;
 
-        if ('done' in options) {
-            done(options.done);
+            console.log(`${id}\tCreated sprite ${path.parse(outputFile).name.bold.blue} with ${inputFiles.length} images. ${'('.bold.blue}${duration}ms${')'.bold.blue}`);
         }
+
+        // task is officially done
+        done('done' in options ? options.done : null);
     });
 }
 
@@ -121,7 +154,10 @@ function render(inputFiles, outputFile, options) {
 function run(options) {
     var files = [];
 
-    console.log(id, 'Starting task...');
+    // measure task running time
+    start = Date.now();
+
+    console.log(`${id}\tStarting task...`);
 
     // normalize call without parameters
     options = options || {};
@@ -156,7 +192,7 @@ function run(options) {
 
     // no sets to process
     if (sets.length < 1) {
-        return 'done' in options ? done(options.done) : done();
+        return done('done' in options ? options.done : null);
     }
 
     // run the main logic for each set
