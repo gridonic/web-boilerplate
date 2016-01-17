@@ -3,11 +3,13 @@ var colors          = require('colors');
 var glob            = require('glob');
 var fs              = require('fs-extra');
 var path            = require('path');
+var async           = require('async');
 var Imagemin        = require('imagemin');
 
-var id              = 'Images\t'.blue.bold;
+var id              = 'Images'.blue.bold;
 var files           = [];
 var index           = 0;
+var start;
 var paths           = {
     dest: path.join(config.dest, config.assets.images.dest),
     src: path.join(config.src, config.assets.images.src)
@@ -24,7 +26,7 @@ if (require.main === module) {
  * @param {Object} error Error object.
  */
 function fail(error) {
-    return console.error('Error:\t'.red.bold.underline, error.message, 'fileName' in error ? '(' + error.fileName + ')' : '');
+    return console.error(`${'Error:'.red.bold.underline}\t${error.message} (${error.fileName})`);
 }
 
 /**
@@ -39,13 +41,49 @@ function done(cb) {
         return;
     }
 
-    console.log(id, 'Finished.');
+    // get total task time
+    var duration = Date.now() - start;
+
+    console.log(`${id}\tFinished. ${'('.bold.blue}${duration}ms${')'.bold.blue}`);
 
     // run callback function after finishing this task
     if (typeof cb === 'function') {
         cb();
     }
 };
+
+/**
+ * Returns the Imagemin plugin depending on the given input type.
+ *
+ * @param {String} type [description]
+ * @return {Function|Boolean}
+ */
+function getPlugin(type) {
+
+    if (type === 'jpg' || type === 'jpeg') {
+        return Imagemin.jpegtran({
+            progressive: true
+        });
+    }
+
+    if (type === 'png') {
+        return Imagemin.optipng({
+            optimizationLevel: 3
+        });
+    }
+
+    if (type === 'gif') {
+        return Imagemin.gifsicle({
+            interlaced: true
+        });
+    }
+
+    if (type === 'svg') {
+        return Imagemin.svgo();
+    }
+
+    return false;
+}
 
 /**
  * The rendering function which processes the image file.
@@ -59,76 +97,54 @@ function render(inputFile, outputFile, options) {
     // normalize call without parameters
     options = options || {};
 
-    // make sure destination path is writable
-    fs.ensureDirSync(path.dirname(outputFile));
+    // get plugin to use for image optimization
+    var plugin = getPlugin(path.extname(inputFile).substr(1));
 
-    // only compress in production mode
-    if (config.env === 'prod') {
-        var plugin;
+    // are we going to compress?
+    var doCompress = config.env === 'prod' && plugin;
 
-        switch (path.extname(inputFile)) {
-            case '.jpg':
-            case '.jpeg':
-                plugin = Imagemin.jpegtran({
-                    progressive: true
-                });
+    async.series([
 
-                break;
-            case '.png':
-                plugin = Imagemin.optipng({
-                    optimizationLevel: 3
-                });
+        // make sure destination path is writable
+        async.apply(fs.ensureDir, path.dirname(outputFile)),
 
-                break;
+        // compress it in production mode, otherwise just copy it
+        function(cb) {
 
-            case '.gif':
-                plugin = Imagemin.gifsicle({
-                    interlaced: true
-                });
+            // only compress in production mode and plugin available
+            if (doCompress) {
+                return new Imagemin()
+                    .src(inputFile)
+                    .dest(path.dirname(outputFile))
+                    .use(plugin)
+                    .run(cb);
+            }
 
-                break;
+            // in develop mode just copy it
+            fs.copy(inputFile, outputFile, cb);
+        },
 
-            case '.svg':
-                plugin = Imagemin.svgo();
+        // get file sizes of input and output file
+        async.apply(fs.stat, inputFile),
+        async.apply(fs.stat, outputFile)
 
-                break;
-        }
-
-        // we have a plugin that is able to optimize the given image
-        if (plugin) {
-            return new Imagemin()
-                .src(inputFile)
-                .dest(path.dirname(outputFile))
-                .use(plugin)
-                .run(function(error, files) {
-                    if (error) {
-                        return fail(error);
-                    }
-
-                    var statsInputFile = fs.statSync(inputFile);
-                    var statsOutputFile = fs.statSync(outputFile);
-                    var saved = Math.round((statsInputFile.size / statsOutputFile.size - 1) * 10000) / 100;
-
-                    console.log(id, 'Optimized', inputFile, '→'.bold.blue, outputFile, '('.blue + saved + '%' + ')'.blue);
-
-                    if ('done' in options) {
-                        done(options.done);
-                    }
-                });
-        }
-    }
-
-    // in develop mode just copy it
-    fs.copy(inputFile, outputFile, function(error) {
+    ], function(error, result) {
         if (error) {
-            return fail(error);
+            fail(error);
+        } else {
+
+            // get percentage of saved space
+            var saved = Math.round((result[2].size / result[3].size - 1) * 10000) / 100;
+
+            if (doCompress) {
+                console.log(`${id}\tOptimized ${inputFile} ${'→'.bold.blue} ${outputFile} ${'('.bold.blue}${saved}%${')'.bold.blue}`);
+            } else {
+                console.log(`${id}\tCopied ${inputFile} ${'→'.bold.blue} ${outputFile}`);
+            }
         }
 
-        console.log(id, 'Copied', inputFile, '→'.bold.blue, outputFile);
-
-        if ('done' in options) {
-            done(options.done);
-        }
+        // task is officially done
+        done('done' in options ? options.done : null);
     });
 }
 
@@ -139,7 +155,10 @@ function render(inputFile, outputFile, options) {
  */
 function run(options) {
 
-    console.log(id, 'Starting task...');
+    // measure task running time
+    start = Date.now();
+
+    console.log(`${id}\tStarting task...`);
 
     // normalize call without parameters
     options = options || {};
@@ -155,7 +174,7 @@ function run(options) {
 
     // no files to process
     if (files.length < 1) {
-        return 'done' in options ? done(options.done) : done();
+        return done('done' in options ? options.done : null);
     }
 
     // run the main logic for each file
