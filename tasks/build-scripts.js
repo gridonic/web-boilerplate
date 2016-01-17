@@ -3,13 +3,15 @@ var colors          = require('colors');
 var glob            = require('glob');
 var fs              = require('fs-extra');
 var path            = require('path');
+var async           = require('async');
 var babel           = require('babel-core');
 var uglifyjs        = require('uglify-js');
 var browserify      = require('browserify');
 
-var id              = 'Scripts\t'.blue.bold;
+var id              = 'Scripts'.blue.bold;
 var files           = [];
 var index           = 0;
+var start;
 var paths           = {
     dest: path.join(config.dest, config.assets.scripts.dest),
     src: path.join(config.src, config.assets.scripts.src)
@@ -26,7 +28,7 @@ if (require.main === module) {
  * @param {Object} error Error object.
  */
 function fail(error) {
-    return console.error('Error:\t'.red.bold.underline, error.message);
+    return console.error(`${'Error:'.red.bold.underline}\t${error.message}`);
 }
 
 /**
@@ -41,7 +43,10 @@ function done(cb) {
         return;
     }
 
-    console.log(id, 'Finished.');
+    // get total task time
+    var duration = Date.now() - start;
+
+    console.log(`${id}\tFinished. ${'('.bold.blue}${duration}ms${')'.bold.blue}`);
 
     // run callback function after finishing this task
     if (typeof cb === 'function') {
@@ -62,38 +67,58 @@ function render(inputFile, outputFile, options) {
     // normalize call without parameters
     options = options || {};
 
-    // make sure destination path is writable
-    fs.ensureDirSync(path.dirname(outputFile));
+    async.series([
 
-    // browserify this file and use babel as a transpiler
-    browserify(inputFile)
-        .transform('babelify', {
-            presets: ['es2015']
-        })
-        .bundle(function(error, buffer) {
-            var code = buffer.toString();
+        // make sure destination path is writable
+        async.apply(fs.ensureDir, path.dirname(outputFile)),
 
-            // uglify it in production mode
-            if (config.env === 'prod') {
-                code = uglifyjs.minify(buffer.toString(), {
-                    fromString: true
-                }).code.toString();
-            }
+        // render, prefix and save compiled sass file
+        function(done) {
 
-            // write code to file
-            fs.writeFile(outputFile, code, function(error) {
-                if (error) {
-                    return fail(error);
+            async.waterfall([
+
+                // browserify this file and use babel as a transpiler
+                function(cb) {
+                    browserify(inputFile).transform('babelify', {
+                        presets: ['es2015']
+                    }).bundle(cb);
+                },
+
+                // uglify it in production mode
+                function(result, cb) {
+                    var code = result.toString();
+
+                    if (config.env === 'prod') {
+                        code = uglifyjs.minify(buffer.toString(), {
+                            fromString: true
+                        }).code.toString();
+                    }
+
+                    cb(null, code);
+                },
+
+                // write code to file
+                function(result, cb) {
+                    fs.writeFile(outputFile, result, cb);
                 }
 
-                console.log(id, 'Rendered', inputFile, '→'.bold.blue, outputFile, '('.blue + (Date.now() - start) + 'ms' + ')'.blue);
-
-                if ('done' in options) {
-                    done(options.done);
-                }
+            ], function(error, result) {
+                done(error ? error : null);
             });
+        }
 
-        }).on('error', fail);
+    ], function(error, result) {
+        if (error) {
+            fail(error);
+        } else {
+            var duration = Date.now() - start;
+
+            console.log(`${id}\tRendered ${inputFile} ${'→'.bold.blue} ${outputFile} ${'('.bold.blue}${duration}ms${')'.bold.blue}`);
+        }
+
+        // task is officially done
+        done('done' in options ? options.done : null);
+    });
 }
 
 /**
@@ -103,7 +128,10 @@ function render(inputFile, outputFile, options) {
  */
 function run(options) {
 
-    console.log(id, 'Starting task...');
+    // measure task running time
+    start = Date.now();
+
+    console.log(`${id}\tStarting task...`);
 
     // normalize call without parameters
     options = options || {};
@@ -119,7 +147,7 @@ function run(options) {
 
     // no files to process
     if (files.length < 1) {
-        return 'done' in options ? done(options.done) : done();
+        return done('done' in options ? options.done : null);
     }
 
     // run the main logic for each file
@@ -131,7 +159,7 @@ function run(options) {
             base: parsedPath.name + '.js'
         });
 
-        return render(file, outputFile, {
+        render(file, outputFile, {
             done: 'done' in options ? options.done : null
         });
     });
