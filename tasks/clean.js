@@ -1,12 +1,41 @@
 var config          = require('../project.json');
 var colors          = require('colors');
 var fs              = require('fs-extra');
+var async           = require('async');
 
-var id              = 'Clean\t'.blue.bold;
+var id              = 'Clean'.blue.bold;
+var start;
 
 // task called directly
 if (require.main === module) {
     run();
+}
+
+/**
+ * Logs a given error.
+ *
+ * @param {Object} error Error object.
+ */
+function fail(error) {
+    return console.error(`${'Error:'.red.bold.underline}\t${error.message}`);
+}
+
+/**
+ * When this task is done, this function will be executed.
+ *
+ * @param {Function} cb Additional callback to run after being done.
+ */
+function done(cb) {
+
+    // get total task time
+    var duration = Date.now() - start;
+
+    console.log(`${id}\tFinished. ${'('.bold.blue}${duration}ms${')'.bold.blue}`);
+
+    // run callback function after finishing this task
+    if (typeof cb === 'function') {
+        cb();
+    }
 }
 
 /**
@@ -15,20 +44,29 @@ if (require.main === module) {
  * @param {Object} options Running options.
  */
 function run(options) {
-    console.log(id, 'Starting task...');
-    console.log(id, 'Deleting', config.dest);
 
-    fs.remove(config.dest, function(error) {
+    // measure task running time
+    start = Date.now();
+
+    console.log(`${id}\tStarting task...`);
+
+    // normalize call without parameters
+    options = options || {};
+
+    async.series([
+
+        // remove destination folder
+        async.apply(fs.remove, config.dest)
+
+    ], function(error, result) {
         if (error) {
-            return console.error('Error:\t'.red.bold.underline, error.message);
+            fail(error)
+        } else {
+            console.log(`${id}\tDeleted ${config.dest}`);
         }
 
-        console.log(id, 'Finished.');
-
-        // run callback function after finishing this task
-        if (options.hasOwnProperty('done') && typeof options.done === 'function') {
-            options.done();
-        }
+        // task is officially done
+        done('done' in options ? options.done : null);
     });
 }
 
