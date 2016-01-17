@@ -78,7 +78,7 @@ function render(inputFiles, outputFile, options) {
 
     // add svg source files
     inputFiles.forEach(function(file) {
-        spriter.add(path.resolve(file), file, fs.readFileSync(path.resolve(file), {
+        spriter.add(path.resolve(file), path.basename(file), fs.readFileSync(path.resolve(file), {
             encoding: 'utf-8'
         }));
     });
