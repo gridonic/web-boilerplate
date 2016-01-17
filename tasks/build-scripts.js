@@ -89,7 +89,7 @@ function render(inputFile, outputFile, options) {
                     var code = result.toString();
 
                     if (config.env === 'prod') {
-                        code = uglifyjs.minify(buffer.toString(), {
+                        code = uglifyjs.minify(code, {
                             fromString: true
                         }).code.toString();
                     }
