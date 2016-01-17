@@ -75,7 +75,7 @@ function render(inputFile, outputFile, options) {
         async.apply(fs.ensureDir, path.dirname(outputFile)),
 
         // render, prefix and save compiled sass file
-        function(done) {
+        (done) => {
             async.waterfall([
 
                 // render it
@@ -86,23 +86,23 @@ function render(inputFile, outputFile, options) {
                 }),
 
                 // prefix it
-                function(result, cb) {
-                    prefixer.process(result.css).then(function(result) {
+                (result, cb) => {
+                    prefixer.process(result.css).then((result) => {
                         cb(null, result);
                     });
                 },
 
                 // write code to file
-                function(result, cb) {
+                (result, cb) => {
                     fs.writeFile(outputFile, result.css, cb);
                 }
 
-            ], function(error, result) {
+            ], (error, result) => {
                 done(error);
             });
         }
 
-    ], function(error, result) {
+    ], (error, result) => {
         if (error) {
             fail(error);
         } else {
@@ -135,7 +135,7 @@ function run(options) {
     if ('files' in options) {
         files = options.files;
     } else {
-        config.assets.styles.files.forEach(function(file) {
+        config.assets.styles.files.forEach((file) => {
             files = files.concat(glob.sync(path.join(paths.src, file)));
         });
     }
@@ -146,7 +146,7 @@ function run(options) {
     }
 
     // run the main logic for each file
-    files.forEach(function(file) {
+    files.forEach((file) => {
         var parsedPath = path.parse(file);
         var outputPath = path.join(paths.dest, parsedPath.dir.replace(paths.src, ''));
         var outputFile = path.format({

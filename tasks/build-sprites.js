@@ -84,17 +84,17 @@ function render(inputFiles, outputFile, options) {
         async.apply(fs.ensureDir, path.dirname(outputFile)),
 
         // sprite it
-        function(done) {
+        (done) => {
 
             // add svg source files
-            inputFiles.forEach(function(file) {
+            inputFiles.forEach((file) => {
                 spriter.add(path.resolve(file), path.basename(file), fs.readFileSync(path.resolve(file), {
                     encoding: 'utf-8'
                 }));
             });
 
             // compile sprite
-            spriter.compile(function(error, result) {
+            spriter.compile((error, result) => {
                 if (error) {
                     return done(error);
                 }
@@ -124,15 +124,15 @@ function render(inputFiles, outputFile, options) {
                     }
                 }
 
-                async.parallel(resources.map(function(item) {
+                async.parallel(resources.map((item) => {
                     return async.apply(fs.writeFile, item.outputFile, item.output);
-                }), function(error, result) {
+                }), (error, result) => {
                     done(error);
                 });
             });
         }
 
-    ], function(error, result) {
+    ], (error, result) => {
         if (error) {
             fail(error);
         } else {
@@ -166,13 +166,13 @@ function run(options) {
     if ('files' in options) {
         files = options.files;
     } else {
-        config.assets.sprites.files.forEach(function(file) {
+        config.assets.sprites.files.forEach((file) => {
             files = files.concat(glob.sync(path.join(paths.src, file)));
         });
     }
 
     // scan files and detect sets
-    files.forEach(function(file) {
+    files.forEach((file) => {
         var setName = path.basename(path.dirname(file));
 
         // new set

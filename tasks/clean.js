@@ -58,7 +58,7 @@ function run(options) {
         // remove destination folder
         async.apply(fs.remove, config.dest)
 
-    ], function(error, result) {
+    ], (error, result) => {
         if (error) {
             fail(error)
         } else {

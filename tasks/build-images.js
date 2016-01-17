@@ -109,7 +109,7 @@ function render(inputFile, outputFile, options) {
         async.apply(fs.ensureDir, path.dirname(outputFile)),
 
         // compress it in production mode, otherwise just copy it
-        function(cb) {
+        (cb) => {
 
             // only compress in production mode and plugin available
             if (doCompress) {
@@ -128,7 +128,7 @@ function render(inputFile, outputFile, options) {
         async.apply(fs.stat, inputFile),
         async.apply(fs.stat, outputFile)
 
-    ], function(error, result) {
+    ], (error, result) => {
         if (error) {
             fail(error);
         } else {
@@ -167,7 +167,7 @@ function run(options) {
     if ('files' in options) {
         files = options.files;
     } else {
-        config.assets.images.files.forEach(function(file) {
+        config.assets.images.files.forEach((file) => {
             files = files.concat(glob.sync(path.join(paths.src, file)));
         });
     }
@@ -178,7 +178,7 @@ function run(options) {
     }
 
     // run the main logic for each file
-    files.forEach(function(file) {
+    files.forEach((file) => {
         var parsedPath = path.parse(file);
         var outputPath = path.join(paths.dest, parsedPath.dir.replace(paths.src, ''));
         var outputFile = path.format({
