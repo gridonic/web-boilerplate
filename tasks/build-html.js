@@ -14,6 +14,7 @@ var paths           = {
     dest: path.join(config.dest, config.assets.html.dest),
     src: path.join(config.src, config.assets.html.src)
 };
+var replaceId       = '@config.';
 
 // task called directly
 if (require.main === module) {
@@ -77,9 +78,16 @@ function render(inputFile, outputFile, options) {
             // task has replacement orders
             if ('replace' in config.assets.html) {
                 for (var pattern in config.assets.html.replace) {
+                    var replacement = config.assets.html.replace[pattern];
+
+                    // use dynamic data
+                    if (replacement.indexOf(replaceId) === 0) {
+                        replacement = config[replacement.substr(replaceId.length)];
+                    }
+
                     replace({
                         regex: pattern,
-                        replacement: config.assets.html.replace[pattern],
+                        replacement: replacement,
                         paths: [ outputFile ],
                         recursive: false,
                         silent: true
