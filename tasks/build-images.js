@@ -4,6 +4,7 @@ var glob            = require('glob');
 var fs              = require('fs-extra');
 var path            = require('path');
 var async           = require('async');
+var notifier        = require('node-notifier');
 var Imagemin        = require('imagemin');
 
 var id              = 'Images'.blue.bold;
@@ -26,6 +27,11 @@ if (require.main === module) {
  * @param {Object} error Error object.
  */
 function fail(error) {
+    notifier.notify({
+        title: 'Images error',
+        message: error.message
+    });
+
     return console.error(`${'Error'.red.bold.underline}\t${error.message} (${error.fileName})`);
 }
 

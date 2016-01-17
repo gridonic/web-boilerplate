@@ -1,6 +1,7 @@
 var config          = require('../project.json');
 var colors          = require('colors');
 var async           = require('async');
+var notifier        = require('node-notifier');
 var glob            = require('glob');
 var fs              = require('fs-extra');
 var path            = require('path');
@@ -27,6 +28,11 @@ if (require.main === module) {
  * @param {Object} error Error object.
  */
 function fail(error) {
+    notifier.notify({
+        title: 'HTML error',
+        message: error.message
+    });
+
     return console.error(`${'Error'.red.bold.underline}\t${error.message}`);
 }
 

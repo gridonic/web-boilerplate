@@ -4,6 +4,7 @@ var glob            = require('glob');
 var fs              = require('fs-extra');
 var path            = require('path');
 var async           = require('async');
+var notifier        = require('node-notifier');
 var SVGSpriter      = require('svg-sprite');
 
 var id              = 'Sprites'.blue.bold;
@@ -26,6 +27,11 @@ if (require.main === module) {
  * @param {Object} error Error object.
  */
 function fail(error) {
+    notifier.notify({
+        title: 'Sprites error',
+        message: error.message
+    });
+
     return console.error(`${'Error'.red.bold.underline}\t${error.message}`);
 }
 

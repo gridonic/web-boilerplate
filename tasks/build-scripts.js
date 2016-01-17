@@ -4,6 +4,7 @@ var glob            = require('glob');
 var fs              = require('fs-extra');
 var path            = require('path');
 var async           = require('async');
+var notifier        = require('node-notifier');
 var babel           = require('babel-core');
 var uglifyjs        = require('uglify-js');
 var browserify      = require('browserify');
@@ -28,6 +29,11 @@ if (require.main === module) {
  * @param {Object} error Error object.
  */
 function fail(error) {
+    notifier.notify({
+        title: 'Scripts error',
+        message: error.message
+    });
+
     return console.error(`${'Error'.red.bold.underline}\t${error.message}`);
 }
 

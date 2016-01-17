@@ -6,6 +6,7 @@ Simple, fast and lightweight web boilerplate serving as my basis for developing 
 - Generates SVG sprites automatically based on sub-directories
 - Optimization of images on the fly, supports JPG, PNG, GIF and SVG
 - Version string based cache busting
+- Desktop notifications when errors occur
 
 **But why ?**
 
