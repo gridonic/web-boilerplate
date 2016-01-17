@@ -3,13 +3,15 @@ var colors          = require('colors');
 var glob            = require('glob');
 var fs              = require('fs-extra');
 var path            = require('path');
+var async           = require('async');
 var sass            = require('node-sass');
 var autoprefixer    = require('autoprefixer');
 var postcss         = require('postcss');
 
-var id              = 'Styles\t'.blue.bold;
+var id              = 'Styles'.blue.bold;
 var files           = [];
 var index           = 0;
+var start;
 var prefixer        = postcss([ autoprefixer(config.autoprefixer || {}) ]); // https://github.com/ai/browserslist
 var outputStyle     = config.env === 'prod' ? 'compressed' : 'nested';
 var paths           = {
@@ -28,7 +30,7 @@ if (require.main === module) {
  * @param {Object} error Error object.
  */
 function fail(error) {
-    return console.error('Error:\t'.red.bold.underline, error.message);
+    return console.error(`${'Error:'.red.bold.underline}\t${error.message}`);
 }
 
 /**
@@ -43,7 +45,10 @@ function done(cb) {
         return;
     }
 
-    console.log(id, 'Finished.');
+    // get total task time
+    var duration = Date.now() - start;
+
+    console.log(`${id}\tFinished. ${'('.bold.blue}${duration}ms${')'.bold.blue}`);
 
     // run callback function after finishing this task
     if (typeof cb === 'function') {
@@ -59,45 +64,55 @@ function done(cb) {
  * @param {Object} options Rendering options.
  */
 function render(inputFile, outputFile, options) {
+    var start = Date.now();
 
     // normalize call without parameters
     options = options || {};
 
-    // make sure destination path is writable
-    fs.ensureDirSync(path.dirname(outputFile));
+    async.series([
 
-    sass.render({
-        file: inputFile,
-        outputStyle: outputStyle,
-        outFile: outputFile
-    }, function(error, result) {
-        if (error) {
-            return fail(error);
+        // make sure destination path is writable
+        async.apply(fs.ensureDir, path.dirname(outputFile)),
+
+        // render, prefix and save compiled sass file
+        function(done) {
+            async.waterfall([
+
+                // render it
+                async.apply(sass.render, {
+                    file: inputFile,
+                    outputStyle: outputStyle,
+                    outFile: outputFile
+                }),
+
+                // prefix it
+                function(result, cb) {
+                    prefixer.process(result.css).then(function(result) {
+                        cb(null, result);
+                    });
+                },
+
+                // write code to file
+                function(result, cb) {
+                    fs.writeFile(outputFile, result.css, cb);
+                }
+
+            ], function(error, result) {
+                done(error ? error : null);
+            });
         }
 
-        // keep duration for later logging
-        var duration = result.stats.duration;
+    ], function(error, result) {
+        if (error) {
+            fail(error);
+        } else {
+            var duration = Date.now() - start;
 
-        // prefix it
-        prefixer.process(result.css.toString()).then(function(result) {
-            result.warnings().forEach(function(warn) {
-                console.warn(warn.toString());
-            });
+            console.log(`${id}\tRendered ${inputFile} ${'→'.bold.blue} ${outputFile} ${'('.bold.blue}${duration}ms${')'.bold.blue}`);
+        }
 
-            fs.writeFile(outputFile, result.css, function(error) {
-                if (error) {
-                    return fail(error);
-                }
-
-                console.log(id, 'Rendered', inputFile, '→'.bold.blue, outputFile, '('.blue + duration + 'ms' + ')'.blue);
-
-                if ('done' in options) {
-                    done(options.done);
-                }
-            });
-
-        });
-
+        // task is officially done
+        done('done' in options ? options.done : null);
     });
 }
 
@@ -108,8 +123,11 @@ function render(inputFile, outputFile, options) {
  */
 function run(options) {
 
-    console.log(id, 'Starting task...');
-    
+    // measure task running time
+    start = Date.now();
+
+    console.log(`${id}\tStarting task...`);
+
     // normalize call without parameters
     options = options || {};
 
@@ -124,7 +142,7 @@ function run(options) {
 
     // no files to process
     if (files.length < 1) {
-        return 'done' in options ? done(options.done) : done();
+        return done('done' in options ? options.done : null);
     }
 
     // run the main logic for each file
