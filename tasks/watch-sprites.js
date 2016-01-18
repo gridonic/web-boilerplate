@@ -51,7 +51,7 @@ function run(options) {
 
     var process = path => {
         sprites.run({
-            files: [ path ]
+            // files: [ path ]
         });
     };
 
