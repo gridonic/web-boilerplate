@@ -5,7 +5,6 @@ var fs              = require('fs-extra');
 var path            = require('path');
 var async           = require('async');
 var notifier        = require('node-notifier');
-var babel           = require('babel-core');
 var uglifyjs        = require('uglify-js');
 var browserify      = require('browserify');
 
