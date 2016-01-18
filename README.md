@@ -4,9 +4,10 @@ Simple, fast and lightweight web boilerplate serving as my basis for developing 
 
 - Supports ES6 JavaScript which is transpiled and bundled by [Babel](https://babeljs.io/) / [browserify](http://browserify.org/) (See [src/js](src/js) for a simple example)
 - Generates SVG sprites automatically based on sub-directories
-- Optimization of images on the fly, supports JPG, PNG, GIF and SVG
+- Optimization of images on the fly (supports JPG, PNG, GIF and SVG)
 - Version string based cache busting
 - Desktop notifications when errors occur
+- [Sass](http://sass-lang.com/) Style Sheets with PostCSS [autoprefixing](https://github.com/postcss/autoprefixer)
 
 **But why ?**
 
@@ -47,7 +48,7 @@ That's it. You might want to check the `project.json` for customizing the build 
 
 ---
 
-Third party frameworks/libraries enabled by default: [normalize.css](https://necolas.github.io/normalize.css/).
+Third party frameworks/libraries enabled by default: [normalize.css](https://necolas.github.io/normalize.css/), [picturefill](https://scottjehl.github.io/picturefill/).
 
 ---
 
