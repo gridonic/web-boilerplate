@@ -13,12 +13,14 @@
         "scripts": {
             "src": "js",
             "dest": "assets/scripts",
-            "files": ["*.js"]
+            "files": ["*.js"],
+            "watch": ["**/*.js"]
         },
         "styles": {
             "src": "scss",
             "dest": "assets/styles",
-            "files": ["**/[!_]*.{sass,scss}"]
+            "files": ["**/[!_]*.{sass,scss}"],
+            "watch": ["**/*.{sass,scss}"]
         },
         "html": {
             "src": "html",
@@ -32,7 +34,11 @@
         "sprites": {
             "src": "images/sprites",
             "dest": "assets/images/sprites",
-            "files": ["*/*.svg"]
+            "files": ["*/*.svg"],
+            "mode": {
+                "inline": true,
+                "symbol": true
+            }
         }
     },
     "autoprefixer": {

@@ -1,20 +1,39 @@
-var config  = require('../project.json');
-var styles  = require('../tasks/watch-styles');
-var scripts = require('../tasks/watch-scripts');
-var html    = require('../tasks/watch-html');
-var images  = require('../tasks/watch-images');
-var sprites = require('../tasks/watch-sprites');
-var clean   = require('../tasks/clean');
+'use strict';
 
-var colors  = require('colors');
+// pattern to check for task request
+let pattern = /--task=(.+)/;
+
+// check if specific task was requested
+let task = ((task) => task ? pattern.exec(task)[1] : null)(process.argv.find((arg) => pattern.exec(arg)));
+
+// get project configuration
+let config = require('../project.json');
+
+// define default tasks to run, order is being respected
+let tasks = {
+    styles:     { path: './styles' },
+    scripts:    { path: './scripts' },
+    fonts:      { path: './copy', id: 'Fonts' },
+    html:       { path: './copy', id: 'HTML' },
+    images:     { path: './images' },
+    sprites:    { path: './sprites' }
+};
+
+// specific task requested
+if (task in tasks) {
+    return new (require(tasks[task].path))(tasks[task]).watch();
+}
+
+// needed modules
+var chalk = require('chalk');
 
 // translate requested build environment
-var mode = (config.env === 'prod' ? 'production' : 'develop').bold.blue;
+var mode = chalk.blue.bold(config.env === 'prod' ? 'production' : 'develop');
 
 // log environment
 console.log(`Watching in ${mode} mode...\n`);
 
-// run all watching tasks
-[ styles, scripts, html, images, sprites ].map((task) => {
-    task.run();
+// run watching tasks
+Object.keys(tasks).map((key) => {
+    new (require(tasks[key].path))(tasks[key]).watch();
 });

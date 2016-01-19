@@ -1,40 +1,53 @@
-var config  = require('../project.json');
-var styles  = require('../tasks/build-styles');
-var scripts = require('../tasks/build-scripts');
-var html    = require('../tasks/build-html');
-var images  = require('../tasks/build-images');
-var sprites = require('../tasks/build-sprites');
-var clean   = require('../tasks/clean');
+'use strict';
 
-var colors  = require('colors');
-var async   = require('async');
+// pattern to check for task request
+let pattern = /--(?:task=|)(.+)/;
+
+// check if specific task was requested
+let task = ((task) => task ? pattern.exec(task)[1] : null)(process.argv.find((arg) => pattern.exec(arg)));
+
+// get project configuration
+let config = require('../project.json');
+
+// define default tasks to run, order is being respected
+let tasks = {
+    clean:      { path: './clean' },
+    styles:     { path: './styles' },
+    scripts:    { path: './scripts' },
+    fonts:      { path: './copy', id: 'Fonts' },
+    html:       { path: './copy', id: 'HTML' },
+    images:     { path: './images' },
+    sprites:    { path: './sprites' }
+};
+
+// specific task requested
+if (task in tasks) {
+    return new (require(tasks[task].path))(tasks[task]).run();
+}
+
+// needed modules
+let chalk = require('chalk');
+let async = require('async');
 
 // measure total build time
-var start = Date.now();
+let start = Date.now();
 
 // translate requested build environment
-var mode = (config.env === 'prod' ? 'production' : 'develop').bold.blue;
-
-// tasks to run in chronological order
-var tasks = [ clean, styles, scripts, html, images, sprites ].map((task) => {
-    return (cb) => {
-        task.run({
-            done: cb
-        });
-    }
-});
+let mode = chalk.blue.bold(config.env === 'prod' ? 'production' : 'develop');
 
 // function to run once building finished
-var done = () => {
-    var hr = String.fromCharCode(8212).repeat(process.stdout.columns * 0.125).bold.green;
-    var duration = Date.now() - start;
+let done = () => {
+    let hr = chalk.green.bold(String.fromCharCode(8212).repeat(process.stdout.columns * 0.125));
+    let duration = Date.now() - start;
 
     // building done
-    console.log(`\n${hr}\nFinished building. ${'('.bold.blue}${duration}ms${')'.bold.blue}`);
+    console.log(`\n${hr}\nFinished building. ${chalk.blue.bold('(')}${duration}ms${chalk.blue.bold(')')}`);
 };
 
 // log environment
 console.log(`Building in ${mode} mode...\n`);
 
 // run tasks
-async.series(tasks, done);
+async.series(Object.keys(tasks).map((key) => {
+    return (cb) => new (require(tasks[key].path))(tasks[key]).run(cb);
+}), done);

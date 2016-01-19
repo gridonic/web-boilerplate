@@ -1,75 +1,59 @@
-var config          = require('../project.json');
-var colors          = require('colors');
-var fs              = require('fs-extra');
-var async           = require('async');
+'use strict';
 
-var id              = 'Clean'.blue.bold;
-var start;
+let Task = require('./task');
 
-// task called directly
-if (require.main === module) {
-    run();
-}
+class Clean extends Task {
 
-/**
- * Logs a given error.
- *
- * @param {Object} error Error object.
- */
-function fail(error) {
-    return console.error(`${'Error'.red.bold.underline}\t${error.message}`);
-}
+    /**
+     * Task is being constructed.
+     *
+     * @param {Object} options Options for this task.
+     */
+    constructor(options) {
 
-/**
- * When this task is done, this function will be executed.
- *
- * @param {Function} cb Additional callback to run after being done.
- */
-function done(cb) {
+        // make sure options is an object
+        options = (typeof options === 'object' && options) || {};
 
-    // get total task time
-    var duration = Date.now() - start;
+        // set task id
+        options.id = 'Clean';
 
-    console.log(`${id}\tFinished. ${'('.bold.blue}${duration}ms${')'.bold.blue}`);
+        // call parent constructor
+        super(options);
+    }
 
-    // run callback function after finishing this task
-    if (typeof cb === 'function') {
-        cb();
+    /**
+     * Run this task.
+     *
+     * @param {Function} done Callback to run when task is done.
+     */
+    run(done) {
+
+        // measure task running time
+        this._start = Date.now();
+
+        console.log(`${this.title}Starting task...`);
+
+        this.async.series([
+
+            // remove destination folder
+            this.async.apply(this.fs.remove, this.config.dest)
+
+        ], (error, result) => {
+
+            // there was an error during handling the file
+            if (error) {
+                this.fail(error);
+
+                // calling parent when done
+                return super.handler(null, () => this.done(done));
+            }
+
+            console.log(`${this.title}Deleted ${this.config.dest}`);
+
+            // calling parent when done
+            super.handler(null, () => this.done(done));
+        });
     }
 }
 
-/**
- * Function providing logic to run this task.
- *
- * @param {Object} options Running options.
- */
-function run(options) {
-
-    // measure task running time
-    start = Date.now();
-
-    console.log(`${id}\tStarting task...`);
-
-    // normalize call without parameters
-    options = options || {};
-
-    async.series([
-
-        // remove destination folder
-        async.apply(fs.remove, config.dest)
-
-    ], (error, result) => {
-        if (error) {
-            fail(error)
-        } else {
-            console.log(`${id}\tDeleted ${config.dest}`);
-        }
-
-        // task is officially done
-        done('done' in options ? options.done : null);
-    });
-}
-
-module.exports = {
-    run: run
-};
+module.exports = Clean;
