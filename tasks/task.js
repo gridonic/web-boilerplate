@@ -67,15 +67,28 @@ class Task {
         }
 
         let isGlob = require('is-glob');
+        let options = {};
 
         // reset files stack
         this._files = [];
+
+        // check if files should be ignored
+        if (this.assets.ignore) {
+            options.ignore = this.assets.ignore.map(
+                (pattern) => this.path.join(this.src, pattern)
+            );
+        }
 
         files.forEach((file) => {
 
             // check if file is a globbing pattern
             if (isGlob(file)) {
-                this._files = this._files.concat(this.glob.sync(this.path.join(this.src, file)));
+                this._files = this._files.concat(
+                    this.glob.sync(
+                        this.path.join(this.src, file),
+                        options
+                    )
+                );
             } else {
                 this._files = this._files.concat(file);
             }
@@ -94,7 +107,7 @@ class Task {
             message: error.message
         });
 
-        return console.error(`${this.chalk.white.bgRed.bold(' Error ')}\t${error.message}`);
+        return console.error(`${this.chalk.white.bgRed.bold(' Error ')}\t ${error.message}`);
     }
 
     /**

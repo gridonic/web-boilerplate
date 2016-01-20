@@ -8,7 +8,8 @@
         "images": {
             "src": "images",
             "dest": "assets/images",
-            "files": ["**/*.{png,jpg,jpeg,gif,svg}"]
+            "files": ["**/*.{png,jpg,jpeg,gif,svg}"],
+            "ignore": ["sprites/**"]
         },
         "scripts": {
             "src": "js",
