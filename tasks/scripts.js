@@ -94,6 +94,22 @@ class Scripts extends Task {
             super.handler(file, done);
         });
     }
+
+    /**
+     * Default listener to run once the watcher raised an event.
+     *
+     * @param {String} event The name of the event.
+     * @param {String|Array} files The file(s) that caused the event.
+     */
+    on(event, files) {
+
+        // only compile those files which really need to be compiled
+        // @todo how do we find out which files are the ones?
+        files = this.assets.files;
+
+        // run parent on method with new data
+        super.on(event, files);
+    }
 }
 
 module.exports = Scripts;
