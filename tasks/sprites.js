@@ -160,6 +160,26 @@ class Sprites extends Task {
             }
         );
     }
+
+    /**
+     * Default listener to run once the watcher raised an event.
+     *
+     * @param {String} event The name of the event.
+     * @param {String|Array} files The file(s) that caused the event.
+     */
+    on(event, files) {
+
+        // get all available sprites
+        this.files = this.assets.files;
+
+        // only keep those which are affected by this event
+        let set = this.files.filter(
+            (file) => this.path.dirname(file) === this.path.dirname(files)
+        );
+
+        // run parent on method with new data
+        super.on(event, set);
+    }
 }
 
 module.exports = Sprites;

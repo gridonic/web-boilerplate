@@ -85,6 +85,23 @@ class Styles extends Task {
             super.handler(file, done);
         });
     }
+
+    /**
+     * Default listener to run once the watcher raised an event.
+     *
+     * @param {String} event The name of the event.
+     * @param {String|Array} files The file(s) that caused the event.
+     */
+    on(event, files) {
+
+        // if it's a partial, get all stylesheets that use it
+        if (this.path.basename(files)[0] === '_') {
+            files = this.assets.files;
+        }
+
+        // run parent on method with new data
+        super.on(event, files);
+    }
 }
 
 module.exports = Styles;
