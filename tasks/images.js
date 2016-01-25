@@ -22,9 +22,7 @@ class Images extends Task {
 
         // public properties
         this.imagemin = require('imagemin');
-
-        // private properties
-        this._plugin = false;
+        this.plugin = false;
     }
 
     /**
@@ -44,29 +42,17 @@ class Images extends Task {
      */
     set plugin(type) {
 
-        if (type === 'jpg' || type === 'jpeg') {
-            return this._plugin = this.imagemin.jpegtran({
-                progressive: true
-            });
+        if ((type === 'jpg' || type === 'jpeg') && 'jpg' in this.assets) {
+            this._plugin = this.imagemin.jpegtran(this.assets.jpg);
+        } else if (type === 'png' && 'png' in this.assets) {
+            this._plugin = this.imagemin.optipng(this.assets.png);
+        } else if (type === 'gif' && 'gif' in this.assets) {
+            this._plugin = this.imagemin.gifsicle(this.assets.gif);
+        } else if (type === 'svg' && 'svg' in this.assets) {
+            this._plugin = this.imagemin.svgo(this.assets.svg);
+        } else {
+            this._plugin = false;
         }
-
-        if (type === 'png') {
-            return this._plugin = this.imagemin.optipng({
-                optimizationLevel: 3
-            });
-        }
-
-        if (type === 'gif') {
-            return this._plugin = this.imagemin.gifsicle({
-                interlaced: true
-            });
-        }
-
-        if (type === 'svg') {
-            return this._plugin = this.imagemin.svgo();
-        }
-
-        this._plugin = false;
     }
 
     /**

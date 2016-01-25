@@ -9,7 +9,17 @@
             "src": "images",
             "dest": "assets/images",
             "files": ["**/*.{png,jpg,jpeg,gif,svg}"],
-            "ignore": ["sprites/**"]
+            "ignore": ["sprites/**"],
+            "jpg": {
+                "progressive": true
+            },
+            "png": {
+                "optimizationLevel": 3
+            },
+            "gif": {
+                "interlaced": true
+            },
+            "svg": {}
         },
         "scripts": {
             "src": "js",
