@@ -62,8 +62,10 @@ class Task {
      * @param {Array} files List of files.
      */
     set files(files) {
+
+        // expect files parameter to be an array
         if (Array.isArray(files) === false) {
-            return;
+            files = [ files ];
         }
 
         let isGlob = require('is-glob');
@@ -209,20 +211,37 @@ class Task {
         watcher
             .on('error', this.fail)
             .on('ready', () => {
-                watcher
-                    .on('add', path => {
-                        console.log(`${this.title}File "${path}" has been ${this.chalk.blue.bold('added')}.`);
+                watcher.on('all', (event, path) => {
+                    if (['add', 'addDir'].indexOf(event) >= 0) {
+                        event = 'added';
+                    } else if (event === 'change') {
+                        event = 'changed';
+                    } else if (['unlink', 'unlinkDir'].indexOf(event) >= 0) {
+                        event = 'removed';
+                    }
 
-                        this.files = [ path ];
-                        this.run();
-                    })
-                    .on('change', path => {
-                        console.log(`${this.title}File "${path}" has been ${this.chalk.blue.bold('changed')}.`);
+                    console.log(`${this.title}File "${path}" has been ${this.chalk.blue.bold(event)}.`);
 
-                        this.files = [ path ];
-                        this.run();
-                    });
+                    this.on(event, path);
+                });
             });
+    }
+
+    /**
+     * Default listener to run once the watcher raised an event.
+     *
+     * @param {String} event The name of the event.
+     * @param {String|Array} files The file(s) that caused the event.
+     */
+    on(event, files) {
+
+        // by default the removed event will not cause any tasks to run
+        if (event === 'removed') {
+            return;
+        }
+
+        this.files = files;
+        this.run();
     }
 }
 
