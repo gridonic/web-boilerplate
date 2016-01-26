@@ -55,6 +55,11 @@
     "autoprefixer": {
         "browsers": ["last 1 version", "last 2 ie versions", "android >= 4.4", "last 2 iOS versions"]
     },
+    "browsersync": {
+        "proxy": "localhost",
+        "logLevel": "silent",
+        "open": "ui"
+    },
     "src":  "./src",
     "dest": "./build",
     "env": "prod",

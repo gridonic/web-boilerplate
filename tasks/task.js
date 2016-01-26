@@ -23,6 +23,7 @@ class Task {
         this.assets = {};
         this.dest = this.config.dest;
         this.src = this.config.src;
+        this.browsersync = options.browsersync;
 
         // private properties
         this._files = [];
@@ -134,6 +135,11 @@ class Task {
      * @param {Function} done Callback to run when handling is done.
      */
     handler(file, done) {
+
+        // if browsersync is given, fire reload
+        if (this.browsersync) {
+            this.browsersync.reload(file);
+        }
 
         // handling file is done
         if (typeof done === 'function') {

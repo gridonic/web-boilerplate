@@ -8,10 +8,13 @@ Simple, fast and lightweight web boilerplate serving as my basis for developing 
 - Version string based cache busting
 - Desktop notifications when errors occur
 - [Sass](http://sass-lang.com/) Style Sheets with PostCSS [autoprefixing](https://github.com/postcss/autoprefixer)
+- Time-saving synchronised browser testing with [Browsersync](https://www.browsersync.io/)
 
-**But why ?**
+---
 
-I know, it's a pretty custom boilerplate and mostly written to fit my personal flavor, but on the other hand it's based on lots of years working in web development agencies, as a freelancer with other freelancers or just on personal projects. So it's pretty much the latest shit, at least I try my best to keep up with the community.
+** But Basti …**
+
+I know, it's pretty custom and mostly written to fit my personal flavor, but on the other hand it's based on lots of years working in web development agencies, as a freelancer with other freelancers or just on personal projects. So it's pretty much the latest shit, at least I try my best to keep up with the community and I think you really could love it like I do.
 
 I used to work with Grunt and Gulp, also with Bower/Bundler and other package managers. That's one of the reasons why I came up with this. I just wanted to get rid of those managers as [NPM](https://www.npmjs.com/)/[Node.js](https://nodejs.org/) solely is just fine enough to handle this kind of work. Also articles like “[Why we should stop using Grunt & Gulp](http://blog.keithcirkel.co.uk/why-we-should-stop-using-grunt/)” or “[Why I Left Gulp and Grunt for npm Scripts](https://medium.com/@housecor/why-i-left-gulp-and-grunt-for-npm-scripts-3d6853dd22b8)” inspired me to do this.
 
@@ -56,6 +59,7 @@ The same goes for watching:
 `node watch sprites`  
 `node watch styles`  
 
+Also all `watch` tasks have a `--sync` option to enable [Browsersync](https://www.browsersync.io/).
 
 ---
 
