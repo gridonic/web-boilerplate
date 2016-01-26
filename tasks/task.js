@@ -29,7 +29,7 @@ class Task {
 
         // adopt task specific options
         this.id = options.id.toLowerCase();
-        this.title = `${this.chalk.blue.bold(options.id)}\t `;
+        this.title = `${this.chalk.blue.bold(options.id)}\t\t`;
 
         // task has no assets
         if (this.config.assets[this.id] === undefined) {
@@ -116,7 +116,7 @@ class Task {
     done(cb) {
 
         // get total task time
-        var duration = Date.now() - this._start;
+        let duration = Date.now() - this._start;
 
         console.log(`${this.title}Finished. ${this.chalk.blue.bold('(')}${duration}ms${this.chalk.blue.bold(')')}`);
 
@@ -212,7 +212,7 @@ class Task {
         }
 
         // initialize watcher
-        var watcher = chokidar.watch(files, options);
+        let watcher = chokidar.watch(files, options);
 
         watcher
             .on('error', this.fail)
@@ -228,7 +228,9 @@ class Task {
                         event = 'removed';
                     }
 
-                    console.log(`${this.title}File "${path}" has been ${this.chalk.blue.bold(event)}.`);
+                    let time = new Date().toLocaleString();
+
+                    console.log(`${this.title}File "${path}" has been ${this.chalk.blue.bold(event)}. (${time})`);
 
                     // run designated event listener
                     this.on(event, path);

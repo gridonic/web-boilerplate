@@ -128,7 +128,7 @@ class Sprites extends Task {
 
         // scan files and detect sets
         this.files.forEach((file) => {
-            var setName = this.path.basename(this.path.dirname(file));
+            let setName = this.path.basename(this.path.dirname(file));
 
             // new set
             if (sets[setName] === undefined) {

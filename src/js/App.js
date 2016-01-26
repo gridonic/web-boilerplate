@@ -1,7 +1,7 @@
 import 'picturefill';
 import Person from './Components/Person';
 
-var basti = new Person({
+let basti = new Person({
     name: 'Sebastian',
     surname: 'Prein'
 });
