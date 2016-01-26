@@ -8,23 +8,6 @@
   ],
   "license": "MIT",
   "name": "web-boilerplate",
-  "scripts": {
-    "build": "node tasks/build",
-    "build:fonts": "node tasks/build --task=fonts",
-    "build:html": "node tasks/build --task=html",
-    "build:images": "node tasks/build --task=images",
-    "build:scripts": "node tasks/build --task=scripts",
-    "build:sprites": "node tasks/build --task=sprites",
-    "build:styles": "node tasks/build --task=styles",
-    "clean": "node tasks/build --clean",
-    "watch": "node tasks/watch",
-    "watch:fonts": "node tasks/watch --task=fonts",
-    "watch:html": "node tasks/watch --task=html",
-    "watch:images": "node tasks/watch --task=images",
-    "watch:scripts": "node tasks/watch --task=scripts",
-    "watch:sprites": "node tasks/watch --task=sprites",
-    "watch:styles": "node tasks/watch --task=styles"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/mzdr/web-boilerplate.git"
