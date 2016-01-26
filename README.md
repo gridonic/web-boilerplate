@@ -10,9 +10,11 @@ Simple, fast and lightweight web boilerplate serving as my basis for developing 
 - [Sass](http://sass-lang.com/) Style Sheets with PostCSS [autoprefixing](https://github.com/postcss/autoprefixer)
 - Time-saving synchronised browser testing with [Browsersync](https://www.browsersync.io/)
 
+Pretty cool, huh?
+
 ---
 
-** But Basti …**
+**But Basti …**
 
 I know, it's pretty custom and mostly written to fit my personal flavor, but on the other hand it's based on lots of years working in web development agencies, as a freelancer with other freelancers or just on personal projects. So it's pretty much the latest shit, at least I try my best to keep up with the community and I think you really could love it like I do.
 
@@ -64,7 +66,5 @@ Also all `watch` tasks have a `--sync` option to enable [Browsersync](https://ww
 ---
 
 Third party frameworks/libraries enabled by default: [normalize.css](https://necolas.github.io/normalize.css/), [picturefill](https://scottjehl.github.io/picturefill/).
-
----
 
 v1.0.0
