@@ -51,7 +51,7 @@ class Copy extends Task {
             }
 
             // task has replacement orders
-            if ('replace' in this.assets) {
+            if (this.assets.replace) {
                 let replace = require('replace');
                 let replaceId = '@config.';
 

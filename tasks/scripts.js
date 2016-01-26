@@ -105,7 +105,9 @@ class Scripts extends Task {
 
         // only compile those files which really need to be compiled
         // @todo how do we find out which files are the ones?
-        files = this.assets.files;
+        files = this.assets.files.map(
+            (file) => this.path.join(this.src, file)
+        );
 
         // run parent on method with new data
         super.on(event, files);

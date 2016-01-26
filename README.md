@@ -13,9 +13,9 @@ Simple, fast and lightweight web boilerplate serving as my basis for developing 
 
 I know, it's a pretty custom boilerplate and mostly written to fit my personal flavor, but on the other hand it's based on lots of years working in web development agencies, as a freelancer with other freelancers or just on personal projects. So it's pretty much the latest shit, at least I try my best to keep up with the community.
 
-I used to work with Grunt and Gulp, also with Bower and other package managers. That's one of the reasons why I came up with this. I just wanted to get rid of those managers as NPM solely is just fine enough to handle this kind of work. Also articles like “[Why we should stop using Grunt & Gulp](http://blog.keithcirkel.co.uk/why-we-should-stop-using-grunt/)” or “[Why I Left Gulp and Grunt for npm Scripts](https://medium.com/@housecor/why-i-left-gulp-and-grunt-for-npm-scripts-3d6853dd22b8)” inspired me to do this.
+I used to work with Grunt and Gulp, also with Bower/Bundler and other package managers. That's one of the reasons why I came up with this. I just wanted to get rid of those managers as [NPM](https://www.npmjs.com/)/[Node.js](https://nodejs.org/) solely is just fine enough to handle this kind of work. Also articles like “[Why we should stop using Grunt & Gulp](http://blog.keithcirkel.co.uk/why-we-should-stop-using-grunt/)” or “[Why I Left Gulp and Grunt for npm Scripts](https://medium.com/@housecor/why-i-left-gulp-and-grunt-for-npm-scripts-3d6853dd22b8)” inspired me to do this.
 
-If you have any suggestions, problems or feedback. Feel free to [create issues](https://github.com/mzdr/web-boilerplate/issues/new), [pull request](https://github.com/mzdr/web-boilerplate/pulls) or get in touch with me via my twitter account ([@mrprein](https://twitter.com/mrprein)).
+Anyway, I had a fun time creating this. If you have any suggestions, problems or feedback. Feel free to [create issues](https://github.com/mzdr/web-boilerplate/issues/new), [pull request](https://github.com/mzdr/web-boilerplate/pulls) or get in touch with me via my twitter account ([@mrprein](https://twitter.com/mrprein)).
 
 
 ---
@@ -24,29 +24,38 @@ Setup is dead simple. Just run:
 
 1. `npm install`
 
-3. `npm run build`
+2. `node build`
 
-That's it. You might want to check the `project.json` for customizing the build process.
+within the terminal of your choice. That's it!
+
+Don't forget to check out the [project.json](project.json) for customizing the whole build process!
 
 ---
 
- Available npm tasks:
+Right now there are three basic tasks `build`, `clean`, `watch`. You can run them like this:
 
-`npm run build`  
-`npm run build:fonts`  
-`npm run build:html`  
-`npm run build:images`  
-`npm run build:scripts`  
-`npm run build:sprites`  
-`npm run build:styles`  
-`npm run clean`  
-`npm run watch`  
-`npm run watch:fonts`  
-`npm run watch:html`  
-`npm run watch:images`  
-`npm run watch:scripts`  
-`npm run watch:sprites`  
-`npm run watch:styles`  
+`node build`  
+`node clean`  
+`node watch`  
+
+If you only need to build specific things, you might want to run one of these:
+
+`node build fonts`  
+`node build html`  
+`node build images`  
+`node build scripts`  
+`node build sprites`  
+`node build styles`  
+
+The same goes for watching:
+
+`node watch fonts`  
+`node watch html`  
+`node watch images`  
+`node watch scripts`  
+`node watch sprites`  
+`node watch styles`  
+
 
 ---
 

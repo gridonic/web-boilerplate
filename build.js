@@ -1,28 +1,29 @@
 'use strict';
 
-// pattern to check for task request
-let pattern = /--(?:task=|)(.+)/;
-
 // check if specific task was requested
-let task = ((task) => task ? pattern.exec(task)[1] : null)(process.argv.find((arg) => pattern.exec(arg)));
+let task = process.argv[2];
 
 // get project configuration
-let config = require('../project.json');
+let config = require('./project.json');
 
 // define default tasks to run, order is being respected
 let tasks = {
-    clean:      { path: './clean' },
-    styles:     { path: './styles' },
-    scripts:    { path: './scripts' },
-    fonts:      { path: './copy', id: 'Fonts' },
-    html:       { path: './copy', id: 'HTML' },
-    images:     { path: './images' },
-    sprites:    { path: './sprites' }
+    styles:     { path: './tasks/styles' },
+    scripts:    { path: './tasks/scripts' },
+    fonts:      { path: './tasks/copy', id: 'Fonts' },
+    html:       { path: './tasks/copy', id: 'HTML' },
+    images:     { path: './tasks/images' },
+    sprites:    { path: './tasks/sprites' }
 };
 
-// specific task requested
-if (task in tasks) {
-    return new (require(tasks[task].path))(tasks[task]).run();
+// specific task requested, pick it and remove other tasks
+if (tasks[task]) {
+    tasks = Object.defineProperty({}, task, {
+        value: tasks[task],
+        writable: true,
+        enumerable: true,
+        configurable: true
+    });
 }
 
 // needed modules
@@ -45,7 +46,7 @@ let done = () => {
 };
 
 // log environment
-console.log(`Building in ${mode} mode...\n`);
+console.log(`\nBuilding in ${mode} mode...\n`);
 
 // run tasks
 async.series(Object.keys(tasks).map((key) => {

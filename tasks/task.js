@@ -32,7 +32,7 @@ class Task {
         this.title = `${this.chalk.blue.bold(options.id)}\t `;
 
         // task has no assets
-        if (this.id in this.config.assets === false) {
+        if (this.config.assets[this.id] === undefined) {
             return;
         }
 
@@ -43,8 +43,17 @@ class Task {
         this.dest = this.path.join(this.config.dest, this.assets.dest);
         this.src = this.path.join(this.config.src, this.assets.src);
 
+        // prepend ignore patterns with src path
+        if (this.assets.ignore) {
+            this.assets.ignore = this.assets.ignore.map(
+                (pattern) => this.path.join(this.src, pattern)
+            );
+        }
+
         // by default use files from configuration for processing
-        this.files = this.assets.files;
+        this.files = this.assets.files.map(
+            (file) => this.path.join(this.src, file)
+        );
     }
 
     /**
@@ -75,23 +84,14 @@ class Task {
         this._files = [];
 
         // check if files should be ignored
-        if ('ignore' in this.assets) {
-            options.ignore = this.assets.ignore.map(
-                (pattern) => this.path.join(this.src, pattern)
-            );
+        if (this.assets.ignore) {
+            options.ignore = this.assets.ignore;
         }
 
-        // check each file (pattern)
-        files.forEach((file) => {
-
-            // prepend src path if not already in it
-            if (file.indexOf(this.src) !== 0) {
-                file = this.path.join(this.src, file);
-            }
-
-            // add globbing result to files stack
-            this._files = this._files.concat(this.glob.sync(file, options));
-        });
+        // check each file (pattern) and add globbing result to files stack
+        files.forEach((file) => this._files = this._files.concat(
+            this.glob.sync(file, options)
+        ));
     }
 
     /**
@@ -101,7 +101,7 @@ class Task {
      */
     fail(error) {
         this.notifier.notify({
-            title: `${this.chalk.stripColor(this.title)} error`,
+            title: `${this.chalk.stripColor(this.title).trim()} error`,
             message: error.message
         });
 
@@ -193,17 +193,22 @@ class Task {
      */
     watch() {
         let chokidar = require('chokidar');
-        let watch = this.assets['watch' in this.assets ? 'watch' : 'files'];
-        let files = watch.map((file) => this.path.join(this.src, file));
+        let files = this.assets.watch || this.assets.files;
         let options = {};
+
+        // this instance has no files or watch patterns
+        if (files === undefined) {
+            return this.fail(new Error('Task has no files or watch patterns.'));
+        }
+
+        // prepend assets src path to files
+        files = files.map((pattern) => this.path.join(this.src, pattern));
 
         console.log(`${this.title}Start watching...`);
 
         // check if files should be ignored
-        if ('ignore' in this.assets) {
-            options.ignored = this.assets.ignore.map(
-                (pattern) => this.path.join(this.src, pattern)
-            );
+        if (this.assets.ignore) {
+            options.ignored = this.assets.ignore;
         }
 
         // initialize watcher

@@ -42,13 +42,13 @@ class Images extends Task {
      */
     set plugin(type) {
 
-        if ((type === 'jpg' || type === 'jpeg') && 'jpg' in this.assets) {
+        if ((type === 'jpg' || type === 'jpeg') && this.assets.jpg) {
             this._plugin = this.imagemin.jpegtran(this.assets.jpg);
-        } else if (type === 'png' && 'png' in this.assets) {
+        } else if (type === 'png' && this.assets.png) {
             this._plugin = this.imagemin.optipng(this.assets.png);
-        } else if (type === 'gif' && 'gif' in this.assets) {
+        } else if (type === 'gif' && this.assets.gif) {
             this._plugin = this.imagemin.gifsicle(this.assets.gif);
-        } else if (type === 'svg' && 'svg' in this.assets) {
+        } else if (type === 'svg' && this.assets.svg) {
             this._plugin = this.imagemin.svgo(this.assets.svg);
         } else {
             this._plugin = false;

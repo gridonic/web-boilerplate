@@ -131,7 +131,7 @@ class Sprites extends Task {
             var setName = this.path.basename(this.path.dirname(file));
 
             // new set
-            if (setName in sets === false) {
+            if (sets[setName] === undefined) {
                 sets[setName] = {
                     outputFile: this.path.format({
                         dir: this.dest,
@@ -170,7 +170,9 @@ class Sprites extends Task {
     on(event, files) {
 
         // get all available sprites
-        this.files = this.assets.files;
+        this.files = this.assets.files.map(
+            (file) => this.path.join(this.src, file)
+        );
 
         // only keep those which are affected by this event
         let set = this.files.filter(

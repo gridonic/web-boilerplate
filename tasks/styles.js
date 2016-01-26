@@ -95,8 +95,11 @@ class Styles extends Task {
     on(event, files) {
 
         // if it's a partial, get all stylesheets that use it
+        // @todo improve it!
         if (this.path.basename(files)[0] === '_') {
-            files = this.assets.files;
+            files = this.assets.files.map(
+                (file) => this.path.join(this.src, file)
+            );
         }
 
         // run parent on method with new data
