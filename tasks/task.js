@@ -68,33 +68,29 @@ class Task {
             files = [ files ];
         }
 
-        let isGlob = require('is-glob');
+        // globbing options
         let options = {};
 
         // reset files stack
         this._files = [];
 
         // check if files should be ignored
-        if (this.assets.ignore) {
+        if ('ignore' in this.assets) {
             options.ignore = this.assets.ignore.map(
                 (pattern) => this.path.join(this.src, pattern)
             );
         }
 
+        // check each file (pattern)
         files.forEach((file) => {
 
-            // check if file is a globbing pattern
-            if (isGlob(file)) {
-                this._files = this._files.concat(
-                    this.glob.sync(
-                        this.path.join(this.src, file),
-                        options
-                    )
-                );
-            } else {
-                this._files = this._files.concat(file);
+            // prepend src path if not already in it
+            if (file.indexOf(this.src) !== 0) {
+                file = this.path.join(this.src, file);
             }
 
+            // add globbing result to files stack
+            this._files = this._files.concat(this.glob.sync(file, options));
         });
     }
 
@@ -199,19 +195,26 @@ class Task {
         let chokidar = require('chokidar');
         let watch = this.assets['watch' in this.assets ? 'watch' : 'files'];
         let files = watch.map((file) => this.path.join(this.src, file));
+        let options = {};
 
         console.log(`${this.title}Start watching...`);
 
+        // check if files should be ignored
+        if ('ignore' in this.assets) {
+            options.ignored = this.assets.ignore.map(
+                (pattern) => this.path.join(this.src, pattern)
+            );
+        }
+
         // initialize watcher
-        var watcher = chokidar.watch(files, {
-            ignored: /[\/\\]\./,
-            persistent: true
-        });
+        var watcher = chokidar.watch(files, options);
 
         watcher
             .on('error', this.fail)
             .on('ready', () => {
                 watcher.on('all', (event, path) => {
+
+                    // normalize event
                     if (['add', 'addDir'].indexOf(event) >= 0) {
                         event = 'added';
                     } else if (event === 'change') {
@@ -222,6 +225,7 @@ class Task {
 
                     console.log(`${this.title}File "${path}" has been ${this.chalk.blue.bold(event)}.`);
 
+                    // run designated event listener
                     this.on(event, path);
                 });
             });

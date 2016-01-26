@@ -45,7 +45,6 @@
     "fs-extra": "^0.26.4",
     "glob": "^6.0.4",
     "imagemin": "^4.0.0",
-    "is-glob": "^2.0.1",
     "node-notifier": "^4.4.0",
     "node-sass": "^3.4.2",
     "postcss": "^5.0.14",
