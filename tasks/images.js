@@ -120,7 +120,7 @@ class Images extends Task {
             }
 
             // calling parent when done
-            super.handler(file, done);
+            super.handler(outputFile, done);
         });
     }
 }

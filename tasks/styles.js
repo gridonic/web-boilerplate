@@ -82,7 +82,7 @@ class Styles extends Task {
             console.log(`${this.title}Compiled ${file} ${this.chalk.blue.bold('→')} ${outputFile} ${this.chalk.blue.bold('(')}${duration}ms${this.chalk.blue.bold(')')}`);
 
             // calling parent when done
-            super.handler(file, done);
+            super.handler(outputFile, done);
         });
     }
 

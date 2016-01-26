@@ -9,10 +9,16 @@ class Sprites extends Task {
      *
      * @param {Object} options Options for this task.
      */
-    constructor() {
-        super({
-            id: 'Sprites'
-        });
+    constructor(options) {
+
+        // make sure options is an object
+        options = (typeof options === 'object' && options) || {};
+
+        // set task id
+        options.id = 'Sprites';
+
+        // call parent constructor
+        super(options);
 
         // create spriter instance
         // @see https://github.com/jkphl/svg-sprite/blob/master/docs/configuration.md
@@ -112,7 +118,7 @@ class Sprites extends Task {
             console.log(`${this.title}Created sprite ${outputName} with ${set.files.length} images. ${this.chalk.blue.bold('(')}${duration}ms${this.chalk.blue.bold(')')}`);
 
             // calling parent when done
-            super.handler(set, done);
+            super.handler(set.outputFile, done);
         });
     }
 

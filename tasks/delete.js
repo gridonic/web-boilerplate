@@ -5,21 +5,6 @@ let Task = require('./task');
 class Delete extends Task {
 
     /**
-     * Task is being constructed.
-     *
-     * @param {Object} options Options for this task.
-     */
-    constructor(options) {
-
-        // make sure options is an object
-        options = (typeof options === 'object' && options) || {};
-
-        super({
-            id: options.id
-        });
-    }
-
-    /**
      * The actual process of copying the input file to the destination path.
      *
      * @param {Object} file The input file.
