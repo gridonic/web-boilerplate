@@ -106,7 +106,7 @@ class Task {
             message: error.message
         });
 
-        return console.error(`${this.chalk.white.bgRed.bold(' Error ')}\t ${error.message}`);
+        return console.error(`${this.chalk.white.bgRed.bold(' Error ')}\t\t${error.message}`);
     }
 
     /**
