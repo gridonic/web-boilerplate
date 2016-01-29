@@ -3,33 +3,33 @@
    -------------------------------------------------------------------------- */
 .debug {
     &::before {
-        background: #ffc;
-        color: _color("text-primary");
-        content: #{_max("small")};
+        background: #fafaaa;
+        color: _color(text-primary);
+        content: "";
         left: 0;
-        padding: 0.25rem;
+        padding: 0.5rem 0.75rem;
         position: fixed;
         top: 0;
-        z-index: _z("debug");
+        z-index: _z(debug);
 
-        @media #{_max("small")} {
-            content: "small (≤ " _break("small") ")";
+        @media #{_max(small)} {
+            content: "small (≤ #{_break(small)})";
         }
 
-        @media #{_min("small")} and #{_max("medium")} {
-            content: "medium (> " _break("small") " and ≤ " _break("medium") ")";
+        @media #{_min(small)} and #{_max(medium)} {
+            content: "medium (> #{_break(small)} and ≤ #{_break(medium)})";
         }
 
-        @media #{_min("medium")} and #{_max("large")} {
-            content: "large (> " _break("medium") " and ≤ " _break("large") ")";
+        @media #{_min(medium)} and #{_max(large)} {
+            content: "large (> #{_break(medium)} and ≤ #{_break(large)})";
         }
 
-        @media #{_min("large")} and #{_max("xlarge")} {
-            content: "exra large (> " _break("large") " and ≤ " _break("xlarge") ")";
+        @media #{_min(large)} and #{_max(xlarge)} {
+            content: "exra large (> #{_break(large)} and ≤ #{_break(xlarge)})";
         }
 
-        @media #{_min("xlarge")} {
-            content: "above extra large (> " _break("xlarge") ")";
+        @media #{_min(xlarge)} {
+            content: "above extra large (> #{_break(xlarge)})";
         }
     }
 }
