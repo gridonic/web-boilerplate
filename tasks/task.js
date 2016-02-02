@@ -44,17 +44,27 @@ class Task {
         this.dest = this.path.join(this.config.dest, this.assets.dest);
         this.src = this.path.join(this.config.src, this.assets.src);
 
-        // prepend ignore patterns with src path
-        if (this.assets.ignore) {
-            this.assets.ignore = this.assets.ignore.map(
-                (pattern) => this.path.join(this.src, pattern)
-            );
-        }
+        // prepend several options which have paths with src path
+        ['files', 'watch', 'ignore'].forEach((set) => {
+
+            // convert string to array
+            if (typeof this.assets[set] === 'string') {
+                this.assets[set] = [ this.assets[set] ];
+            }
+
+            // invalid set
+            if (Array.isArray(this.assets[set]) === false) {
+                return;
+            }
+
+            // prepend src path
+            this.assets[set].forEach((element, index, array) => {
+                array[index] = this.path.join(this.src, element);
+            })
+        });
 
         // by default use files from configuration for processing
-        this.files = this.assets.files.map(
-            (file) => this.path.join(this.src, file)
-        );
+        this.files = this.assets.files;
     }
 
     /**
@@ -72,27 +82,7 @@ class Task {
      * @param {Array} files List of files.
      */
     set files(files) {
-
-        // expect files parameter to be an array
-        if (Array.isArray(files) === false) {
-            files = [ files ];
-        }
-
-        // globbing options
-        let options = {};
-
-        // reset files stack
-        this._files = [];
-
-        // check if files should be ignored
-        if (this.assets.ignore) {
-            options.ignore = this.assets.ignore;
-        }
-
-        // check each file (pattern) and add globbing result to files stack
-        files.forEach((file) => this._files = this._files.concat(
-            this.glob.sync(file, options)
-        ));
+        this._files = this.resolveGlobs(files);
     }
 
     /**
@@ -207,9 +197,6 @@ class Task {
             return this.fail(new Error('Task has no files or watch patterns.'));
         }
 
-        // prepend assets src path to files
-        files = files.map((pattern) => this.path.join(this.src, pattern));
-
         console.log(`${this.title}Start watching...`);
 
         // check if files should be ignored
@@ -259,6 +246,36 @@ class Task {
 
         this.files = files;
         this.run();
+    }
+
+    /**
+     * Match files using the patterns the shell uses, like stars and stuff.
+     *
+     * @param {Array} files List of files with or without patterns.
+     * @return {Array} List of matches files.
+     */
+    resolveGlobs(files) {
+        let result = [];
+
+        // expect files parameter to be an array
+        if (Array.isArray(files) === false) {
+            files = [ files ];
+        }
+
+        // globbing options
+        let options = {};
+
+        // check if files should be ignored
+        if (this.assets.ignore) {
+            options.ignore = this.assets.ignore;
+        }
+
+        // check each file (pattern) and add globbing result to stack
+        files.forEach((file) => result = result.concat(
+            this.glob.sync(file, options)
+        ));
+
+        return result;
     }
 }
 

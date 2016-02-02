@@ -19,6 +19,14 @@ class Scripts extends Task {
 
         // call parent constructor
         super(options);
+
+        // linting requested
+        if (this.assets.eslint) {
+            this.eslint = new (require('eslint')).CLIEngine(this.assets.eslint);
+        }
+
+        // by default use watch files from configuration for processing
+        this.files = this.assets.watch;
     }
 
     /**
@@ -37,6 +45,16 @@ class Scripts extends Task {
             dir: path,
             base: `${this.path.parse(file).name}.js`
         });
+
+        // check if linter is available and input is fine
+        if (this.eslint && this.lint(file) === false) {
+            return super.handler(file, done);
+        }
+
+        // only compile those files which really need to be compiled
+        if (this.resolveGlobs(this.assets.files).indexOf(file) < 0) {
+            return super.handler(file, done);
+        }
 
         this.async.series([
 
@@ -96,21 +114,31 @@ class Scripts extends Task {
     }
 
     /**
-     * Default listener to run once the watcher raised an event.
+     * Lints a given file.
      *
-     * @param {String} event The name of the event.
-     * @param {String|Array} files The file(s) that caused the event.
+     * @param {String} file Path to input file.
+     * @return {Boolean} Returns false on fail, true on success.
      */
-    on(event, files) {
+    lint(file) {
 
-        // only compile those files which really need to be compiled
-        // @todo how do we find out which files are the ones?
-        files = this.assets.files.map(
-            (file) => this.path.join(this.src, file)
+        console.log(`${this.title}Linting ${file}`);
+
+        // scan file
+        let report = this.eslint.executeOnFiles([ file ]);
+
+        // all fine
+        if (report.errorCount < 1) {
+            return true;
+        }
+
+        // oh oh, linting found errors
+        report.results.forEach((result) =>
+            result.messages.forEach((message) =>
+                this.fail(new Error(`${message.message} (${result.filePath}:${message.line})`))
+            )
         );
 
-        // run parent on method with new data
-        super.on(event, files);
+        return false;
     }
 }
 
