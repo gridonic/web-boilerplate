@@ -69,4 +69,4 @@ Also all `watch` tasks have a `--sync` option to enable [Browsersync](https://ww
 
 Third party frameworks/libraries enabled by default: [normalize.css](https://necolas.github.io/normalize.css/), [picturefill](https://scottjehl.github.io/picturefill/).
 
-v1.0.0
+v1.1.0
