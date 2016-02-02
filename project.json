@@ -25,7 +25,8 @@
             "src": "js",
             "dest": "assets/scripts",
             "files": ["*.js"],
-            "watch": ["**/*.js"]
+            "watch": ["**/*.js"],
+            "eslint": {}
         },
         "styles": {
             "src": "scss",
@@ -58,10 +59,10 @@
     "browsersync": {
         "proxy": "localhost",
         "logLevel": "silent",
-        "open": "ui"
+        "open": false
     },
     "src":  "./src",
     "dest": "./build",
     "env": "prod",
-    "version": "1.0.0"
+    "version": "1.1.0"
 }

@@ -26,6 +26,7 @@
     "browserify": "^13.0.0",
     "chalk": "^1.1.1",
     "chokidar": "^1.4.2",
+    "eslint": "^1.10.3",
     "fs-extra": "^0.26.4",
     "glob": "^6.0.4",
     "imagemin": "^4.0.0",

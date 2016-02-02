@@ -176,9 +176,7 @@ class Sprites extends Task {
     on(event, files) {
 
         // get all available sprites
-        this.files = this.assets.files.map(
-            (file) => this.path.join(this.src, file)
-        );
+        this.files = this.assets.files;
 
         // only keep those which are affected by this event
         let set = this.files.filter(

@@ -2,9 +2,11 @@
 
 Simple, fast and lightweight web boilerplate serving as my basis for developing webapps and websites. By default you'll get the following features:
 
-- Supports ES6 JavaScript which is transpiled and bundled by [Babel](https://babeljs.io/) / [browserify](http://browserify.org/) (See [src/js](src/js) for a simple example)
-- Generates SVG sprites automatically based on sub-directories
-- Optimization of images on the fly (supports JPG, PNG, GIF and SVG)
+- Bundling of JavaScript by [browserify](http://browserify.org/)
+- Support of [ECMAScript 2015](http://www.ecma-international.org/publications/standards/Ecma-262.htm) (ES6) features which are transpiled by [Babel](https://babeljs.io/) (See [src/js](src/js) for a simple example)
+- Configurable linting with [ESLint](http://eslint.org/docs/user-guide/configuring)
+- Automatic SVG Sprite generation based on sub-directories
+- Optimization of images on the fly (supports JPG, PNG, GIF and SVG) with [imagemin](https://github.com/imagemin/imagemin)
 - Version string based cache busting
 - Desktop notifications when errors occur
 - [Sass](http://sass-lang.com/) Style Sheets with PostCSS [autoprefixing](https://github.com/postcss/autoprefixer)
@@ -67,4 +69,4 @@ Also all `watch` tasks have a `--sync` option to enable [Browsersync](https://ww
 
 Third party frameworks/libraries enabled by default: [normalize.css](https://necolas.github.io/normalize.css/), [picturefill](https://scottjehl.github.io/picturefill/).
 
-v1.0.0
+v1.1.0

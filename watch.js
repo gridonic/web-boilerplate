@@ -50,10 +50,20 @@ if (process.argv.indexOf('--sync') >= 0) {
     let bs = require('browser-sync').create();
 
     // starts the server
-    return bs.init(config.browsersync, () => {
+    return bs.init(config.browsersync, (error, _bs) => {
+        let urls = _bs.options.get('urls');
 
         // give feedback
         console.log(`${chalk.blue.bold('Browsersync')}\tRunning...`);
+
+        if (config.browsersync.proxy) {
+            console.log(`${chalk.blue.bold('Browsersync')}\tProxying ${chalk.green.underline(config.browsersync.proxy)}`);
+        }
+
+        console.log(`${chalk.blue.bold('Browsersync')}\tLocal: ${chalk.green.underline(urls.get('local'))}`);
+        console.log(`${chalk.blue.bold('Browsersync')}\tExternal: ${chalk.green.underline(urls.get('external'))}`);
+        console.log(`${chalk.blue.bold('Browsersync')}\tUI: ${chalk.green.underline(urls.get('ui'))}`);
+        console.log(`${chalk.blue.bold('Browsersync')}\tUI External: ${chalk.green.underline(urls.get('ui-external'))}`);
 
         // run tasks and provide browsersync instance
         run(tasks, bs);

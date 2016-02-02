@@ -2,11 +2,11 @@
    Global buttons.
    -------------------------------------------------------------------------- */
 .btn {
-    background-color: _color("button-default");
+    background-color: _color(button-default);
     border-radius: 0.125rem;
     border: 0;
-    box-shadow: 0 0.125rem 0.0625rem _color("gray-light");
-    color: _color("button-default-text");
+    box-shadow: 0 0.125rem 0.0625rem _color(gray-light);
+    color: _color(button-default-text);
     display: block;
     line-height: inherit;
     outline: 0;
@@ -17,11 +17,11 @@
     word-wrap: break-word;
 
     &:not(:last-child) {
-        margin-bottom: _grid("gutter-width") / 2;
+        margin-bottom: _grid(gutter-width) / 2;
     }
 
     &.-primary {
-        background-color: _color("button-primary");
-        color: _color("button-primary-text");
+        background-color: _color(button-primary);
+        color: _color(button-primary-text);
     }
 }
