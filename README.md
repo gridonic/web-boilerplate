@@ -44,6 +44,7 @@ Right now there are three basic tasks `build`, `clean`, `watch`. You can run the
 `node build`  
 `node clean`  
 `node watch`  
+`node server` (alias to `node watch --sync`)  
 
 If you only need to build specific things, you might want to run one of these:
 
