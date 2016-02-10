@@ -40,7 +40,7 @@
             "files": ["**/*.{html,txt,php}"],
             "replace": {
                 "@sprite:([^,]+),([^\\s]+)": "<svg class=\"$2\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"$1\"></use></svg>",
-                "@version": "@config.version"
+                "@version": "@this.version"
             }
         },
         "sprites": {
@@ -57,7 +57,9 @@
         "browsers": ["last 1 version", "last 2 ie versions", "android >= 4.4", "last 2 iOS versions"]
     },
     "browsersync": {
-        "proxy": "localhost",
+        "server": {
+            "baseDir": "@this.dest"
+        },
         "logLevel": "silent",
         "open": false
     },
