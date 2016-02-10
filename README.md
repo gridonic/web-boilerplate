@@ -27,47 +27,36 @@ Anyway, I had a fun time creating this. If you have any suggestions, problems or
 
 # Installation
 
-Setup is dead simple. Just run:
+Setup is dead simple. Just run: `npm install` within the [terminal](https://en.wikipedia.org/wiki/Terminal_%28OS_X%29) of your choice.
 
-1. `npm install`
-
-2. `node build`
-
-within the [terminal](https://en.wikipedia.org/wiki/Terminal_%28OS_X%29) of your choice. That's it!
-
-**Don't forget** to check out the [project.json](project.json) for customizing the whole build process!
+That's it!
 
 # Usage
 
-Right now there are three basic tasks `build`, `clean`, `watch`. You can run them like this:
+Right now there are three basic tasks `build`, `clean` and `watch`. You can run them like this:
 
-`node build`  
-`node clean`  
-`node watch`  
-`node server` (alias to `node watch --sync`)  
+Command    | Description
+--------------------| -----------
+`node build`        | Builds the whole project by running all tasks which are enabled in the `build.js` file.
+`node clean`        | Will clean up your project by deleting everything that has been built before.<br>(By default the `./build` folder will be deleted)
+`node watch`        | Starts a process that watches all relevant files and once a file has been changed<br> the corresponding task will be started.
+`node server`       | This is an alias to `node watch --sync` which will start Browsersync as well.
 
-If you only need to build specific things, you might want to run one of these:
+If you want to build/watch for specific things only, you may pass the **sub-task** as a **second parameter**. Right now there is `fonts`, `html`, `images`, `scripts`, `sprites` and `styles`.
 
-`node build fonts`  
-`node build html`  
-`node build images`  
-`node build scripts`  
-`node build sprites`  
-`node build styles`  
+So if you care about your styles only, you may use:
 
-The same goes for watching:
+`node build styles` *or*   
+`node watch styles`
 
-`node watch fonts`  
-`node watch html`  
-`node watch images`  
-`node watch scripts`  
-`node watch sprites`  
-`node watch styles`  
+Also all `watch` tasks have a `--sync` parameter to enable [Browsersync](https://www.browsersync.io/).
 
-Also all `watch` tasks have a `--sync` option to enable [Browsersync](https://www.browsersync.io/). By default this option will start the Browsersync's built-in static server which will serve files from the project destination (by default `./build`) directory. In case you already have a vhost running and want to proxy it, have a look at the [documentation](https://www.browsersync.io/docs/options/).
+By default this parameter will start the Browsersync's built-in static server which will serve files from the project destination (`dest` in `project.json` which is `./build` by default) directory. In case you already have a vhost running and want to proxy it, have a look at the [documentation](https://www.browsersync.io/docs/options/).
 
----
+And **don't forget** to check out the [project.json](project.json) for customizing the whole build process!
 
-Third party frameworks/libraries enabled by default: [normalize.css](https://necolas.github.io/normalize.css/), [picturefill](https://scottjehl.github.io/picturefill/).
+# Frameworks/Libraries
+
+By default this boilerplate comes enabled with [normalize.css](https://necolas.github.io/normalize.css/) and [picturefill](https://scottjehl.github.io/picturefill/).
 
 v1.1.1
