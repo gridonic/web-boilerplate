@@ -14,9 +14,9 @@ Simple, fast and lightweight web boilerplate serving as my basis for developing 
 
 Pretty cool, huh?
 
----
+# What, where and why?
 
-**But Basti …**
+**But Basti…**
 
 I know, it's pretty custom and mostly written to fit my personal flavor, but on the other hand it's based on lots of years working in web development agencies, as a freelancer with other freelancers or just on personal projects. So it's pretty much the latest shit, at least I try my best to keep up with the community and I think you really could love it like I do.
 
@@ -25,48 +25,38 @@ I used to work with Grunt and Gulp, also with Bower/Bundler and other package ma
 Anyway, I had a fun time creating this. If you have any suggestions, problems or feedback. Feel free to [create issues](https://github.com/mzdr/web-boilerplate/issues/new), [pull request](https://github.com/mzdr/web-boilerplate/pulls) or get in touch with me via my twitter account ([@mrprein](https://twitter.com/mrprein)).
 
 
----
+# Installation
 
-Setup is dead simple. Just run:
+Setup is dead simple. Just run: `npm install` within the [terminal](https://en.wikipedia.org/wiki/Terminal_%28OS_X%29) of your choice.
 
-1. `npm install`
+That's it!
 
-2. `node build`
+# Usage
 
-within the terminal of your choice. That's it!
+Right now there are three basic tasks `build`, `clean` and `watch`. You can run them like this:
 
-Don't forget to check out the [project.json](project.json) for customizing the whole build process!
+Command    | Description
+--------------------| -----------
+`node build`        | Builds the whole project by running all tasks which are enabled in the `build.js` file.
+`node clean`        | Will clean up your project by deleting everything that has been built before.<br>(By default the `./build` folder will be deleted)
+`node watch`        | Starts a process that watches all relevant files and once a file has been changed<br> the corresponding task will be started.
+`node server`       | This is an alias to `node watch --sync` which will start Browsersync as well.
 
----
+If you want to build/watch for specific things only, you may pass the **sub-task** as a **second parameter**. Right now there is `fonts`, `html`, `images`, `scripts`, `sprites` and `styles`.
 
-Right now there are three basic tasks `build`, `clean`, `watch`. You can run them like this:
+So if you care about your styles only, you may use:
 
-`node build`  
-`node clean`  
-`node watch`  
+`node build styles` *or*   
+`node watch styles`
 
-If you only need to build specific things, you might want to run one of these:
+Also all `watch` tasks have a `--sync` parameter to enable [Browsersync](https://www.browsersync.io/).
 
-`node build fonts`  
-`node build html`  
-`node build images`  
-`node build scripts`  
-`node build sprites`  
-`node build styles`  
+By default this parameter will start the Browsersync's built-in static server which will serve files from the project destination (`dest` in `project.json` which is `./build` by default) directory. In case you already have a vhost running and want to proxy it, have a look at the [documentation](https://www.browsersync.io/docs/options/).
 
-The same goes for watching:
+And **don't forget** to check out the [project.json](project.json) for customizing the whole build process!
 
-`node watch fonts`  
-`node watch html`  
-`node watch images`  
-`node watch scripts`  
-`node watch sprites`  
-`node watch styles`  
+# Frameworks/Libraries
 
-Also all `watch` tasks have a `--sync` option to enable [Browsersync](https://www.browsersync.io/).
+By default this boilerplate comes enabled with [normalize.css](https://necolas.github.io/normalize.css/) and [picturefill](https://scottjehl.github.io/picturefill/).
 
----
-
-Third party frameworks/libraries enabled by default: [normalize.css](https://necolas.github.io/normalize.css/), [picturefill](https://scottjehl.github.io/picturefill/).
-
-v1.1.0
+v1.1.1

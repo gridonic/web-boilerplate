@@ -1,11 +1,12 @@
 'use strict';
 
 // get project configuration
-let config = require('./project.json');
+let config = require('./config.js');
 
 // create clean instance of delete task
 let clean = new (require('./tasks/delete'))({
-    id: 'Clean'
+    id: 'Clean',
+    config: config
 });
 
 // project destination folder shall be cleaned

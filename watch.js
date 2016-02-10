@@ -1,7 +1,7 @@
 'use strict';
 
 // get project configuration
-let config = require('./project.json');
+let config = require('./config.js');
 
 // check if specific task was requested
 let task = process.argv[2];
@@ -11,7 +11,8 @@ let run = (tasks, browsersync) => {
     Object.keys(tasks).map(
         (key) => new (require(tasks[key].path))({
             id: tasks[key].id,
-            browsersync: browsersync
+            browsersync: browsersync,
+            config: config
         }).watch()
     );
 }
@@ -58,6 +59,10 @@ if (process.argv.indexOf('--sync') >= 0) {
 
         if (config.browsersync.proxy) {
             console.log(`${chalk.blue.bold('Browsersync')}\tProxying ${chalk.green.underline(config.browsersync.proxy)}`);
+        }
+
+        if (config.browsersync.server.baseDir) {
+            console.log(`${chalk.blue.bold('Browsersync')}\tServing files from ${chalk.green.underline(config.browsersync.server.baseDir)}`);
         }
 
         console.log(`${chalk.blue.bold('Browsersync')}\tLocal: ${chalk.green.underline(urls.get('local'))}`);
