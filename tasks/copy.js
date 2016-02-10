@@ -38,15 +38,9 @@ class Copy extends Task {
             // task has replacement orders
             if (this.assets.replace) {
                 let replace = require('replace');
-                let replaceId = '@config.';
 
                 for (let pattern in this.assets.replace) {
                     let replacement = this.assets.replace[pattern];
-
-                    // use dynamic data
-                    if (replacement.indexOf(replaceId) === 0) {
-                        replacement = this.config[replacement.substr(replaceId.length)];
-                    }
 
                     replace({
                         regex: pattern,

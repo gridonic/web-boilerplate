@@ -13,7 +13,6 @@ class Task {
         options = (typeof options === 'object' && options) || {};
 
         // public properties
-        this.config = require('../project.json');
         this.notifier = require('node-notifier');
         this.async = require('async');
         this.chalk = require('chalk');
@@ -21,12 +20,8 @@ class Task {
         this.fs = require('fs-extra');
         this.path = require('path');
         this.assets = {};
-        this.dest = this.config.dest;
-        this.src = this.config.src;
         this.browsersync = options.browsersync;
-
-        // private properties
-        this._files = [];
+        this.config = options.config || require('../config.js');
 
         // adopt task specific options
         this.id = options.id.toLowerCase();
@@ -73,7 +68,7 @@ class Task {
      * @return {Array} List of files.
      */
     get files() {
-        return this._files;
+        return Array.isArray(this._files) ? this._files : [];
     }
 
     /**

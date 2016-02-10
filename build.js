@@ -4,7 +4,7 @@
 let task = process.argv[2];
 
 // get project configuration
-let config = require('./project.json');
+let config = require('./config.js');
 
 // define default tasks to run, order is being respected
 let tasks = {
@@ -50,5 +50,10 @@ console.log(`\nBuilding in ${mode} mode...\n`);
 
 // run tasks
 async.series(Object.keys(tasks).map((key) => {
-    return (cb) => new (require(tasks[key].path))(tasks[key]).run(cb);
+    let task = tasks[key];
+
+    // inject configuration
+    task.config = config;
+
+    return (cb) => new (require(task.path))(task).run(cb);
 }), done);
