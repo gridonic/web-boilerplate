@@ -14,9 +14,9 @@ Simple, fast and lightweight web boilerplate serving as my basis for developing 
 
 Pretty cool, huh?
 
----
+# What, where and why?
 
-**But Basti …**
+**But Basti…**
 
 I know, it's pretty custom and mostly written to fit my personal flavor, but on the other hand it's based on lots of years working in web development agencies, as a freelancer with other freelancers or just on personal projects. So it's pretty much the latest shit, at least I try my best to keep up with the community and I think you really could love it like I do.
 
@@ -25,7 +25,7 @@ I used to work with Grunt and Gulp, also with Bower/Bundler and other package ma
 Anyway, I had a fun time creating this. If you have any suggestions, problems or feedback. Feel free to [create issues](https://github.com/mzdr/web-boilerplate/issues/new), [pull request](https://github.com/mzdr/web-boilerplate/pulls) or get in touch with me via my twitter account ([@mrprein](https://twitter.com/mrprein)).
 
 
----
+# Installation
 
 Setup is dead simple. Just run:
 
@@ -33,11 +33,11 @@ Setup is dead simple. Just run:
 
 2. `node build`
 
-within the terminal of your choice. That's it!
+within the [terminal](https://en.wikipedia.org/wiki/Terminal_%28OS_X%29) of your choice. That's it!
 
-Don't forget to check out the [project.json](project.json) for customizing the whole build process!
+**Don't forget** to check out the [project.json](project.json) for customizing the whole build process!
 
----
+# Usage
 
 Right now there are three basic tasks `build`, `clean`, `watch`. You can run them like this:
 
@@ -64,10 +64,10 @@ The same goes for watching:
 `node watch sprites`  
 `node watch styles`  
 
-Also all `watch` tasks have a `--sync` option to enable [Browsersync](https://www.browsersync.io/).
+Also all `watch` tasks have a `--sync` option to enable [Browsersync](https://www.browsersync.io/). By default this option will start the Browsersync's built-in static server which will serve files from the project destination (by default `./build`) directory. In case you already have a vhost running and want to proxy it, have a look at the [documentation](https://www.browsersync.io/docs/options/).
 
 ---
 
 Third party frameworks/libraries enabled by default: [normalize.css](https://necolas.github.io/normalize.css/), [picturefill](https://scottjehl.github.io/picturefill/).
 
-v1.1.0
+v1.1.1
