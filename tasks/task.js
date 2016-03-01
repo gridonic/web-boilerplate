@@ -86,12 +86,14 @@ class Task {
      * @param {Error} error The thrown error.
      */
     fail(error) {
+        let message = error.formatted || error.message;
+
         this.notifier.notify({
             title: `${this.chalk.stripColor(this.title).trim()} error`,
-            message: error.message
+            message: message
         });
 
-        return console.error(`${this.chalk.white.bgRed.bold(' Error ')}\t\t${error.formatted}`);
+        return console.error(`${this.chalk.white.bgRed.bold(' Error ')}\t\t${message}`);
     }
 
     /**
