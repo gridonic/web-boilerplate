@@ -59,12 +59,10 @@
     "browsersync": {
         "server": {
             "baseDir": "@this.dest"
-        },
-        "logLevel": "silent",
-        "open": false
+        }
     },
     "src":  "./src",
     "dest": "./build",
     "env": "prod",
-    "version": "1.1.1"
+    "version": "1.1.2"
 }

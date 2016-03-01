@@ -59,4 +59,4 @@ And **don't forget** to check out the [project.json](project.json) for customizi
 
 By default this boilerplate comes enabled with [normalize.css](https://necolas.github.io/normalize.css/) and [picturefill](https://scottjehl.github.io/picturefill/).
 
-v1.1.1
+v1.1.2
