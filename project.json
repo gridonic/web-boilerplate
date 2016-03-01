@@ -59,9 +59,7 @@
     "browsersync": {
         "server": {
             "baseDir": "@this.dest"
-        },
-        "logLevel": "silent",
-        "open": false
+        }
     },
     "src":  "./src",
     "dest": "./build",
