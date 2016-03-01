@@ -50,6 +50,13 @@ console.log(`\nWatching in ${mode} mode...\n`);
 if (process.argv.indexOf('--sync') >= 0) {
     let bs = require('browser-sync').create();
 
+    // make sure browersync config property is given
+    config.browsersync = config.browsersync || {};
+
+    // change default behaviour
+    config.browsersync.logLevel = config.browsersync.logLevel || 'silent';
+    config.browsersync.open = config.browsersync.open || false;
+
     // starts the server
     return bs.init(config.browsersync, (error, _bs) => {
         let urls = _bs.options.get('urls');
@@ -61,7 +68,7 @@ if (process.argv.indexOf('--sync') >= 0) {
             console.log(`${chalk.blue.bold('Browsersync')}\tProxying ${chalk.green.underline(config.browsersync.proxy)}`);
         }
 
-        if (config.browsersync.server.baseDir) {
+        if (config.browsersync.server && config.browsersync.server.baseDir) {
             console.log(`${chalk.blue.bold('Browsersync')}\tServing files from ${chalk.green.underline(config.browsersync.server.baseDir)}`);
         }
 
