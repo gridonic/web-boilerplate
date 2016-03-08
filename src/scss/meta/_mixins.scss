@@ -10,7 +10,7 @@
 }
 
 @mixin font-smoothing($on: true) {
-    @if $value {
+    @if $on {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     } @else {
