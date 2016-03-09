@@ -14,16 +14,6 @@ Simple, fast and lightweight web boilerplate serving as my basis for developing 
 
 Pretty cool, huh?
 
-# What, where and why?
-
-**But Basti…**
-
-I know, it's pretty custom and mostly written to fit my personal flavor, but on the other hand it's based on lots of years working in web development agencies, as a freelancer with other freelancers or just on personal projects. So it's pretty much the latest shit, at least I try my best to keep up with the community and I think you really could love it like I do.
-
-I used to work with Grunt and Gulp, also with Bower/Bundler and other package managers. That's one of the reasons why I came up with this. I just wanted to get rid of those managers as [NPM](https://www.npmjs.com/)/[Node.js](https://nodejs.org/) solely is just fine enough to handle this kind of work. Also articles like “[Why we should stop using Grunt & Gulp](http://blog.keithcirkel.co.uk/why-we-should-stop-using-grunt/)” or “[Why I Left Gulp and Grunt for npm Scripts](https://medium.com/@housecor/why-i-left-gulp-and-grunt-for-npm-scripts-3d6853dd22b8)” inspired me to do this.
-
-Anyway, I had a fun time creating this. If you have any suggestions, problems or feedback. Feel free to [create issues](https://github.com/mzdr/web-boilerplate/issues/new), [pull request](https://github.com/mzdr/web-boilerplate/pulls) or get in touch with me via my twitter account ([@mrprein](https://twitter.com/mrprein)).
-
 
 # Installation
 
