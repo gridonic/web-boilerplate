@@ -2,7 +2,7 @@
 
 let Task = require('./task');
 
-class Watch extends Task {
+class Build extends Task {
 
     /**
      * Task is being constructed.
@@ -15,10 +15,32 @@ class Watch extends Task {
         options = (typeof options === 'object' && options) || {};
 
         // set task id
-        options.id = 'Watch';
+        options.id = 'Build';
 
         // call parent constructor
         super(options);
+    }
+
+    /**
+     * After finishing a task, this function will run last.
+     *
+     * @param {Function} cb Optional callback to run after finishing.
+     */
+    done(cb) {
+        let hr = this.chalk.green.bold(String.fromCharCode(8212).repeat(
+            process.stdout.columns * 0.33)
+        );
+
+        // get total task time
+        let duration = Date.now() - this._start;
+
+        // building done
+        console.log(`\n${hr}\nFinished building. ${this.chalk.blue.bold('(')}${duration}ms${this.chalk.blue.bold(')')}`);
+
+        // run callback function after finishing this task
+        if (typeof cb === 'function') {
+            cb();
+        }
     }
 
     /**
@@ -34,18 +56,21 @@ class Watch extends Task {
         // run all tasks or requested one
         let tasks = task < 0 ? this.settings : [ this.settings[task] ];
 
+        // measure task running time
+        this._start = Date.now();
+
         // translate requested build environment
         let mode = this.chalk.blue.bold(this.project.env === 'prod' ? 'production' : 'develop');
 
         // log environment
-        console.log(`\nWatching in ${mode} mode...\n`);
+        console.log(`\nBuilding in ${mode} mode...\n`);
 
         // run tasks
-        tasks.forEach((task) => {
+        this.async.series(tasks.map((task) => {
             let subtask = task.split(':');
             let options = {
-                project: this.project,
-                cwd: this.cwd
+                paths: this.paths,
+                project: this.project
             };
 
             // sub task of a generic task requested
@@ -55,12 +80,11 @@ class Watch extends Task {
             }
 
             // path to task file
-            let path = this.path.join(this.cwd, 'bin', 'tasks', task);
+            let path = this.path.join(this.paths.tasks, task);
 
-            // start task watcher
-            new (require(path))(options).watch();
-        });
+            return (cb) => new (require(path))(options).run(cb);
+        }), () => this.done(done));
     }
 }
 
-module.exports = Watch;
+module.exports = Build;

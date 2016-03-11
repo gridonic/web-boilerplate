@@ -1,7 +1,7 @@
 {
   "author": "gridonic <hello@gridonic.ch>",
   "bin": {
-    "webbp": "bin/webbp.js"
+    "webbp": "webbp/webbp.js"
   },
   "bugs": {
     "url": "https://github.com/gridonic/web-boilerplate/issues"

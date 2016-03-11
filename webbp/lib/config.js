@@ -39,16 +39,14 @@ let walk = (input) => {
 }
 
 // export config
-module.exports = (cwd) => {
+module.exports = (project) => {
     let fs = require('fs');
-    let path = require('path');
-    let pathname = path.join(cwd, 'project.json');
 
     // check if project.json is available
-    fs.accessSync(pathname, fs.R_OK | fs.W_OK);
+    fs.accessSync(project, fs.R_OK | fs.W_OK);
 
     // save project.json content
-    config = require(pathname) || {};
+    config = require(project) || {};
 
     // walk config and resolve references
     return walk(config);

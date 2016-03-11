@@ -7,19 +7,24 @@ let path = require('path');
 // determine command to run
 let command = process.argv[2] || '';
 
-// get current working dir
-let cwd = process.cwd();
+// define important paths
+let paths = {};
+
+paths.root = process.cwd();
+paths.home = path.join(paths.root, 'webbp');
+paths.lib = path.join(paths.home, 'lib');
+paths.tasks = path.join(paths.home, 'tasks');
 
 // get project configuration
-let config = require(path.join(cwd, 'bin', 'config.js'))(cwd);
+let config = require(path.join(paths.lib, 'config.js'))(path.join(paths.root, 'project.json'));
 
 // delegate logic
 switch (command) {
 
     // should build project
     case 'build':
-        new (require(path.join(cwd, 'bin', 'tasks', 'build.js')))({
-            cwd: cwd,
+        new (require(path.join(paths.tasks, 'build.js')))({
+            paths: paths,
             project: config
         }).run();
         break;
@@ -31,8 +36,8 @@ switch (command) {
 
     // shall watch project for changes
     case 'watch':
-        new (require(path.join(cwd, 'bin', 'tasks', 'watch.js')))({
-            cwd: cwd,
+        new (require(path.join(paths.tasks, 'watch.js')))({
+            paths: paths,
             project: config
         }).run();
         break;

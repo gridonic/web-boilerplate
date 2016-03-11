@@ -23,7 +23,7 @@ class Task {
         this.browsersync = options.browsersync;
         this.project = options.project || {};
         this.settings = {};
-        this.cwd = options.cwd || '';
+        this.paths = options.paths || {};
 
         // adopt task specific options
         this.title = this.id = options.id.toLowerCase();
