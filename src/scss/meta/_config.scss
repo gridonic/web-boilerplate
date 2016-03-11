@@ -49,11 +49,12 @@ $global-color-associations: (
    https://goo.gl/EDZOAH
    -------------------------------------------------------------------------- */
 $global-breakpoints: (
-    xsmall: 20rem, // 320px,
-    small: 40rem, // 640px
-    medium: 60rem, // 960px
-    large: 80rem, // 1280px
-    xlarge: 120rem // 1920px
+    mobile-s: 20rem,       // 320px
+    mobile-m: 23.4375rem,  // 375px
+    mobile-l: 26.5625rem,  // 425px
+    tablet: 48rem,         // 768px
+    laptop: 64rem,         // 1024px
+    laptop-l: 90rem        // 1440px
 );
 
 
@@ -61,9 +62,9 @@ $global-breakpoints: (
    Global grid.
    -------------------------------------------------------------------------- */
 $global-grid: (
-    max-width: 72.5rem, // 1160px
+    max-width: 72.5rem,    // 1160px
     total-columns: 12,
-    gutter-width: 1.5rem // 24px
+    gutter-width: 1.5rem   // 24px
 );
 
 
