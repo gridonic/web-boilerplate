@@ -22,7 +22,7 @@ class Delete extends Task {
             }
 
             // give feedback
-            console.log(`${this.title}Deleted ${file}`);
+            this.print(`Deleted ${file}`);
 
             // calling parent when done
             super.handler(file, done);

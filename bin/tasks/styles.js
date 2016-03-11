@@ -33,9 +33,12 @@ class Styles extends Task {
         let sass = require('node-sass');
         let autoprefixer = require('autoprefixer');
         let prefixer = require('postcss')([
-            autoprefixer(this.config.autoprefixer || {}) // https://github.com/ai/browserslist
+            autoprefixer(this.project.autoprefixer || {}) // https://github.com/ai/browserslist
         ]);
-        let path = this.path.join(this.dest, this.path.dirname(file).replace(this.src, ''));
+        let path = this.path.join(
+            this.settings.dest,
+            this.path.dirname(this.path.resolve(file)).replace(this.path.resolve(this.settings.src), '')
+        );
         let outputFile = this.path.format({
             dir: path,
             base: `${this.path.parse(file).name}.css`
@@ -53,7 +56,7 @@ class Styles extends Task {
                     // compile it
                     this.async.apply(sass.render, {
                         file: file,
-                        outputStyle: this.config.env === 'prod' ? 'compressed' : 'nested'
+                        outputStyle: this.project.env === 'prod' ? 'compressed' : 'nested'
                     }),
 
                     // prefix it
@@ -79,7 +82,7 @@ class Styles extends Task {
 
             let duration = Date.now() - start;
 
-            console.log(`${this.title}Compiled ${file} ${this.chalk.blue.bold('→')} ${outputFile} ${this.chalk.blue.bold('(')}${duration}ms${this.chalk.blue.bold(')')}`);
+            this.print(`Compiled ${file} ${this.chalk.blue.bold('→')} ${outputFile} ${this.chalk.blue.bold('(')}${duration}ms${this.chalk.blue.bold(')')}`);
 
             // calling parent when done
             super.handler(outputFile, done);
@@ -97,7 +100,7 @@ class Styles extends Task {
         // if it's a partial, get all stylesheets that use it
         // @todo improve it!
         if (this.path.basename(files)[0] === '_') {
-            files = this.assets.files;
+            files = this.settings.files;
         }
 
         // run parent on method with new data

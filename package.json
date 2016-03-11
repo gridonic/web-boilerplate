@@ -1,22 +1,16 @@
 {
   "author": "gridonic <hello@gridonic.ch>",
-  "description": "Fast, light and modern web boilerplate.",
-  "keywords": [
-    "fast",
-    "light",
-    "modern"
-  ],
-  "license": "MIT",
-  "name": "web-boilerplate",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gridonic/web-boilerplate.git"
+  "bin": {
+    "webbp": "bin/webbp.js"
   },
-  "version": "2.0.0",
+  "bugs": {
+    "url": "https://github.com/gridonic/web-boilerplate/issues"
+  },
   "dependencies": {
     "normalize.scss": "^0.1.0",
     "picturefill": "^3.0.1"
   },
+  "description": "Fast, light and modern web boilerplate.",
   "devDependencies": {
     "async": "^1.5.2",
     "autoprefixer": "^6.2.3",
@@ -36,5 +30,28 @@
     "replace": "^0.3.0",
     "svg-sprite": "^1.2.19",
     "uglify-js": "^2.6.1"
-  }
+  },
+  "homepage": "https://github.com/gridonic/web-boilerplate",
+  "keywords": [
+    "fast",
+    "light",
+    "modern",
+    "boilerplate",
+    "es6",
+    "scss",
+    "html",
+    "sass",
+    "svg",
+    "sprites",
+    "glob",
+    "autoprefixer",
+    "eslint"
+  ],
+  "license": "MIT",
+  "name": "web-boilerplate",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gridonic/web-boilerplate.git"
+  },
+  "version": "2.0.0"
 }

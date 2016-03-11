@@ -42,14 +42,14 @@ class Images extends Task {
      */
     set plugin(type) {
 
-        if ((type === 'jpg' || type === 'jpeg') && this.assets.jpg) {
-            this._plugin = this.imagemin.jpegtran(this.assets.jpg);
-        } else if (type === 'png' && this.assets.png) {
-            this._plugin = this.imagemin.optipng(this.assets.png);
-        } else if (type === 'gif' && this.assets.gif) {
-            this._plugin = this.imagemin.gifsicle(this.assets.gif);
-        } else if (type === 'svg' && this.assets.svg) {
-            this._plugin = this.imagemin.svgo(this.assets.svg);
+        if ((type === 'jpg' || type === 'jpeg') && this.settings.jpg) {
+            this._plugin = this.imagemin.jpegtran(this.settings.jpg);
+        } else if (type === 'png' && this.settings.png) {
+            this._plugin = this.imagemin.optipng(this.settings.png);
+        } else if (type === 'gif' && this.settings.gif) {
+            this._plugin = this.imagemin.gifsicle(this.settings.gif);
+        } else if (type === 'svg' && this.settings.svg) {
+            this._plugin = this.imagemin.svgo(this.settings.svg);
         } else {
             this._plugin = false;
         }
@@ -63,7 +63,10 @@ class Images extends Task {
      * @param {Function} done Callback to run when copying is done.
      */
     handler(file, done) {
-        let path = this.path.join(this.dest, this.path.dirname(file).replace(this.src, ''));
+        let path = this.path.join(
+            this.settings.dest,
+            this.path.dirname(this.path.resolve(file)).replace(this.path.resolve(this.settings.src), '')
+        );
         let outputFile = this.path.format({
             dir: path,
             base: this.path.basename(file)
@@ -73,7 +76,7 @@ class Images extends Task {
         this.plugin = this.path.extname(file).substr(1);
 
         // are we going to compress?
-        let doCompress = this.config.env === 'prod' && this.plugin;
+        let doCompress = this.project.env === 'prod' && this.plugin;
 
         this.async.series([
 
@@ -114,9 +117,9 @@ class Images extends Task {
             let saved = Math.round((result[2].size / result[3].size - 1) * 10000) / 100;
 
             if (doCompress) {
-                console.log(`${this.title}Optimized ${file} ${this.chalk.blue.bold('→')} ${outputFile} ${this.chalk.blue.bold('(')}${saved}%${this.chalk.blue.bold(')')}`);
+                this.print(`Optimized ${file} ${this.chalk.blue.bold('→')} ${outputFile} ${this.chalk.blue.bold('(')}${saved}%${this.chalk.blue.bold(')')}`);
             } else {
-                console.log(`${this.title}Copied ${file} ${this.chalk.blue.bold('→')} ${outputFile}`);
+                this.print(`Copied ${file} ${this.chalk.blue.bold('→')} ${outputFile}`);
             }
 
             // calling parent when done

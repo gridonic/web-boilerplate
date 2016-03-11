@@ -21,12 +21,12 @@ class Scripts extends Task {
         super(options);
 
         // linting requested
-        if (this.assets.eslint) {
-            this.eslint = new (require('eslint')).CLIEngine(this.assets.eslint);
+        if (this.settings.eslint) {
+            this.eslint = new (require('eslint')).CLIEngine(this.settings.eslint);
         }
 
         // by default use watch files from configuration for processing
-        this.files = this.assets.watch;
+        this.files = this.settings.watch;
     }
 
     /**
@@ -40,7 +40,10 @@ class Scripts extends Task {
         let start = Date.now();
         let uglifyjs = require('uglify-js');
         let browserify = require('browserify');
-        let path = this.path.join(this.dest, this.path.dirname(file).replace(this.src, ''));
+        let path = this.path.join(
+            this.settings.dest,
+            this.path.dirname(this.path.resolve(file)).replace(this.path.resolve(this.settings.src), '')
+        );
         let outputFile = this.path.format({
             dir: path,
             base: `${this.path.parse(file).name}.js`
@@ -52,7 +55,7 @@ class Scripts extends Task {
         }
 
         // only compile those files which really need to be compiled
-        if (this.resolveGlobs(this.assets.files).indexOf(file) < 0) {
+        if (this.resolveGlobs(this.settings.files).indexOf(file) < 0) {
             return super.handler(file, done);
         }
 
@@ -75,8 +78,8 @@ class Scripts extends Task {
                     (result, cb) => {
                         let code = result.toString();
 
-                        if (this.config.env === 'prod') {
-                            let config = this.assets;
+                        if (this.project.env === 'prod') {
+                            let config = this.settings;
 
                             // overwrite fromString option
                             config.fromString = true;
@@ -106,7 +109,7 @@ class Scripts extends Task {
 
             let duration = Date.now() - start;
 
-            console.log(`${this.title}Compiled ${file} ${this.chalk.blue.bold('→')} ${outputFile} ${this.chalk.blue.bold('(')}${duration}ms${this.chalk.blue.bold(')')}`);
+            this.print(`Compiled ${file} ${this.chalk.blue.bold('→')} ${outputFile} ${this.chalk.blue.bold('(')}${duration}ms${this.chalk.blue.bold(')')}`);
 
             // calling parent when done
             super.handler(outputFile, done);
@@ -121,7 +124,7 @@ class Scripts extends Task {
      */
     lint(file) {
 
-        console.log(`${this.title}Linting ${file}`);
+        this.print(`Linting ${file}`);
 
         // scan file
         let report = this.eslint.executeOnFiles([ file ]);
