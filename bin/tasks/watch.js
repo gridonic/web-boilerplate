@@ -22,28 +22,6 @@ class Watch extends Task {
     }
 
     /**
-     * After finishing a task, this function will run last.
-     *
-     * @param {Function} cb Optional callback to run after finishing.
-     */
-    done(cb) {
-        let hr = this.chalk.green.bold(String.fromCharCode(8212).repeat(
-            process.stdout.columns * 0.125)
-        );
-
-        // get total task time
-        let duration = Date.now() - this._start;
-
-        // building done
-        console.log(`\n${hr}\nFinished building. ${this.chalk.blue.bold('(')}${duration}ms${this.chalk.blue.bold(')')}`);
-
-        // run callback function after finishing this task
-        if (typeof cb === 'function') {
-            cb();
-        }
-    }
-
-    /**
      * Run this task.
      *
      * @param {Function} done Callback to run when task is done.
@@ -55,9 +33,6 @@ class Watch extends Task {
 
         // run all tasks or requested one
         let tasks = task < 0 ? this.settings : [ this.settings[task] ];
-
-        // measure task running time
-        this._start = Date.now();
 
         // translate requested build environment
         let mode = this.chalk.blue.bold(this.project.env === 'prod' ? 'production' : 'develop');
