@@ -76,7 +76,12 @@ class Task {
      * @param {String} title Task title.
      */
     set title(title) {
-        this._title = title.charAt(0).toUpperCase() + title.slice(1);
+
+        // uppercase words and first character
+        this._title = title.toLowerCase().replace(
+            /(^|[:])+?(\w+?)/g,
+            (a, b, c) => b + c.toUpperCase()
+        );
     }
 
     /**
