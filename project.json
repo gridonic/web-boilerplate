@@ -20,15 +20,15 @@
         "images",
         "sprites"
     ],
-    "clean": {
-        "files": "@this.dest"
-    },
-    "dest": "./build",
-    "fonts": {
+    "copy:fonts": {
         "src": "@this.src/fonts",
         "dest": "@this.dest/assets/fonts",
         "files": ["**/*.{woff2,woff,svg,eot,ttf,otf}"]
     },
+    "delete:clean": {
+        "files": "@this.dest"
+    },
+    "dest": "./build",
     "images": {
         "src": "@this.src/images",
         "dest": "@this.dest/assets/images",

@@ -40,14 +40,15 @@ let walk = (input) => {
 
 // export config
 module.exports = (project) => {
-    let fs = require('fs');
+    try {
 
-    // check if project.json is available
-    fs.accessSync(project, fs.R_OK | fs.W_OK);
+        // save project.json content
+        config = require(project);
 
-    // save project.json content
-    config = require(project) || {};
+        // walk config and resolve references
+        return walk(typeof config === 'object' ? config : {});
 
-    // walk config and resolve references
-    return walk(config);
+    } catch (e) {
+        return false;
+    }
 };

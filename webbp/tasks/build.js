@@ -67,22 +67,33 @@ class Build extends Task {
 
         // run tasks
         this.async.series(tasks.map((task) => {
-            let subtask = task.split(':');
+            let spawn = task.split(':');
             let options = {
+                id: task,
                 paths: this.paths,
                 project: this.project
             };
 
-            // sub task of a generic task requested
-            if (subtask.length > 1) {
-                options.id = subtask[1];
-                task = subtask[0];
+            // specific spawn of a generic task requested
+            if (spawn.length > 1) {
+                task = spawn.shift();
             }
 
-            // path to task file
-            let path = this.path.join(this.paths.tasks, task);
+            return (cb) => {
 
-            return (cb) => new (require(path))(options).run(cb);
+                // prefer custom tasks in local project over global default tasks
+                this.async.detectSeries([ this.paths.cwd, this.paths.global ].map(
+                    (item) => this.path.join(item, this.paths.tasks, task)
+                ), (item, valid) => {
+                    try {
+                        valid(!!require(item));
+                    } catch (e) {
+                        valid(false);
+                    }
+                }, (result) => {
+                    new (require(result))(options).run(cb)
+                });
+            };
         }), () => this.done(done));
     }
 }
