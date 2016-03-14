@@ -1,17 +1,12 @@
 {
   "author": "gridonic <hello@gridonic.ch>",
   "bin": {
-    "webbp": "webbp/webbp.js"
+    "webbp": "cli/webbp.js"
   },
   "bugs": {
     "url": "https://github.com/gridonic/web-boilerplate/issues"
   },
   "dependencies": {
-    "normalize.scss": "^0.1.0",
-    "picturefill": "^3.0.1"
-  },
-  "description": "Fast, light and modern web boilerplate.",
-  "devDependencies": {
     "async": "^1.5.2",
     "autoprefixer": "^6.2.3",
     "babel-preset-es2015": "^6.3.13",
@@ -31,6 +26,7 @@
     "svg-sprite": "^1.2.19",
     "uglify-js": "^2.6.1"
   },
+  "description": "Fast, light and modern web boilerplate.",
   "homepage": "https://github.com/gridonic/web-boilerplate",
   "keywords": [
     "fast",

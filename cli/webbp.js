@@ -11,8 +11,8 @@ let command = process.argv[2] || '';
 // define important paths
 let paths = {
     cwd: process.cwd(),
-    lib: path.join('webbp', 'lib'),
-    tasks: path.join('webbp', 'tasks'),
+    lib: 'lib',
+    tasks: 'tasks',
     global: path.dirname(__dirname)
 };
 
@@ -64,24 +64,10 @@ switch (command) {
         console.log('serving');
         break;
 
-    // show version number strings of global and local boilerplate
+    // show version number of web boilerplate
     case '-v':
     case '--version':
-        let global = (require(path.join(paths.global, 'package.json'))).version;
-
-        try {
-
-            // try to get local version
-            let local = (require(path.join(paths.cwd, 'package.json'))).version;
-
-            console.log(`Global: v${global}`);
-            console.log(`Local: v${local}`);
-
-        } catch (e) {
-
-            // failed picking local version, print global only
-            console.log(`v${global}`);
-        }
+        console.log(`v${(require(path.join(paths.global, 'package.json'))).version}`);
 
         break;
 

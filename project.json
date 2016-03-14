@@ -25,6 +25,15 @@
         "dest": "@this.dest/assets/fonts",
         "files": ["**/*.{woff2,woff,svg,eot,ttf,otf}"]
     },
+    "copy:html": {
+        "src": "@this.src/html",
+        "dest": "@this.dest",
+        "files": ["**/*.{html,htm,txt}"],
+        "replace": {
+            "@sprite:([^,]+),([^\\s]+)": "<svg class=\"$2\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"$1\"></use></svg>",
+            "@version": "@this.version"
+        }
+    },
     "delete:clean": {
         "files": "@this.dest"
     },
@@ -38,15 +47,6 @@
         "png": { "optimizationLevel": 3 },
         "gif": { "interlaced": true },
         "svg": {}
-    },
-    "jade": {
-        "src": "@this.src/jade",
-        "dest": "@this.dest",
-        "files": ["**/*.{jade}"],
-        "replace": {
-            "@sprite:([^,]+),([^\\s]+)": "<svg class=\"$2\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"$1\"></use></svg>",
-            "@version": "@this.version"
-        }
     },
     "scripts": {
         "src": "@this.src/js",
