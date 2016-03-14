@@ -27,7 +27,9 @@ let config = require(path.join(
 let env = process.argv.join(' ').match(/(?:-e |--env=)(\w+)/i);
 
 // inject into configuration or use default environment
-config.env = Array.isArray(env) ? env.pop() : 'dev';
+if (config) {
+    config.env = Array.isArray(env) ? env.pop() : 'dev';
+}
 
 // delegate logic
 switch (command) {
