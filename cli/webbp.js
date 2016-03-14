@@ -4,6 +4,8 @@
 // needed modules
 let path = require('path');
 let async = require('async');
+let fs = require('fs-extra');
+let chalk = require('chalk');
 
 // determine command to run
 let command = process.argv[2] || '';
@@ -40,7 +42,7 @@ switch (command) {
 
         // not a webbp project
         if (config === false) {
-            console.log(`Unable to find project.json, are you sure this is a webbp project?`);
+            console.error(`Unable to find project.json, are you sure this is a webbp project?`);
             break;
         }
 
@@ -64,7 +66,42 @@ switch (command) {
 
     // shall create new project
     case 'new':
-        console.log('creating');
+    case 'create':
+        let name = process.argv[3];
+
+        // no project name given
+        if (name === undefined) {
+            console.error(`Please provide a project name, e.g. webbp new my-epic-app`);
+            break;
+        }
+
+        // default files to copy when setting up new project
+        let files = [
+            path.join(paths.global, 'src'),
+            path.join(paths.global, '.eslintrc'),
+            path.join(paths.global, '.gitignore'),
+            path.join(paths.global, 'project.json')
+        ];
+
+        // copy files
+        async.parallel(
+            files.map((item) => (done) => {
+                let output = path.join(
+                    paths.cwd,
+                    name,
+                    path.relative(paths.global, item)
+                );
+
+                fs.copy(item, output, (error) => done(error));
+            }), (error, results) => {
+                if (error) {
+                    return console.error(error);
+                }
+
+                console.log(`Project '${name}' has been created.`);
+            }
+        );
+
         break;
 
     // shall run projects intergrated server
@@ -76,10 +113,25 @@ switch (command) {
     case '-v':
     case '--version':
         console.log(`v${(require(path.join(paths.global, 'package.json'))).version}`);
-
         break;
 
-    // unknown command
+    // unknown command or help
+    case '-h':
+    case '--help':
     default:
-        console.log('Unknown command.');
+        console.log(`
+usage: webbp [options] [command]
+
+commands:
+
+  ${chalk.bold('build')} [options] - build a project
+  ${chalk.bold('new')}|${chalk.bold('create')} <location> - create a new project based on the web boilerplate
+  ${chalk.bold('watch')} [options] - watch a project for changes and build immediately
+
+  also see [command] --help
+
+global options:
+
+  -v, --version   output version and exit
+  -h, --help      show help`);
 }
