@@ -1,8 +1,8 @@
 ![Ingredients of the web boilerplate](https://mzdr.github.io/web-boilerplate/ingredients.png)
 
-Simple, fast and lightweight web boilerplate serving as my basis for developing webapps and websites. By default you'll get the following features:
+Simple, fast and lightweight web boilerplate serving as our basis for developing webapps and websites. You'll get the following features:
 
-- Bundling of JavaScript by [browserify](http://browserify.org/)
+- Bundling of JavaScript with [browserify](http://browserify.org/)
 - Support of [ECMAScript 2015](http://www.ecma-international.org/publications/standards/Ecma-262.htm) (ES6) features which are transpiled by [Babel](https://babeljs.io/) (See [src/js](src/js) for a simple example)
 - Configurable linting with [ESLint](http://eslint.org/docs/user-guide/configuring)
 - Automatic SVG Sprite generation based on sub-directories
@@ -12,41 +12,87 @@ Simple, fast and lightweight web boilerplate serving as my basis for developing 
 - [Sass](http://sass-lang.com/) Style Sheets with PostCSS [autoprefixing](https://github.com/postcss/autoprefixer)
 - Time-saving synchronised browser testing with [Browsersync](https://www.browsersync.io/)
 
-Pretty cool, huh?
-
-
 # Installation
 
-Setup is dead simple. Just run: `npm install` within the [terminal](https://en.wikipedia.org/wiki/Terminal_%28OS_X%29) of your choice.
+Setup is dead simple. Just run: `npm install -g web-boilerplate` within the [terminal](https://en.wikipedia.org/wiki/Terminal_%28OS_X%29) of your choice.
 
 That's it!
 
 # Usage
 
-Right now there are three basic tasks `build`, `clean` and `watch`. You can run them like this:
+After installation there is a new command line interface available in your terminal for the web boilerplate. It's called `webbp`.
 
-Command    | Description
---------------------| -----------
-`node build`        | Builds the whole project by running all tasks which are enabled in the `build.js` file.
-`node clean`        | Will clean up your project by deleting everything that has been built before.<br>(By default the `./build` folder will be deleted)
-`node watch`        | Starts a process that watches all relevant files and once a file has been changed<br> the corresponding task will be started.
-`node server`       | This is an alias to `node watch --sync` which will start Browsersync as well.
+When you run `webbp`, it looks for a `project.json` within the current folder and gathers all necessary information about the project in order to build it successfully.
 
-If you want to build/watch for specific things only, you may pass the **sub-task** as a **second parameter**. Right now there is `fonts`, `html`, `images`, `scripts`, `sprites` and `styles`.
+## Use cases
 
-So if you care about your styles only, you may use:
+Let us demonstrate a few use cases you might have:
 
-`node build styles` *or*   
-`node watch styles`
+1. You want to **create a new web project** and **build it**. Therefore you run those commands in that order:
 
-Also all `watch` tasks have a `--sync` parameter to enable [Browsersync](https://www.browsersync.io/).
+    ```shell
+webbp new my-epic-app  
+cd my-epic-app  
+webbp build  
+    ```
 
-By default this parameter will start the Browsersync's built-in static server which will serve files from the project destination (`dest` in `project.json` which is `./build` by default) directory. In case you already have a vhost running and want to proxy it, have a look at the [documentation](https://www.browsersync.io/docs/options/).
+2. You have an **existing project** and start working on it. Any **changes** you make **will be built immediately**. Those lines will do the magic:
 
-And **don't forget** to check out the [project.json](project.json) for customizing the whole build process!
+    ```shell
+cd your-existing-project
+webbp watch
+    ```
 
-# Frameworks/Libraries
+3. You want to **show your project** to your client **without setting up complicated web servers**. You can use the **built in webserver** (by default its [Browsersync](https://www.browsersync.io/)) to quickly demonstrate your project. Just run:
 
-By default this boilerplate comes enabled with [normalize.css](https://necolas.github.io/normalize.css/) and [picturefill](https://scottjehl.github.io/picturefill/).
+    ```shell
+cd your-existing-project
+webbp server
+    ```
 
+## Overview
+
+All in all the CLI currently supports those commands and options:
+
+<table>
+    <tr>
+        <th width="26%">Command</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><code>webbp build</code></td>
+        <td>Builds the whole project by running all tasks which are enabled in the <code>project.json</code> file.</td>
+    </tr>
+    <tr>
+        <td><code>webbp watch</code></td>
+        <td>Starts a process that watches all relevant files and once a file has been changed the corresponding task will be started.</td>
+    </tr>
+    <tr>
+        <td><code>webbp server</code></td>
+        <td>Will start the built-in/configured web server which will serve files from the project destination (<code>dest</code> in <code>project.json</code> which is <code>./build</code> by default) directory. In case you already have a vhost running and want to proxy it, have a look at the Browsersync <a href="https://www.browsersync.io/docs/options/">documentation</a>.</td>
+    </tr>
+</table>
+
+If you only want to take care of specific things, you may pass the **sub-task** as a **second parameter**.
+
+```shell
+webbp build|watch|server <task>
+```
+
+Some examples:
+
+```shell
+webbp build styles
+webbp watch styles,scripts -e prod
+```
+
+Finally **don't forget** to check out the [project.json](project.json) for customizing the whole project and build process.
+
+## Frameworks/Libraries
+
+Including and using frameworks is pretty easy as well. Just install your desired library via [npm](https://www.npmjs.com/) (`npm install <package> --save-dev`) and include/require it in Sass/JS or where ever you need files of this package.
+
+Don't forget to share/commit your `package.json` so that collaborators/co-workers can install them as well.
+
+---
 v2.0.0

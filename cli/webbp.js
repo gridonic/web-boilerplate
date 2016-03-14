@@ -120,14 +120,14 @@ usage: webbp [options] [command]
 
 commands:
 
-  ${chalk.bold('build')} [options] - build a project
-  ${chalk.bold('new')}|${chalk.bold('create')} <location> - create a new project based on the web boilerplate
-  ${chalk.bold('watch')} [options] - watch a project for changes and build immediately
-
-  also see [command] --help
+  ${chalk.bold('build')} [options] <task>      build a project
+  ${chalk.bold('new')}|${chalk.bold('create')} <location>       create a new project based on the web boilerplate
+  ${chalk.bold('server')} [options] <task>     start the built-in configured webserver
+  ${chalk.bold('watch')} [options] <task>      watch a project for changes and build immediately
 
 global options:
 
-  -v, --version   output version and exit
-  -h, --help      show help`);
+  -e <env>, --env=<env>       build environment
+  -v, --version               output version and exit
+  -h, --help                  show help`);
 }
