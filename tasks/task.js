@@ -196,9 +196,8 @@ class Task {
 
         // handle all files in parallel
         this.async.parallel(
-            this.files.map((file) => {
-                return (cb) => handler(file, cb)
-            }), (error, result) => {
+            this.files.map((file) => (cb) => handler(file, cb)),
+            (error, result) => {
 
                 // there was an error during handling the file
                 if (error) {

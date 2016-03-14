@@ -153,9 +153,8 @@ class Sprites extends Task {
 
         // compile all sprites in parallel
         this.async.parallel(
-            Object.keys(sets).map((key) => {
-                return (cb) => this.handler(sets[key], cb)
-            }), (error, result) => {
+            Object.keys(sets).map((key) => (cb) => this.handler(sets[key], cb)),
+            (error, result) => {
 
                 // there was an error during handling the file
                 if (error) {
