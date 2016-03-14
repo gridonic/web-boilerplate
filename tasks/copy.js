@@ -39,7 +39,7 @@ class Copy extends Task {
             }
 
             // task has replacement orders
-            if (this.replace) {
+            if (this.settings.replace) {
                 let replace = require('replace');
 
                 for (let pattern in this.settings.replace) {
