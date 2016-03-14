@@ -22,7 +22,6 @@ class Task {
         this.settings = {};
         this.browsersync = options.browsersync;
         this.project = options.project || {};
-        this.settings = {};
         this.paths = options.paths || {};
 
         // adopt task specific options
