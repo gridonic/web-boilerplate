@@ -55,6 +55,7 @@
         "watch": ["**/*.js"],
         "eslint": {}
     },
+    "server": "@this.watch",
     "sprites": {
         "src": "@this.src/images/sprites",
         "dest": "@this.dest/assets/images/sprites",
@@ -72,5 +73,11 @@
         "watch": ["**/*.{sass,scss}"]
     },
     "version": "1.0.0",
-    "watch": "@this.build"
+    "watch": [
+        "styles",
+        "scripts",
+        "copy:fonts",
+        "images",
+        "sprites"
+    ]
 }
