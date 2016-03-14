@@ -90,9 +90,7 @@ class Build extends Task {
                     } catch (e) {
                         valid(false);
                     }
-                }, (result) => {
-                    new (require(result))(options).run(cb)
-                });
+                }, (result) => new (require(result))(options).run(cb));
             };
         }), () => this.done(done));
     }
