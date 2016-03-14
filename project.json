@@ -16,6 +16,7 @@
         "delete:clean",
         "styles",
         "scripts",
+        "copy:html",
         "copy:fonts",
         "images",
         "sprites"
@@ -77,6 +78,7 @@
         "styles",
         "scripts",
         "copy:fonts",
+        "copy:html",
         "images",
         "sprites"
     ]
