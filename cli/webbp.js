@@ -36,9 +36,10 @@ if (config) {
 // delegate logic
 switch (command) {
 
-    // should build or watch project
+    // should build/watch project or run built-in server
     case 'build':
     case 'watch':
+    case 'server':
 
         // not a webbp project
         if (config === false) {
@@ -102,11 +103,6 @@ switch (command) {
             }
         );
 
-        break;
-
-    // shall run projects intergrated server
-    case 'server':
-        console.log('serving');
         break;
 
     // show version number of web boilerplate
