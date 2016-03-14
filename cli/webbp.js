@@ -23,6 +23,12 @@ let config = require(path.join(
     'config.js'
 ))(path.join(paths.cwd, 'project.json'));
 
+// detect environment switch
+let env = process.argv.join(' ').match(/(?:-e |--env=)(\w+)/i);
+
+// inject into configuration or use default environment
+config.env = Array.isArray(env) ? env.pop() : 'dev';
+
 // delegate logic
 switch (command) {
 
