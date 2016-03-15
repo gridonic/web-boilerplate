@@ -2,17 +2,17 @@
    Define your color palette over here.
    -------------------------------------------------------------------------- */
 $global-colors: (
-    black: #000000,
-    blue: #1c65d9,
-    gray: #3c3c3b,
-    gray-light: #9c9c9c,
-    gray-lighter: #c8c8c8,
-    gray-lightest: #e0e0e0,
-    green: #006e33,
-    purple: #673ab7,
-    red: #ff3333,
-    white: #fff,
-    yellow: #fac135
+    "black": #000000,
+    "blue": #1c65d9,
+    "gray": #3c3c3b,
+    "gray-light": #9c9c9c,
+    "gray-lighter": #c8c8c8,
+    "gray-lightest": #e0e0e0,
+    "green": #006e33,
+    "purple": #673ab7,
+    "red": #ff3333,
+    "white": #fff,
+    "yellow": #fac135
 );
 
 
@@ -20,20 +20,20 @@ $global-colors: (
    Color associations.
    -------------------------------------------------------------------------- */
 $global-color-associations: (
-    background-primary: _color(gray),
-    background-secondary: _color(gray-lightest),
-    background-tertiary: _color(white),
-    button-default-text: _color(black),
-    button-default: _color(gray-lighter),
-    button-primary: _color(gray),
-    button-primary-text: _color(white),
-    error-primary: _color(red),
-    headline-primary: _color(gray),
-    success-primary: _color(green),
-    text-primary-disabled: _color(gray-light),
-    text-primary-inverted: _color(white),
-    text-primary: _color(black),
-    warning-primary: _color(yellow)
+    "background-primary": _color("gray"),
+    "background-secondary": _color("gray-lightest"),
+    "background-tertiary": _color("white"),
+    "button-default-text": _color("black"),
+    "button-default": _color("gray-lighter"),
+    "button-primary": _color("gray"),
+    "button-primary-text": _color("white"),
+    "error-primary": _color("red"),
+    "headline-primary": _color("gray"),
+    "success-primary": _color("green"),
+    "text-primary-disabled": _color("gray-light"),
+    "text-primary-inverted": _color("white"),
+    "text-primary": _color("black"),
+    "warning-primary": _color("yellow")
 );
 
 
@@ -49,12 +49,12 @@ $global-color-associations: (
    https://goo.gl/EDZOAH
    -------------------------------------------------------------------------- */
 $global-breakpoints: (
-    mobile-s: 20rem,       // 320px
-    mobile-m: 23.4375rem,  // 375px
-    mobile-l: 26.5625rem,  // 425px
-    tablet: 48rem,         // 768px
-    laptop: 64rem,         // 1024px
-    laptop-l: 90rem        // 1440px
+    "mobile-s": 20rem,       // 320px
+    "mobile-m": 23.4375rem,  // 375px
+    "mobile-l": 26.5625rem,  // 425px
+    "tablet": 48rem,         // 768px
+    "laptop": 64rem,         // 1024px
+    "laptop-l": 90rem        // 1440px
 );
 
 
@@ -62,9 +62,9 @@ $global-breakpoints: (
    Global grid.
    -------------------------------------------------------------------------- */
 $global-grid: (
-    max-width: 72.5rem,    // 1160px
-    total-columns: 12,
-    gutter-width: 1.5rem   // 24px
+    "max-width": 72.5rem,    // 1160px
+    "total-columns": 12,
+    "gutter-width": 1.5rem   // 24px
 );
 
 
@@ -72,9 +72,9 @@ $global-grid: (
    Z-index listing.
    -------------------------------------------------------------------------- */
 $global-z-layers: (
-    default: 0,
-    overlay: 100,
-    debug: 500
+    "default": 0,
+    "overlay": 100,
+    "debug": 500
 );
 
 
@@ -82,9 +82,9 @@ $global-z-layers: (
    Typography.
    -------------------------------------------------------------------------- */
 $global-fonts: (
-    primary-font-family: (Tahoma, Verdana, Segoe, sans-serif),
-    primary-font-size: 16px,
-    primary-line-height: 1.4,
-    text-primary-rendering: optimizeLegibility,
-    secondary-font-family: (Georgia, Times, Times New Roman, serif)
+    "primary-font-family": (Tahoma, Verdana, Segoe, sans-serif),
+    "primary-font-size": 16px,
+    "primary-line-height": 1.4,
+    "text-primary-rendering": optimizeLegibility,
+    "secondary-font-family": (Georgia, Times, Times New Roman, serif)
 );
