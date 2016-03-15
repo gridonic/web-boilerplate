@@ -1,27 +1,3 @@
 /* -----------------------------------------------------------------------------
    Global buttons.
    -------------------------------------------------------------------------- */
-.btn {
-    background-color: _color(button-default);
-    border-radius: 0.125rem;
-    border: 0;
-    box-shadow: 0 0.125rem 0.0625rem _color(gray-light);
-    color: _color(button-default-text);
-    display: block;
-    line-height: inherit;
-    outline: 0;
-    padding: 0.875rem 1.125rem;
-    text-align: center;
-    text-decoration: none;
-    width: 100%;
-    word-wrap: break-word;
-
-    &:not(:last-child) {
-        margin-bottom: _grid(gutter-width) / 2;
-    }
-
-    &.-primary {
-        background-color: _color(button-primary);
-        color: _color(button-primary-text);
-    }
-}
