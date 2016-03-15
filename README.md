@@ -11,6 +11,7 @@ Simple, fast and lightweight web boilerplate serving as our basis for developing
 - Desktop notifications when errors occur
 - [Sass](http://sass-lang.com/) Style Sheets with PostCSS [autoprefixing](https://github.com/postcss/autoprefixer)
 - Time-saving synchronised browser testing with [Browsersync](https://www.browsersync.io/)
+- Vertical rhythm system based on rem units
 
 # Installation
 

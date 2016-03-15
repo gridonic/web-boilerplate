@@ -20,6 +20,14 @@
     text-rendering: _font("text-primary-rendering");
 }
 
+:root {
+    color: _color("text-primary");
+    font-family: _font("primary-font-family");
+    font-size: _font("primary-font-size");
+    line-height: _font("primary-line-height");
+    text-rendering: _font("text-primary-rendering");
+}
+
 h1, .h1,
 h2, .h2,
 h3, .h3,
@@ -29,19 +37,40 @@ h6, .h6 {
     color: _color("headline-primary");
     font-family: _font("secondary-font-family");
     margin-top: 0;
+    margin-bottom: 0;
 }
 
 h1, .h1 {
-    font-size: 1.25rem;
-    margin-bottom: 1.25rem;
+    font-size: 2rem;
+    line-height: _grid("vertical-base") * 2;
 }
 
 h2, .h2 {
-    font-size: 1.125rem;
-    margin-bottom: 1.125rem;
+    font-size: 1.5rem;
+    line-height: _grid("vertical-base") * 1.5;
 }
 
 h3, .h3 {
-    font-size: 1.0625rem;
-    margin-bottom: 1.0625rem;
+    font-size: 1.25rem;
+}
+
+h4, .h4 {
+    font-size: 1.125rem;
+}
+
+h5, .h5 {
+    font-size: 1rem;
+}
+
+p, .paragraph {
+    margin-top: _grid("vertical-base");
+    margin-bottom: _grid("vertical-base");
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
 }

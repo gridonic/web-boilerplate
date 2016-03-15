@@ -1,3 +1,40 @@
 /* -----------------------------------------------------------------------------
    Global debugging styles.
    -------------------------------------------------------------------------- */
+.debug-mode {
+    position: relative;
+
+    // baseline grid
+    &::after {
+        background-color: transparent;
+        background-image: linear-gradient(transparent calc(100% - 1px), rgba(#000, 0.05) 0%),
+                          linear-gradient(transparent calc(100% - 1px), rgba(#000, 0.05) 0%);
+        background-size: 1px _grid("vertical-base"),
+                         1px _grid("vertical-base") / 2;
+        bottom: 0;
+        content: "baseline grid (factor: #{_grid("vertical-base")})";
+        left: 0;
+        position: absolute;
+        right: 0;
+        text-indent: _grid("gutter-width") / 2;
+        top: 0;
+        z-index: -1;
+    }
+
+    // breakpoints indicator
+    &::before {
+        background: #fafaaa;
+        color: #000;
+        right: 0;
+        padding: 0 _grid("gutter-width") / 2;
+        position: fixed;
+        top: 0;
+        z-index: _z("debug");
+
+        @each $name, $width in $global-breakpoints {
+            @media #{_min($name)} {
+                content: "#{$name} (min-width: #{$width})";
+            }
+        }
+    }
+}
