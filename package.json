@@ -27,6 +27,9 @@
     "uglify-js": "^2.6.1"
   },
   "description": "Fast, light and modern web boilerplate.",
+  "engines" : {
+      "node" : ">4"
+  },
   "homepage": "https://github.com/gridonic/web-boilerplate",
   "keywords": [
     "fast",
