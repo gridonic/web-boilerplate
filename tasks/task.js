@@ -98,7 +98,16 @@ class Task {
      * @param {Array} files List of files.
      */
     set files(files) {
-        this._files = this.resolveGlobs(files);
+        this._files = [];
+
+        // resolve all files and only keep unique ones
+        this.resolveGlobs(files).forEach((file) => {
+            if (this._files.indexOf(file) > -1) {
+                return;
+            }
+
+            this._files.push(file);
+        });
     }
 
     /**
