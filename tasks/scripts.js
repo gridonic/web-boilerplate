@@ -162,6 +162,28 @@ class Scripts extends Task {
 
         return false;
     }
+
+    /**
+     * Default listener to run once the watcher raised an event.
+     *
+     * @param {String} event The name of the event.
+     * @param {String|Array} files The file(s) that caused the event.
+     */
+    on(event, files) {
+
+        // make sure files is an array
+        files = Array.isArray(files) ? files : [ files ];
+
+        // right now i don't know how to determine which files actually
+        // use/require the files of the event, so that i just need to
+        // compile those files that require them
+
+        // @todo improve it #needhelp
+        files = files.concat(this.settings.files);
+
+        // run parent on method with new data
+        super.on(event, files);
+    }
 }
 
 module.exports = Scripts;
