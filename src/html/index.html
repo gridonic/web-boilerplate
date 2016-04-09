@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html class="debug-mode">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -21,41 +21,43 @@
         <pre>&lt;svg class="my-class"&gt;&#10;    &lt;use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="assets/images/sprites/brands.svg#shell"&gt;&lt;/use&gt;&#10;&lt;/svg></pre>
         <p>which then the browser is rendering like this&hellip;</p>
 
-        @sprite:assets/images/sprites/brands.svg#shell,svg-sample
-        @sprite:assets/images/sprites/brands.svg#apple,svg-sample
-        @sprite:assets/images/sprites/brands.svg#dell,svg-sample
-        @sprite:assets/images/sprites/brands.svg#burger-king,svg-sample
-        @sprite:assets/images/sprites/brands.svg#starbucks,svg-sample
+        <p style="line-height: 0;">
+            @sprite:assets/images/sprites/brands.svg#shell,svg-sample
+            @sprite:assets/images/sprites/brands.svg#apple,svg-sample
+            @sprite:assets/images/sprites/brands.svg#dell,svg-sample
+            @sprite:assets/images/sprites/brands.svg#burger-king,svg-sample
+            @sprite:assets/images/sprites/brands.svg#starbucks,svg-sample
+        </p>
 
-        <br>
+        <p style="line-height: 0;">
+            @sprite:assets/images/sprites/olympic-games.svg#nagano,svg-sample
+            @sprite:assets/images/sprites/olympic-games.svg#sydney,svg-sample
+            @sprite:assets/images/sprites/olympic-games.svg#salt-lake,svg-sample
+            @sprite:assets/images/sprites/olympic-games.svg#beijing,svg-sample
+            @sprite:assets/images/sprites/olympic-games.svg#tokyo,svg-sample
+        </p>
 
-        @sprite:assets/images/sprites/olympic-games.svg#nagano,svg-sample
-        @sprite:assets/images/sprites/olympic-games.svg#sydney,svg-sample
-        @sprite:assets/images/sprites/olympic-games.svg#salt-lake,svg-sample
-        @sprite:assets/images/sprites/olympic-games.svg#beijing,svg-sample
-        @sprite:assets/images/sprites/olympic-games.svg#tokyo,svg-sample
-
-        <br>
-
-        @sprite:assets/images/sprites/pictograms.svg#bobsleigh,svg-sample
-        @sprite:assets/images/sprites/pictograms.svg#gymnastics,svg-sample
-        @sprite:assets/images/sprites/pictograms.svg#ice-hockey,svg-sample
-        @sprite:assets/images/sprites/pictograms.svg#judo,svg-sample
-        @sprite:assets/images/sprites/pictograms.svg#shooting,svg-sample
+        <p style="line-height: 0;">
+            @sprite:assets/images/sprites/pictograms.svg#bobsleigh,svg-sample
+            @sprite:assets/images/sprites/pictograms.svg#gymnastics,svg-sample
+            @sprite:assets/images/sprites/pictograms.svg#ice-hockey,svg-sample
+            @sprite:assets/images/sprites/pictograms.svg#judo,svg-sample
+            @sprite:assets/images/sprites/pictograms.svg#shooting,svg-sample
+        </p>
 
         <p>You can customize the replacement in the <code>project.json</code> file.</p>
 
         <style>
-        :root {
-            padding: 2em;
+        body {
+            margin: 0;
+            padding: 1.5rem;
         }
 
         .svg-sample {
-            box-shadow: 0 0 1px #ccc;
-            height: 8em;
-            margin: 0.5em;
-            padding: 0.5em;
-            width: 8em;
+            box-shadow: 0 0 0 1px #ccc;
+            height: 6rem;
+            padding: 0.75rem;
+            width: 6rem;
         }
         </style>
 

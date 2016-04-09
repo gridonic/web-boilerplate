@@ -13,17 +13,17 @@
         @return map-get($global-color-associations, $color);
     }
 
-    @warn "No color found for `#{$color}` in $global-colors and $global-color-associations map. Property omitted.";
+    @error "No color found for `#{$color}` in $global-colors and $global-color-associations map. Property omitted.";
 }
 
 @function _font($font) {
 
     @if not variable-exists(global-fonts) {
-        @warn "Global variable $global-fonts not defined but needed for _font(). Aborting call.";
+        @error "Global variable $global-fonts not defined but needed for _font(). Aborting call.";
     }
 
     @if not map-has-key($global-fonts, $font) {
-        @warn "No font found for `#{$font}` in $global-fonts map. Property omitted.";
+        @error "No font found for `#{$font}` in $global-fonts map. Property omitted.";
     }
 
     @return map-get($global-fonts, $font);
@@ -32,11 +32,11 @@
 @function _z($layer) {
 
     @if not variable-exists(global-z-layers) {
-        @warn "Global variable $global-z-layers not defined but needed for _z(). Aborting call.";
+        @error "Global variable $global-z-layers not defined but needed for _z(). Aborting call.";
     }
 
     @if not map-has-key($global-z-layers, $layer) {
-        @warn "No layer found for `#{$layer}` in $global-z-layers map. Property omitted.";
+        @error "No layer found for `#{$layer}` in $global-z-layers map. Property omitted.";
     }
 
     @return map-get($global-z-layers, $layer);
@@ -45,11 +45,11 @@
 @function _grid($setting) {
 
     @if not variable-exists(global-grid) {
-        @warn "Global variable $global-grid not defined but needed for _z(). Aborting call.";
+        @error "Global variable $global-grid not defined but needed for _z(). Aborting call.";
     }
 
     @if not map-has-key($global-grid, $setting) {
-        @warn "No layer found for `#{$setting}` in $global-grid map. Property omitted.";
+        @error "No layer found for `#{$setting}` in $global-grid map. Property omitted.";
     }
 
     @return map-get($global-grid, $setting);
@@ -61,11 +61,11 @@
 @function _break($breakpoint) {
 
     @if not variable-exists(global-breakpoints) {
-        @warn "Global variable $global-breakpoints not defined but needed for _break(). Aborting call.";
+        @error "Global variable $global-breakpoints not defined but needed for _break(). Aborting call.";
     }
 
     @if not map-has-key($global-breakpoints, $breakpoint) {
-        @warn "No breakpoint found for `#{$breakpoint}` in $global-breakpoints map. Property omitted.";
+        @error "No breakpoint found for `#{$breakpoint}` in $global-breakpoints map. Property omitted.";
     }
 
     @return map-get($global-breakpoints, $breakpoint);
@@ -84,12 +84,50 @@
     $factorName: "primary-font-size";
 
     @if not variable-exists(global-fonts) {
-        @warn "Global variable $global-fonts not defined but needed for _px2rem(). Aborting call.";
+        @error "Global variable $global-fonts not defined but needed for _px2rem(). Aborting call.";
     }
 
     @if not map-has-key($global-fonts, $factorName) {
-        @warn "No `#{$factorName}` in $global-fonts map. Please add this to the map.";
+        @error "No `#{$factorName}` in $global-fonts map. Please add this to the map.";
     }
 
     @return $pixels / map-get($global-fonts, $factorName) + 0rem;
+}
+
+@function str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search);
+
+    @if $index {
+        @return str-slice($string, 1, $index - 1) +
+                $replace +
+                str-replace(
+                    str-slice($string, $index + str-length($search)),
+                    $search,
+                    $replace
+                );
+    }
+
+    @return $string;
+}
+
+@function svg-url($svg){
+
+    // chunk up string in order to avoid "SystemStackError: stack level too deep"
+    $encoded:'';
+    $slice: 2000;
+    $index: 0;
+    $loops: ceil(str-length($svg) / $slice);
+
+    @for $i from 1 through $loops {
+        $chunk: str-slice($svg, $index, $index + $slice - 1);
+        $chunk: str-replace($chunk,'"','\'');
+        $chunk: str-replace($chunk,'<','%3C');
+        $chunk: str-replace($chunk,'>','%3E');
+        $chunk: str-replace($chunk,'&','%26');
+        $chunk: str-replace($chunk,'#','%23');
+        $encoded: #{$encoded}#{$chunk};
+        $index: $index + $slice;
+    }
+
+    @return url("data:image/svg+xml;charset=utf8,#{$encoded}");
 }

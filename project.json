@@ -1,68 +1,88 @@
 {
-    "assets": {
-        "fonts": {
-            "src": "fonts",
-            "dest": "assets/fonts",
-            "files": ["**/*.{woff2,woff,svg,eot,ttf,otf}"]
-        },
-        "images": {
-            "src": "images",
-            "dest": "assets/images",
-            "files": ["**/*.{png,jpg,jpeg,gif,svg}"],
-            "ignore": ["sprites/**"],
-            "jpg": {
-                "progressive": true
-            },
-            "png": {
-                "optimizationLevel": 3
-            },
-            "gif": {
-                "interlaced": true
-            },
-            "svg": {}
-        },
-        "scripts": {
-            "src": "js",
-            "dest": "assets/scripts",
-            "files": ["*.js"],
-            "watch": ["**/*.js"],
-            "eslint": {}
-        },
-        "styles": {
-            "src": "scss",
-            "dest": "assets/styles",
-            "files": ["**/[!_]*.{sass,scss}"],
-            "watch": ["**/*.{sass,scss}"]
-        },
-        "html": {
-            "src": "html",
-            "dest": "",
-            "files": ["**/*.{html,txt,php}"],
-            "replace": {
-                "@sprite:([^,]+),([^\\s]+)": "<svg class=\"$2\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"$1\"></use></svg>",
-                "@version": "@this.version"
-            }
-        },
-        "sprites": {
-            "src": "images/sprites",
-            "dest": "assets/images/sprites",
-            "files": ["*/*.svg"],
-            "mode": {
-                "inline": true,
-                "symbol": true
-            }
-        }
-    },
     "autoprefixer": {
-        "browsers": ["last 1 version", "last 2 ie versions", "android >= 4.4", "last 2 iOS versions"]
+        "browsers": [
+            "last 1 version",
+            "ie >= 9",
+            "android >= 4.4",
+            "iOS >= 8"
+        ]
     },
     "browsersync": {
         "server": {
             "baseDir": "@this.dest"
         }
     },
-    "src":  "./src",
+    "build": [
+        "delete:clean",
+        "styles",
+        "scripts",
+        "copy:html",
+        "copy:fonts",
+        "images",
+        "sprites"
+    ],
+    "copy:fonts": {
+        "src": "@this.src/fonts",
+        "dest": "@this.dest/assets/fonts",
+        "files": ["**/*.{woff2,woff,svg,eot,ttf,otf}"]
+    },
+    "copy:html": {
+        "src": "@this.src/html",
+        "dest": "@this.dest",
+        "files": ["**/*.{html,htm,txt}"],
+        "replace": {
+            "@sprite:([^,]+),([^\\s]+)": "<svg class=\"$2\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"$1\"></use></svg>",
+            "@version": "@this.version"
+        }
+    },
+    "delete:clean": {
+        "files": "@this.dest"
+    },
     "dest": "./build",
-    "env": "prod",
-    "version": "1.1.3"
+    "images": {
+        "src": "@this.src/images",
+        "dest": "@this.dest/assets/images",
+        "files": ["**/*.{png,jpg,jpeg,gif,svg}"],
+        "ignore": ["sprites/**"],
+        "jpg": { "progressive": true },
+        "png": { "optimizationLevel": 3 },
+        "gif": { "interlaced": true },
+        "svg": {}
+    },
+    "scripts": {
+        "src": "@this.src/js",
+        "dest": "@this.dest/assets/scripts",
+        "files": ["*.js"],
+        "watch": ["**/*.js"],
+        "eslint": {},
+        "babelify": {
+            "presets": ["babel-preset-es2015"]
+        }
+    },
+    "server": "@this.watch",
+    "sprites": {
+        "src": "@this.src/images/sprites",
+        "dest": "@this.dest/assets/images/sprites",
+        "files": ["*/*.svg"],
+        "mode": {
+            "inline": true,
+            "symbol": true
+        }
+    },
+    "src": "./src",
+    "styles": {
+        "src": "@this.src/scss",
+        "dest": "@this.dest/assets/styles",
+        "files": ["**/[!_]*.{sass,scss}"],
+        "watch": ["**/*.{sass,scss}"]
+    },
+    "version": "1.0.0",
+    "watch": [
+        "styles",
+        "scripts",
+        "copy:fonts",
+        "copy:html",
+        "images",
+        "sprites"
+    ]
 }

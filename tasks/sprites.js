@@ -22,7 +22,7 @@ class Sprites extends Task {
 
         // create spriter instance
         // @see https://github.com/jkphl/svg-sprite/blob/master/docs/configuration.md
-        this.spriter = new require('svg-sprite')(this.assets);
+        this.spriter = new require('svg-sprite')(this.settings);
     }
 
     /**
@@ -115,7 +115,7 @@ class Sprites extends Task {
             let duration = Date.now() - start;
             let outputName = this.chalk.blue.bold(this.path.parse(set.outputFile).name);
 
-            console.log(`${this.title}Created sprite ${outputName} with ${set.files.length} images. ${this.chalk.blue.bold('(')}${duration}ms${this.chalk.blue.bold(')')}`);
+            this.print(`Created sprite ${outputName} with ${set.files.length} images. ${this.chalk.blue.bold('(')}${duration}ms${this.chalk.blue.bold(')')}`);
 
             // calling parent when done
             super.handler(set.outputFile, done);
@@ -140,7 +140,7 @@ class Sprites extends Task {
             if (sets[setName] === undefined) {
                 sets[setName] = {
                     outputFile: this.path.format({
-                        dir: this.dest,
+                        dir: this.settings.dest,
                         base: `${setName}.svg`
                     }),
                     files: []
@@ -153,9 +153,8 @@ class Sprites extends Task {
 
         // compile all sprites in parallel
         this.async.parallel(
-            Object.keys(sets).map((key) => {
-                return (cb) => this.handler(sets[key], cb)
-            }), (error, result) => {
+            Object.keys(sets).map((key) => (cb) => this.handler(sets[key], cb)),
+            (error, result) => {
 
                 // there was an error during handling the file
                 if (error) {
@@ -176,7 +175,7 @@ class Sprites extends Task {
     on(event, files) {
 
         // get all available sprites
-        this.files = this.assets.files;
+        this.files = this.settings.files;
 
         // only keep those which are affected by this event
         let set = this.files.filter(

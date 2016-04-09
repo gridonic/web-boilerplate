@@ -19,47 +19,68 @@ class Task {
         this.glob = require('glob');
         this.fs = require('fs-extra');
         this.path = require('path');
-        this.assets = {};
+        this.settings = {};
         this.browsersync = options.browsersync;
-        this.config = options.config || require('../config.js');
+        this.project = options.project || {};
+        this.paths = options.paths || {};
 
         // adopt task specific options
-        this.id = options.id.toLowerCase();
-        this.title = `${this.chalk.blue.bold(options.id)}\t\t`;
+        this.title = this.id = options.id.toLowerCase();
 
-        // task has no assets
-        if (this.config.assets[this.id] === undefined) {
+        // task has no specific configuration
+        if (this.project[this.id] === undefined) {
             return;
         }
 
-        // shortcut to tasks own assets
-        this.assets = this.config.assets[this.id];
+        // save shortcut to task specific settings
+        this.settings = this.project[this.id];
 
-        // save task src and destination paths
-        this.dest = this.path.join(this.config.dest, this.assets.dest);
-        this.src = this.path.join(this.config.src, this.assets.src);
-
-        // prepend several options which have paths with src path
+        // prepend several options which have paths with source path
         ['files', 'watch', 'ignore'].forEach((set) => {
 
             // convert string to array
-            if (typeof this.assets[set] === 'string') {
-                this.assets[set] = [ this.assets[set] ];
+            if (typeof this.settings[set] === 'string') {
+                this.settings[set] = [ this.settings[set] ];
             }
 
             // invalid set
-            if (Array.isArray(this.assets[set]) === false) {
+            if (Array.isArray(this.settings[set]) === false) {
                 return;
             }
 
-            // prepend src path
-            this.assets[set].forEach((element, index, array) => {
-                array[index] = this.path.join(this.src, element);
-            })
+            // prepend source path
+            this.settings[set] = this.settings[set].map(
+                (item) => this.path.join(this.settings.src || '', item)
+            );
         });
 
-        // by default use files from configuration for processing
-        this.files = this.assets.files;
+        // use files from configuration for processing if given
+        if (this.settings.files) {
+            this.files = this.settings.files;
+        }
+    }
+
+    /**
+     * Returns the current set task title.
+     *
+     * @return {String} Task title.
+     */
+    get title() {
+        return this._title;
+    }
+
+    /**
+     * Sets the current task title that will be used to label logging output.
+     *
+     * @param {String} title Task title.
+     */
+    set title(title) {
+
+        // uppercase words and first character
+        this._title = title.toLowerCase().replace(
+            /(^|[:])+?(\w+?)/g,
+            (a, b, c) => b + c.toUpperCase()
+        );
     }
 
     /**
@@ -77,7 +98,43 @@ class Task {
      * @param {Array} files List of files.
      */
     set files(files) {
-        this._files = this.resolveGlobs(files);
+        this._files = [];
+
+        // resolve all files and only keep unique ones
+        this.resolveGlobs(files).forEach((file) => {
+            if (this._files.indexOf(file) > -1) {
+                return;
+            }
+
+            this._files.push(file);
+        });
+    }
+
+    /**
+     * Just a simple printing function to provide consistency among tasks.
+     *
+     * @param {String} message Message to log.
+     * @param {Object} options Options to adjust logging behaviour.
+     */
+    print(message, options) {
+
+        // make sure options is an object
+        options = (typeof options === 'object' && options) || {};
+
+        // maximum title length
+        let maxLength = 18;
+
+        // pad title with empty spaces to make sure all titles align
+        let space = ' '.repeat(maxLength - this.title.length);
+
+        // depending on type, output is different
+        switch (options.type) {
+            case 'error':
+                console.error(`\n${this.chalk.bgRed.white.bold(' ' + this.title + ' ')}${space}\n${message}\n`);
+                break;
+            default:
+                console.log(`${this.chalk.bgBlue.white.bold(' ' + this.title + ' ')}${space}${message}`);
+        }
     }
 
     /**
@@ -86,14 +143,16 @@ class Task {
      * @param {Error} error The thrown error.
      */
     fail(error) {
-        let message = error.formatted || error.message;
+        let message = error.annotated || error.formatted || error.message;
 
         this.notifier.notify({
-            title: `${this.chalk.stripColor(this.title).trim()} error`,
+            title: `${this.title} error`,
             message: message
         });
 
-        return console.error(`${this.chalk.white.bgRed.bold(' Error ')}\t\t${message}`);
+        return this.print(message, {
+            type: 'error'
+        });
     }
 
     /**
@@ -106,7 +165,7 @@ class Task {
         // get total task time
         let duration = Date.now() - this._start;
 
-        console.log(`${this.title}Finished. ${this.chalk.blue.bold('(')}${duration}ms${this.chalk.blue.bold(')')}`);
+        this.print(`Finished. ${this.chalk.blue.bold('(')}${duration}ms${this.chalk.blue.bold(')')}`);
 
         // run callback function after finishing this task
         if (typeof cb === 'function') {
@@ -145,9 +204,8 @@ class Task {
 
         // handle all files in parallel
         this.async.parallel(
-            this.files.map((file) => {
-                return (cb) => handler(file, cb)
-            }), (error, result) => {
+            this.files.map((file) => (cb) => handler(file, cb)),
+            (error, result) => {
 
                 // there was an error during handling the file
                 if (error) {
@@ -170,7 +228,7 @@ class Task {
         this._start = Date.now();
 
         // print feedback
-        console.log(`${this.title}Starting task...`);
+        this.print('Starting task...');
 
         // no files to process
         if (Array.isArray(this.files) === false || this.files.length < 1) {
@@ -186,7 +244,7 @@ class Task {
      */
     watch() {
         let chokidar = require('chokidar');
-        let files = this.assets.watch || this.assets.files;
+        let files = this.settings.watch || this.settings.files;
         let options = {};
 
         // this instance has no files or watch patterns
@@ -194,11 +252,11 @@ class Task {
             return this.fail(new Error('Task has no files or watch patterns.'));
         }
 
-        console.log(`${this.title}Start watching...`);
+        this.print('Start watching...');
 
         // check if files should be ignored
-        if (this.assets.ignore) {
-            options.ignored = this.assets.ignore;
+        if (this.settings.ignore) {
+            options.ignored = this.settings.ignore;
         }
 
         // initialize watcher
@@ -220,7 +278,7 @@ class Task {
 
                     let time = new Date().toLocaleString();
 
-                    console.log(`${this.title}File "${path}" has been ${this.chalk.blue.bold(event)}. (${time})`);
+                    this.print(`File "${path}" has been ${this.chalk.blue.bold(event)}. (${time})`);
 
                     // run designated event listener
                     this.on(event, path);
@@ -263,8 +321,8 @@ class Task {
         let options = {};
 
         // check if files should be ignored
-        if (this.assets.ignore) {
-            options.ignore = this.assets.ignore;
+        if (this.settings.ignore) {
+            options.ignore = this.settings.ignore;
         }
 
         // check each file (pattern) and add globbing result to stack
