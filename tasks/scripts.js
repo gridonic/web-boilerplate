@@ -25,6 +25,23 @@ class Scripts extends Task {
             this.eslint = new (require('eslint')).CLIEngine(this.settings.eslint);
         }
 
+        // if babelify is given, prepare some settings
+        if (this.settings.babelify) {
+
+            // resolve presets to allow fallback on global modules
+            // @see https://phabricator.babeljs.io/T6692
+            if (this.settings.babelify.presets) {
+                this.settings.babelify.presets =
+                this.settings.babelify.presets.map((preset) => {
+                    try {
+                        return require.resolve(preset)
+                    } catch (e) {
+                        return preset;
+                    }
+                });
+            }
+        }
+
         // by default use watch files from configuration for processing
         this.files = this.settings.watch;
     }
@@ -40,6 +57,7 @@ class Scripts extends Task {
         let start = Date.now();
         let uglifyjs = require('uglify-js');
         let browserify = require('browserify');
+        let babelify = require('babelify');
         let path = this.path.join(
             this.settings.dest,
             this.path.dirname(this.path.resolve(file)).replace(this.path.resolve(this.settings.src), '')
@@ -70,9 +88,10 @@ class Scripts extends Task {
                 this.async.waterfall([
 
                     // browserify this file and use babel as a transpiler
-                    (cb) => browserify(file)
-                        .transform('babelify', { presets: ['es2015'] })
-                        .bundle(cb),
+                    (cb) => browserify(file).transform(
+                        babelify,
+                        this.settings.babelify || {}
+                    ).bundle(cb),
 
                     // uglify it in production mode
                     (result, cb) => {

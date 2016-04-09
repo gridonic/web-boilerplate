@@ -54,7 +54,10 @@
         "dest": "@this.dest/assets/scripts",
         "files": ["*.js"],
         "watch": ["**/*.js"],
-        "eslint": {}
+        "eslint": {},
+        "babelify": {
+            "presets": ["babel-preset-es2015"]
+        }
     },
     "server": "@this.watch",
     "sprites": {

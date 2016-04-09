@@ -134,7 +134,7 @@ class Task {
      * @param {Error} error The thrown error.
      */
     fail(error) {
-        let message = error.formatted || error.message;
+        let message = error.annotated || error.formatted || error.message;
 
         this.notifier.notify({
             title: `${this.title} error`,
