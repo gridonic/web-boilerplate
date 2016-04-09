@@ -80,7 +80,7 @@ switch (command) {
         let files = [
             path.join(paths.global, 'src'),
             path.join(paths.global, '.eslintrc'),
-            path.join(paths.global, '.gitignore'),
+            // path.join(paths.global, '.gitignore'), @see https://github.com/npm/npm/issues/3763
             path.join(paths.global, 'project.json')
         ];
 
