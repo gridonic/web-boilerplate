@@ -1,4 +1,3 @@
-import 'picturefill';
 import Person from './Components/Person';
 
 let basti = new Person({

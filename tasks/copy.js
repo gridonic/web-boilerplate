@@ -11,7 +11,10 @@ class Copy extends Task {
      * @param {Function} done Callback to run when copying is done.
      */
     handler(file, done) {
-        let path = this.path.join(this.dest, this.path.dirname(file).replace(this.src, ''));
+        let path = this.path.join(
+            this.settings.dest,
+            this.path.dirname(this.path.resolve(file)).replace(this.path.resolve(this.settings.src), '')
+        );
         let outputFile = this.path.format({
             dir: path,
             base: this.path.basename(file)
@@ -36,11 +39,11 @@ class Copy extends Task {
             }
 
             // task has replacement orders
-            if (this.assets.replace) {
+            if (this.settings.replace) {
                 let replace = require('replace');
 
-                for (let pattern in this.assets.replace) {
-                    let replacement = this.assets.replace[pattern];
+                for (let pattern in this.settings.replace) {
+                    let replacement = this.settings.replace[pattern];
 
                     replace({
                         regex: pattern,
@@ -53,7 +56,7 @@ class Copy extends Task {
             }
 
             // give feedback
-            console.log(`${this.title}Copied ${file} ${this.chalk.blue.bold('→')} ${outputFile}`);
+            this.print(`Copied ${file} ${this.chalk.blue.bold('→')} ${outputFile}`);
 
             // calling parent when done
             super.handler(outputFile, done);

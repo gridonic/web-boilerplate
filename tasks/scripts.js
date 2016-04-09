@@ -21,26 +21,47 @@ class Scripts extends Task {
         super(options);
 
         // linting requested
-        if (this.assets.eslint) {
-            this.eslint = new (require('eslint')).CLIEngine(this.assets.eslint);
+        if (this.settings.eslint) {
+            this.eslint = new (require('eslint')).CLIEngine(this.settings.eslint);
+        }
+
+        // if babelify is given, prepare some settings
+        if (this.settings.babelify) {
+
+            // resolve presets to allow fallback on global modules
+            // @see https://phabricator.babeljs.io/T6692
+            if (this.settings.babelify.presets) {
+                this.settings.babelify.presets =
+                this.settings.babelify.presets.map((preset) => {
+                    try {
+                        return require.resolve(preset)
+                    } catch (e) {
+                        return preset;
+                    }
+                });
+            }
         }
 
         // by default use watch files from configuration for processing
-        this.files = this.assets.watch;
+        this.files = this.settings.watch;
     }
 
     /**
-     * The actual process of handling the scripts by transpiling, compress and
-     * writing it to the destination.
+     * The actual process of handling the scripts by transpiling, compressing
+     * and writing it to the destination.
      *
      * @param {Object} file The input file.
-     * @param {Function} done Callback to run when copying is done.
+     * @param {Function} done Callback to run when handling is done.
      */
     handler(file, done) {
         let start = Date.now();
         let uglifyjs = require('uglify-js');
         let browserify = require('browserify');
-        let path = this.path.join(this.dest, this.path.dirname(file).replace(this.src, ''));
+        let babelify = require('babelify');
+        let path = this.path.join(
+            this.settings.dest,
+            this.path.dirname(this.path.resolve(file)).replace(this.path.resolve(this.settings.src), '')
+        );
         let outputFile = this.path.format({
             dir: path,
             base: `${this.path.parse(file).name}.js`
@@ -52,7 +73,7 @@ class Scripts extends Task {
         }
 
         // only compile those files which really need to be compiled
-        if (this.resolveGlobs(this.assets.files).indexOf(file) < 0) {
+        if (this.resolveGlobs(this.settings.files).indexOf(file) < 0) {
             return super.handler(file, done);
         }
 
@@ -67,16 +88,17 @@ class Scripts extends Task {
                 this.async.waterfall([
 
                     // browserify this file and use babel as a transpiler
-                    (cb) => browserify(file)
-                        .transform('babelify', { presets: ['es2015'] })
-                        .bundle(cb),
+                    (cb) => browserify(file).transform(
+                        babelify,
+                        this.settings.babelify || {}
+                    ).bundle(cb),
 
                     // uglify it in production mode
                     (result, cb) => {
                         let code = result.toString();
 
-                        if (this.config.env === 'prod') {
-                            let config = this.assets;
+                        if (this.project.env === 'prod') {
+                            let config = this.settings;
 
                             // overwrite fromString option
                             config.fromString = true;
@@ -106,7 +128,7 @@ class Scripts extends Task {
 
             let duration = Date.now() - start;
 
-            console.log(`${this.title}Compiled ${file} ${this.chalk.blue.bold('→')} ${outputFile} ${this.chalk.blue.bold('(')}${duration}ms${this.chalk.blue.bold(')')}`);
+            this.print(`Compiled ${file} ${this.chalk.blue.bold('→')} ${outputFile} ${this.chalk.blue.bold('(')}${duration}ms${this.chalk.blue.bold(')')}`);
 
             // calling parent when done
             super.handler(outputFile, done);
@@ -121,7 +143,7 @@ class Scripts extends Task {
      */
     lint(file) {
 
-        console.log(`${this.title}Linting ${file}`);
+        this.print(`Linting ${file}`);
 
         // scan file
         let report = this.eslint.executeOnFiles([ file ]);
@@ -139,6 +161,28 @@ class Scripts extends Task {
         );
 
         return false;
+    }
+
+    /**
+     * Default listener to run once the watcher raised an event.
+     *
+     * @param {String} event The name of the event.
+     * @param {String|Array} files The file(s) that caused the event.
+     */
+    on(event, files) {
+
+        // make sure files is an array
+        files = Array.isArray(files) ? files : [ files ];
+
+        // right now i don't know how to determine which files actually
+        // use/require the files of the event, so that i just need to
+        // compile those files that require them
+
+        // @todo improve it #needhelp
+        files = files.concat(this.settings.files);
+
+        // run parent on method with new data
+        super.on(event, files);
     }
 }
 
