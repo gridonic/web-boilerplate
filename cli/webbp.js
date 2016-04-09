@@ -116,18 +116,18 @@ switch (command) {
     case '--help':
     default:
         console.log(`
-usage: webbp [options] [command]
+usage: webbp [command] [options]
 
 commands:
 
-  ${chalk.bold('build')} [options] <task>      build a project
-  ${chalk.bold('new')}|${chalk.bold('create')} <location>       create a new project based on the web boilerplate
-  ${chalk.bold('server')} [options] <task>     start the built-in configured webserver
-  ${chalk.bold('watch')} [options] <task>      watch a project for changes and build immediately
+  ${chalk.bold('build')} <task>              build a project
+  ${chalk.bold('new')}|${chalk.bold('create')} <location>     create a new project based on the web boilerplate
+  ${chalk.bold('server')} <task>             start the built-in configured webserver
+  ${chalk.bold('watch')} <task>              watch a project for changes and build immediately
 
 global options:
 
-  -e <env>, --env=<env>       build environment
-  -v, --version               output version and exit
-  -h, --help                  show help`);
+  -e <env>, --env=<env>     build environment
+  -v, --version             output version and exit
+  -h, --help                show help`);
 }
