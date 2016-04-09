@@ -5,10 +5,10 @@ let Task = require('./task');
 class Delete extends Task {
 
     /**
-     * The actual process of copying the input file to the destination path.
+     * The actual process of deleting the input file to the destination path.
      *
      * @param {Object} file The input file.
-     * @param {Function} done Callback to run when copying is done.
+     * @param {Function} done Callback to run when deleting is done.
      */
     handler(file, done) {
         this.fs.remove(file, (error) => {

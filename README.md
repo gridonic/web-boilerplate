@@ -12,6 +12,7 @@ Simple, fast and lightweight web boilerplate serving as our basis for developing
 - [Sass](http://sass-lang.com/) Style Sheets with PostCSS [autoprefixing](https://github.com/postcss/autoprefixer)
 - Time-saving synchronised browser testing with [Browsersync](https://www.browsersync.io/)
 - Vertical rhythm system based on rem units
+- Overwrite default tasks or add custom ones
 
 # Installation
 
@@ -84,7 +85,7 @@ Some examples:
 
 ```shell
 webbp build styles
-webbp watch styles,scripts -e prod
+webbp watch scripts -e prod
 ```
 
 Finally **don't forget** to check out the [project.json](project.json) for customizing the whole project and build process.
@@ -94,6 +95,88 @@ Finally **don't forget** to check out the [project.json](project.json) for custo
 Including and using frameworks is pretty easy as well. Just install your desired library via [npm](https://www.npmjs.com/) (`npm install <package> --save-dev`) and include/require it in Sass/JS or where ever you need files of this package.
 
 Don't forget to share/commit your `package.json` so that collaborators/co-workers can install them as well.
+
+# Customizing
+
+You are not only able to customize the web boilerplate build process by adjusting the `project.json`, you can even **customize the default tasks** or **include your own ones**. Just put your tasks/customizations in a sub directory called `tasks` within your project.
+
+## Custom task
+<a name="/customizing/custom-task"></a>
+
+If you want to have a new task, let's say it's called *test* just follow these steps:
+
+1. Create a file called `test.js` within the `tasks` folder.
+2. Make sure the `test.js` is exporting a class/function and has a `run()` method.
+
+    For example:
+
+    ```javascript
+    'use strict';
+
+    class Test {
+
+        /**
+         * Run this task.
+         *
+         * @param {Function} done Callback to run when task is done.
+         */
+        run(done) {
+            console.log('Testing build...');
+            done();
+        }
+    }
+
+    module.exports = Test;
+    ```
+3. Include it in your `project.json` under the `build` key.
+
+## Extending/customizing default tasks
+
+If you want to extend/overwrite any of the already built-in tasks, it's pretty simple to do so. Just create a `.js` file with the exact name of the default task and place it in the `tasks` folder.
+
+Let's play through a simple step by step scenario assuming we want to customize the *scripts* tasks.
+
+1. Make sure you've linked the web-boilerplate node package locally as this is needed when requiring files from it (*step 4*). This is done with this command:
+
+    `npm link web-boilerplate`
+
+2. Create a `scripts.js` file in the `tasks` folder. For example:
+
+    `touch tasks/scripts.js`
+
+3. If you just want to overwrite it with your own code that doesn't depend on web-boilerplate classes like described in the [custom task](#/customizing/custom-task) chapter, you're done by now. Just hack it, save it and run it.
+
+4. If you want to extend it, check out this example:
+
+    ```javascript
+    'use strict';
+
+    let Scripts = require('web-boilerplate/tasks/scripts');
+
+    class MyBetterScriptsTasks extends Scripts {
+
+        /**
+         * The actual process of handling the scripts by transpiling, compressing
+         * and writing it to the destination.
+         *
+         * @param {Object} file The input file.
+         * @param {Function} done Callback to run when handling is done.
+         */
+        handler(file, done) {
+
+            // just do some custom stuff before running the parent method
+            this.print('My custom stuff...');
+
+            // run parent handler
+            super.handler(file, done);
+        }
+    }
+
+    module.exports = MyBetterScriptsTasks;
+    ```
+
+    That way you're able to fine-adjust any method of this task as much as you like to.
+
 
 ---
 v2.0.0

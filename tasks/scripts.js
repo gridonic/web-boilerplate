@@ -47,11 +47,11 @@ class Scripts extends Task {
     }
 
     /**
-     * The actual process of handling the scripts by transpiling, compress and
-     * writing it to the destination.
+     * The actual process of handling the scripts by transpiling, compressing
+     * and writing it to the destination.
      *
      * @param {Object} file The input file.
-     * @param {Function} done Callback to run when copying is done.
+     * @param {Function} done Callback to run when handling is done.
      */
     handler(file, done) {
         let start = Date.now();

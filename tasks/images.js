@@ -60,7 +60,7 @@ class Images extends Task {
      * to the destination.
      *
      * @param {Object} file The input file.
-     * @param {Function} done Callback to run when copying is done.
+     * @param {Function} done Callback to run when handling is done.
      */
     handler(file, done) {
         let path = this.path.join(
