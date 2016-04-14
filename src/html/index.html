@@ -61,8 +61,15 @@
         }
         </style>
 
-        <!-- include assets below the fold -->
         <link rel="stylesheet" href="assets/styles/styles.css?v=@version">
-        <script src="assets/scripts/App.js?v=@version"></script>
+
+        <!-- https://varvy.com/pagespeed/defer-loading-javascript.html -->
+        <script type="text/javascript">
+            window.addEventListener("load", function() {
+                var element = document.createElement("script");
+                element.src = "@scriptsPath/App.js?v=@version";
+                document.body.appendChild(element);
+            }, false);
+        </script>
     </body>
 </html>
