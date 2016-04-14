@@ -2,7 +2,7 @@
    Master Stylesheet.
 
    Project:       Web Boilerplate
-   Version:       2.0.0
+   Version:       2.0.1
    Contributors:  Sebastian Prein <basti@gridonic.ch>
    URL:           http://my-web-app.io
    -------------------------------------------------------------------------- */
@@ -23,6 +23,7 @@
    -------------------------------------------------------------------------- */
 // @import "../../node_modules/normalize.scss/normalize.scss";
 
+
 /* -----------------------------------------------------------------------------
    All styles which are used throughout the whole website get in here.
    -------------------------------------------------------------------------- */
@@ -38,6 +39,7 @@
    could be buttons, banners, lists, dialogs and so on.
    -------------------------------------------------------------------------- */
 @import "components/buttons";
+
 
 /* -----------------------------------------------------------------------------
    Sections are bigger parts of a specific view which mostly have a semantic

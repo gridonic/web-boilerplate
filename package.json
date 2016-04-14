@@ -1,11 +1,15 @@
 {
-  "author": "gridonic <hello@gridonic.ch>",
+  "author": "Gridonic <hello@gridonic.ch>",
   "bin": {
     "webbp": "cli/webbp.js"
   },
   "bugs": {
     "url": "https://github.com/gridonic/web-boilerplate/issues"
   },
+  "contributers": [{
+      "name": "Sebastian Prein",
+      "email": "basti@gridonic.ch"
+  }],
   "dependencies": {
     "async": "^1.5.2",
     "autoprefixer": "^6.2.3",
@@ -52,5 +56,5 @@
     "type": "git",
     "url": "https://github.com/gridonic/web-boilerplate.git"
   },
-  "version": "2.0.0"
+  "version": "2.0.1"
 }
