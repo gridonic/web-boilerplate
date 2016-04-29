@@ -22,36 +22,34 @@ class Images extends Task {
 
         // public properties
         this.imagemin = require('imagemin');
-        this.plugin = false;
     }
 
     /**
      * Returns the Imagemin plugin depending on the given input type.
      *
-     * @return {Function|Boolean}
-     */
-    get plugin() {
-        return this._plugin;
-    }
-
-    /**
-     * Sets the Imagemin plugin depending on the given input type.
-     *
      * @param {String} type File extension.
      * @return {Function|Boolean}
      */
-    set plugin(type) {
+    getImageminPlugin(type) {
 
-        if ((type === 'jpg' || type === 'jpeg') && this.settings.jpg) {
-            this._plugin = this.imagemin.jpegtran(this.settings.jpg);
-        } else if (type === 'png' && this.settings.png) {
-            this._plugin = this.imagemin.optipng(this.settings.png);
-        } else if (type === 'gif' && this.settings.gif) {
-            this._plugin = this.imagemin.gifsicle(this.settings.gif);
-        } else if (type === 'svg' && this.settings.svg) {
-            this._plugin = this.imagemin.svgo(this.settings.svg);
-        } else {
-            this._plugin = false;
+        // return plugin depending on file type
+        switch (type) {
+
+            case 'jpg':
+            case 'jpeg':
+                return this.settings.jpg ? this.imagemin.jpegtran(this.settings.jpg) : false;
+
+            case 'png':
+                return this.settings.png ? this.imagemin.optipng(this.settings.png) : false;
+
+            case 'gif':
+                return this.settings.gif ? this.imagemin.gifsicle(this.settings.gif) : false;
+
+            case 'svg':
+                return this.settings.svg ? this.imagemin.svgo(this.settings.svg) : false;
+
+            default:
+                return false;
         }
     }
 
@@ -72,11 +70,11 @@ class Images extends Task {
             base: this.path.basename(file)
         });
 
-        // set plugin to use for image optimization
-        this.plugin = this.path.extname(file).substr(1);
+        // get plugin to use for image optimization
+        let plugin = this.getImageminPlugin(this.path.extname(file).substr(1));
 
         // are we going to compress?
-        let doCompress = this.project.env === 'prod' && this.plugin;
+        let doCompress = !!(this.project.env === 'prod' && plugin);
 
         this.async.series([
 
@@ -91,7 +89,7 @@ class Images extends Task {
                     return new this.imagemin()
                         .src(file)
                         .dest(path)
-                        .use(this.plugin)
+                        .use(plugin)
                         .run(cb);
                 }
 

@@ -48,15 +48,22 @@ switch (command) {
         }
 
         // prefer custom tasks in local project over global default tasks
-        async.detectSeries([ paths.cwd, paths.global ].map(
+        async.detectSeries([
+            paths.cwd,
+            paths.global
+        ].map(
             (item) => path.join(item, paths.tasks, command)
-        ), (item, valid) => {
+        ), (path, passed) => {
             try {
-                valid(!!require(item));
+                passed(require.resolve(path) && true);
             } catch (e) {
-                valid(false);
+                passed(false);
             }
         }, (result) => {
+            if (result === undefined) {
+                return console.error(`There is no global or local task called '${command}'. This is pretty serious! Try to reinstall the web-boilerplate CLI or create a ticket on GitHub. Thanks!`);
+            }
+
             new (require(result))({
                 paths: paths,
                 project: config

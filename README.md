@@ -179,4 +179,4 @@ Let's play through a simple step by step scenario assuming we want to customize 
 
 
 ---
-v2.0.1
+v2.0.2
