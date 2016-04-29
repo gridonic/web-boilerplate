@@ -56,6 +56,12 @@ class Build extends Task {
         // run all tasks or requested one
         let tasks = task < 0 ? this.settings : [ this.settings[task] ];
 
+        // get schedule
+        let schedule = new this.schedule(tasks, {
+            paths: this.paths,
+            project: this.project
+        });
+
         // measure task running time
         this._start = Date.now();
 
@@ -66,33 +72,10 @@ class Build extends Task {
         console.log(`\nBuilding in ${mode} mode...\n`);
 
         // run tasks
-        this.async.series(tasks.map((task) => {
-            let spawn = task.split(':');
-            let options = {
-                id: task,
-                paths: this.paths,
-                project: this.project
-            };
-
-            // specific spawn of a generic task requested
-            if (spawn.length > 1) {
-                task = spawn.shift();
-            }
-
-            return (cb) => {
-
-                // prefer custom tasks in local project over global default tasks
-                this.async.detectSeries([ this.paths.cwd, this.paths.global ].map(
-                    (item) => this.path.join(item, this.paths.tasks, task)
-                ), (item, valid) => {
-                    try {
-                        valid(!!require(item));
-                    } catch (e) {
-                        valid(false);
-                    }
-                }, (result) => new (require(result))(options).run(cb));
-            };
-        }), () => this.done(done));
+        this.async.series(
+            schedule.get().map((task) => (cb) => task.run(cb)),
+            () => this.done(done)
+        );
     }
 }
 

@@ -37,37 +37,17 @@ class Watch extends Task {
         // translate requested build environment
         let mode = this.chalk.blue.bold(this.project.env === 'prod' ? 'production' : 'develop');
 
+        // get schedule
+        let schedule = new this.schedule(tasks, {
+            paths: this.paths,
+            project: this.project
+        });
+
         // log environment
         console.log(`\nWatching in ${mode} mode...\n`);
 
         // run tasks
-        this.async.parallel(tasks.map((task) => {
-            let spawn = task.split(':');
-            let options = {
-                id: task,
-                paths: this.paths,
-                project: this.project
-            };
-
-            // specific spawn of a generic task requested
-            if (spawn.length > 1) {
-                task = spawn.shift();
-            }
-
-            return (cb) => {
-
-                // prefer custom tasks in local project over global default tasks
-                this.async.detectSeries([ this.paths.cwd, this.paths.global ].map(
-                    (item) => this.path.join(item, this.paths.tasks, task)
-                ), (item, valid) => {
-                    try {
-                        valid(!!require(item));
-                    } catch (e) {
-                        valid(false);
-                    }
-                }, (result) => new (require(result))(options).watch());
-            };
-        }));
+        schedule.get().map((task) => task.watch());
     }
 }
 
