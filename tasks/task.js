@@ -24,6 +24,13 @@ class Task {
         this.project = options.project || {};
         this.paths = options.paths || {};
 
+        // provide schedule module
+        this.schedule = require(this.path.join(
+            this.paths.global,
+            this.paths.lib,
+            'schedule.js'
+        ));
+
         // adopt task specific options
         this.title = this.id = options.id.toLowerCase();
 
