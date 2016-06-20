@@ -1,73 +1,33 @@
-<!doctype html>
-<html class="debug-mode">
+<!DOCTYPE html>
+<html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>Modern Web Boilerplate</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--<style>[class*="@"], [class*="$"] { opacity: 0; }</style>-->
     </head>
     <body>
 
-        <!-- you can remove the example content below :) -->
+        <h1>It's done!</h1>
+        <p>You're now viewing the built HTML file. Type <code>:debug</code> to enable the visual debugging mode.</p>
 
-        <h1>Yep. It's done.</h1>
-        <p>You're now viewing the built html file.</p>
+        <p>Below is an example component that has been dynamically loaded after the initial page request was done.</p>
+        <div class="@$person-card">
+            <span class="name">Sebastian</span>
+            <span class="surname">Prein</span>
+            <span class="role">Professional magician</span>
+            <q class="quote">Alles ist Zauber.</q>
+        </div>
 
-        <h2>Generated SVG sprite example:</h2>
-        <p>The following snippet&hellip;</p>
-        <pre>&#64;sprite:assets/images/sprites/brands.svg#shell,my-class</pre>
-        <p>will be replaced when building with this&hellip;</p>
-        <pre>&lt;svg class="my-class"&gt;&#10;    &lt;use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="assets/images/sprites/brands.svg#shell"&gt;&lt;/use&gt;&#10;&lt;/svg></pre>
-        <p>which then the browser is rendering like this&hellip;</p>
-
-        <p style="line-height: 0;">
-            @sprite:assets/images/sprites/brands.svg#shell,svg-sample
-            @sprite:assets/images/sprites/brands.svg#apple,svg-sample
-            @sprite:assets/images/sprites/brands.svg#dell,svg-sample
-            @sprite:assets/images/sprites/brands.svg#burger-king,svg-sample
-            @sprite:assets/images/sprites/brands.svg#starbucks,svg-sample
-        </p>
-
-        <p style="line-height: 0;">
-            @sprite:assets/images/sprites/olympic-games.svg#nagano,svg-sample
-            @sprite:assets/images/sprites/olympic-games.svg#sydney,svg-sample
-            @sprite:assets/images/sprites/olympic-games.svg#salt-lake,svg-sample
-            @sprite:assets/images/sprites/olympic-games.svg#beijing,svg-sample
-            @sprite:assets/images/sprites/olympic-games.svg#tokyo,svg-sample
-        </p>
-
-        <p style="line-height: 0;">
-            @sprite:assets/images/sprites/pictograms.svg#bobsleigh,svg-sample
-            @sprite:assets/images/sprites/pictograms.svg#gymnastics,svg-sample
-            @sprite:assets/images/sprites/pictograms.svg#ice-hockey,svg-sample
-            @sprite:assets/images/sprites/pictograms.svg#judo,svg-sample
-            @sprite:assets/images/sprites/pictograms.svg#shooting,svg-sample
-        </p>
-
-        <p>You can customize the replacement in the <code>project.json</code> file.</p>
-
-        <style>
-        body {
-            margin: 0;
-            padding: 1.5rem;
-        }
-
-        .svg-sample {
-            box-shadow: 0 0 0 1px #ccc;
-            height: 6rem;
-            padding: 0.75rem;
-            width: 6rem;
-        }
-        </style>
-
-        <link rel="stylesheet" href="assets/styles/styles.css?v=@version">
+        <link rel="stylesheet" href="assets/styles.css">
 
         <!-- https://varvy.com/pagespeed/defer-loading-javascript.html -->
         <script type="text/javascript">
             window.addEventListener("load", function() {
                 var element = document.createElement("script");
-                element.src = "@scriptsPath/App.js?v=@version";
+                element.src = "assets/App.js";
                 document.body.appendChild(element);
             }, false);
         </script>

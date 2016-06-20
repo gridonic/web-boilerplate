@@ -20,14 +20,6 @@
     text-rendering: _font("text-primary-rendering");
 }
 
-:root {
-    color: _color("text-primary");
-    font-family: _font("primary-font-family");
-    font-size: _font("primary-font-size");
-    line-height: _font("primary-line-height");
-    text-rendering: _font("text-primary-rendering");
-}
-
 h1, .h1,
 h2, .h2,
 h3, .h3,
@@ -67,10 +59,10 @@ p, .paragraph {
     margin-bottom: _grid("vertical-base");
 }
 
-.text-center {
-    text-align: center;
-}
-
-.text-right {
-    text-align: right;
+code, .code {
+    background-color: _color("warning-primary");
+    display: inline-block;
+    padding-left: 4px;
+    padding-right: 4px;
+    vertical-align: bottom;
 }

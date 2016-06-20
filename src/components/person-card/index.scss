@@ -1,0 +1,31 @@
+@import "../../styles/meta";
+
+.person-card {
+    display: inline-block;
+    box-shadow: inset 0 0 0 1px #{_color("background-primary")},
+                4px 4px 0 -2px #{_color("background-secondary")};
+    padding: #{_grid("vertical-base") * 3/4} _grid("gutter-width");
+    text-transform: uppercase;
+
+    > .name {}
+
+    > .surname {
+        font-weight: bold;
+    }
+
+    > .role {
+        border-top: 1px solid #{_color("background-secondary")};
+        display: block;
+        font-family: monospace;
+        font-size: 0.5rem;
+        margin-top: (_grid("vertical-base") / 4);
+    }
+
+    > .quote {
+        display: block;
+        font-family: cursive;
+        font-style: italic;
+        margin-top: _grid("vertical-base") / 2;
+        text-transform: none;
+    }
+}
