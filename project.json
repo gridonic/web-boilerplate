@@ -32,8 +32,7 @@
         "files": ["**/*.{html,htm,txt}"],
         "replace": {
             "@sprite:([^,]+),([^\\s]+)": "<svg class=\"$2\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"$1\"></use></svg>",
-            "@version": "@this.version",
-            "@scriptsPath": "assets/scripts"
+            "@version": "@this.version"
         }
     },
     "delete:clean": {
@@ -51,9 +50,9 @@
         "svg": {}
     },
     "scripts": {
-        "src": "@this.src/js",
-        "dest": "@this.dest/assets/scripts",
-        "files": ["*.js"],
+        "src": "@this.src",
+        "dest": "@this.dest/assets",
+        "files": ["**/*.js"],
         "watch": ["**/*.js"],
         "eslint": {},
         "babelify": {
@@ -72,8 +71,8 @@
     },
     "src": "./src",
     "styles": {
-        "src": "@this.src/scss",
-        "dest": "@this.dest/assets/styles",
+        "src": "@this.src",
+        "dest": "@this.dest/assets",
         "files": ["**/[!_]*.{sass,scss}"],
         "watch": ["**/*.{sass,scss}"]
     },
