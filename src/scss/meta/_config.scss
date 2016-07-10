@@ -1,92 +1,151 @@
-/* -----------------------------------------------------------------------------
-   Define your color palette over here.
-   -------------------------------------------------------------------------- */
-$global-colors: (
-    "black": #000,
-    "denim": #1c65d9,
-    "tuatara": #3c3c3b,
-    "dusty-tuatara": #9c9c9c,
-    "silver": #c8c8c8,
-    "alto": #e0e0e0,
-    "japanese-laurel": #06a20d,
-    "purple-heart": #673ab7,
-    "red-orange": #f33,
-    "white": #fff,
-    "saffron": #fac135
+$config: ();
+
+// -----------------------------------------------------------------------------
+// Define your color palette over here.
+// -----------------------------------------------------------------------------
+$config: map-merge(
+    $config, (
+        "color": (
+            "black": #000,
+            "denim": #1c65d9,
+            "tuatara": #3c3c3b,
+            "dusty-tuatara": #9c9c9c,
+            "silver": #c8c8c8,
+            "alto": #e0e0e0,
+            "japanese-laurel": #06a20d,
+            "purple-heart": #673ab7,
+            "red-orange": #f33,
+            "white": #fff,
+            "saffron": #fac135
+        )
+    )
 );
 
 
-/* -----------------------------------------------------------------------------
-   Color associations.
-   -------------------------------------------------------------------------- */
-$global-color-associations: (
-    "background-primary": _color("tuatara"),
-    "background-secondary": _color("alto"),
-    "background-tertiary": _color("white"),
-    "button-default-text": _color("black"),
-    "button-default": _color("silver"),
-    "button-primary": _color("tuatara"),
-    "button-primary-text": _color("white"),
-    "error-primary": _color("red-orange"),
-    "headline-primary": _color("tuatara"),
-    "success-primary": _color("japanese-laurel"),
-    "text-primary-disabled": _color("dusty-tuatara"),
-    "text-primary-inverted": _color("white"),
-    "text-primary": _color("black"),
-    "warning-primary": _color("saffron")
+// -----------------------------------------------------------------------------
+// Color associations.
+// -----------------------------------------------------------------------------
+$config: map-merge(
+    $config, (
+        "color": map-merge(
+            _("color"), (
+                "background-primary": _("color", "tuatara"),
+                "background-secondary": _("color", "alto"),
+                "background-tertiary": _("color", "white"),
+                "button-default-text": _("color", "black"),
+                "button-default": _("color", "silver"),
+                "button-primary": _("color", "tuatara"),
+                "button-primary-text": _("color", "white"),
+                "error-primary": _("color", "red-orange"),
+                "headline-primary": _("color", "tuatara"),
+                "success-primary": _("color", "japanese-laurel"),
+                "text-primary-disabled": _("color", "dusty-tuatara"),
+                "text-primary-inverted": _("color", "white"),
+                "text-primary": _("color", "black"),
+                "warning-primary": _("color", "saffron")
+            )
+        )
+    )
 );
 
 
-/* -----------------------------------------------------------------------------
-   Typography.
-   -------------------------------------------------------------------------- */
-$global-fonts: (
-    "primary-font-family": (Tahoma, Verdana, Segoe, sans-serif),
-    "primary-font-size": 16px,
-    "primary-line-height": 1.5rem,
-    "text-primary-rendering": optimizeLegibility,
-    "secondary-font-family": (Georgia, Times, Times New Roman, serif)
+// -----------------------------------------------------------------------------
+// Typography.
+// -----------------------------------------------------------------------------
+$config: map-merge(
+    $config, (
+        "font": (
+            "primary-font-family": (Tahoma, Verdana, Segoe, sans-serif),
+            "primary-font-size": 16px,
+            "primary-line-height": 1.5rem,
+            "text-primary-rendering": optimizeLegibility,
+            "secondary-font-family": (Georgia, Times, Times New Roman, serif)
+        )
+    )
 );
 
 
-/* -----------------------------------------------------------------------------
-   Resolution relative settings. Excerpt from Google web fundamentals:
-
-   - Create breakpoints based on content, never on specific devices, products,
-     or brands.
-   - Design for the smallest mobile device first, then progressively enhance
-     the experience as more screen real estate becomes available.
-   - Keep lines of text to a maximum of around 70 or 80 characters.
-
-   https://goo.gl/EDZOAH
-   -------------------------------------------------------------------------- */
-$global-breakpoints: (
-    "mobile-s": 20rem,       // 320px
-    "mobile-m": 23.4375rem,  // 375px
-    "mobile-l": 26.5625rem,  // 425px
-    "tablet": 48rem,         // 768px
-    "laptop": 64rem,         // 1024px
-    "laptop-l": 90rem,       // 1440px
-    "4k": 160rem             // 2560px
+// -----------------------------------------------------------------------------
+// Resolution relative settings. Excerpt from Google web fundamentals:
+//
+// - Create breakpoints based on content, never on specific devices, products,
+//   or brands.
+// - Design for the smallest mobile device first, then progressively enhance
+//   the experience as more screen real estate becomes available.
+// - Keep lines of text to a maximum of around 70 or 80 characters.
+//
+// https://goo.gl/EDZOAH
+// -----------------------------------------------------------------------------
+$config: map-merge(
+    $config, (
+        "breakpoints": (
+            "mobile-s": (
+                "min-width": 20em, // 320px
+                "class": "ms"
+            ),
+            "mobile-m": (
+                "min-width": 23.4375em, // 375px
+                "class": "mm"
+            ),
+            "mobile-l": (
+                "min-width": 26.5625em, // 425px
+                "class": "ml"
+            ),
+            "tablet": (
+                "min-width": 48em, // 768px
+                "class": "tb"
+            ),
+            "laptop": (
+                "min-width": 64em, // 1024px
+                "class": "lp"
+            ),
+            "laptop-l": (
+                "min-width": 90em, // 1440px
+                "class": "ll"
+            ),
+            "4k": (
+                "min-width": 160em, // 2560px
+                "class": "4k"
+            ),
+        )
+    )
 );
 
 
-/* -----------------------------------------------------------------------------
-   Global grid.
-   -------------------------------------------------------------------------- */
-$global-grid: (
-    "vertical-base": _font("primary-line-height"),
-    "total-columns": 12,
-    "gutter-width": 1.5rem,  // 24px
-    "max-width": 72.5rem     // 1160px
+// -----------------------------------------------------------------------------
+// Global grid.
+// -----------------------------------------------------------------------------
+$config: map-merge(
+    $config, (
+        "grid": (
+            "vertical-base": _("font", "primary-line-height"),
+            "total-columns": 12,
+            "gutter-width": 1.5rem,  // 24px
+            "max-width": 72.5rem     // 1160px
+        )
+    )
 );
 
 
-/* -----------------------------------------------------------------------------
-   Z-index listing.
-   -------------------------------------------------------------------------- */
-$global-z-layers: (
-    "default": 0,
-    "overlay": 100,
-    "debug": 500
+// -----------------------------------------------------------------------------
+// Z-index listing.
+// -----------------------------------------------------------------------------
+$config: map-merge(
+    $config, (
+        "z": (
+            "default": 0,
+            "overlay": 100,
+            "debug": 500
+        )
+    )
 );
+
+
+// -----------------------------------------------------------------------------
+// Extract breakpoints from config for include-media library.
+// -----------------------------------------------------------------------------
+$breakpoints: ();
+
+@each $name, $data in _("breakpoints") {
+    $breakpoints: map-merge($breakpoints, ($name: map-get($data, "min-width")));
+}

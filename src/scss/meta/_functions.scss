@@ -1,133 +1,25 @@
-/* -----------------------------------------------------------------------------
-   Define your global functions in here!
-   -------------------------------------------------------------------------- */
-@function _color($color) {
+// -----------------------------------------------------------------------------
+// Define your global functions in here!
+// -----------------------------------------------------------------------------
+@function _($keys...) {
+    $track: "";
+    $map: $config;
 
-    // check if key exists in $global-colors
-    @if variable-exists(global-colors) and map-has-key($global-colors, $color) {
-        @return map-get($global-colors, $color);
+    // Global config map is not set, pretty bad
+    @if not global-variable-exists("config") {
+        @error "Global variable \"$config\" not defined but needed for _(). Aborting call.";
     }
 
-    // check if key exists in $global-color-associations
-    @if variable-exists(global-color-associations) and map-has-key($global-color-associations, $color) {
-        @return map-get($global-color-associations, $color);
+    @each $key in $keys {
+
+        // Trying to access a specific part of the config map has failed
+        @if not map-has-key($map, $key) {
+            @error "No \"#{$key}\" found in \"$config#{$track}\". Property omitted.";
+        }
+
+        $track: $track + "." + $key;
+        $map: map-get($map, $key);
     }
 
-    @error "No color found for `#{$color}` in $global-colors and $global-color-associations map. Property omitted.";
-}
-
-@function _font($font) {
-
-    @if not variable-exists(global-fonts) {
-        @error "Global variable $global-fonts not defined but needed for _font(). Aborting call.";
-    }
-
-    @if not map-has-key($global-fonts, $font) {
-        @error "No font found for `#{$font}` in $global-fonts map. Property omitted.";
-    }
-
-    @return map-get($global-fonts, $font);
-}
-
-@function _z($layer) {
-
-    @if not variable-exists(global-z-layers) {
-        @error "Global variable $global-z-layers not defined but needed for _z(). Aborting call.";
-    }
-
-    @if not map-has-key($global-z-layers, $layer) {
-        @error "No layer found for `#{$layer}` in $global-z-layers map. Property omitted.";
-    }
-
-    @return map-get($global-z-layers, $layer);
-}
-
-@function _grid($setting) {
-
-    @if not variable-exists(global-grid) {
-        @error "Global variable $global-grid not defined but needed for _z(). Aborting call.";
-    }
-
-    @if not map-has-key($global-grid, $setting) {
-        @error "No layer found for `#{$setting}` in $global-grid map. Property omitted.";
-    }
-
-    @return map-get($global-grid, $setting);
-}
-
-/* -----------------------------------------------------------------------------
-   Breakpoint and media query related functions.
-   -------------------------------------------------------------------------- */
-@function _break($breakpoint) {
-
-    @if not variable-exists(global-breakpoints) {
-        @error "Global variable $global-breakpoints not defined but needed for _break(). Aborting call.";
-    }
-
-    @if not map-has-key($global-breakpoints, $breakpoint) {
-        @error "No breakpoint found for `#{$breakpoint}` in $global-breakpoints map. Property omitted.";
-    }
-
-    @return map-get($global-breakpoints, $breakpoint);
-}
-
-@function _min($breakpoint) {
-    @return "(min-width:" + _break($breakpoint) + ")";
-}
-
-@function _max($breakpoint) {
-    @return "(max-width:" + (_break($breakpoint) - _px2rem(1px))")";
-}
-
-@function _px2rem($pixels) {
-
-    $factorName: "primary-font-size";
-
-    @if not variable-exists(global-fonts) {
-        @error "Global variable $global-fonts not defined but needed for _px2rem(). Aborting call.";
-    }
-
-    @if not map-has-key($global-fonts, $factorName) {
-        @error "No `#{$factorName}` in $global-fonts map. Please add this to the map.";
-    }
-
-    @return $pixels / map-get($global-fonts, $factorName) + 0rem;
-}
-
-@function str-replace($string, $search, $replace: '') {
-    $index: str-index($string, $search);
-
-    @if $index {
-        @return str-slice($string, 1, $index - 1) +
-                $replace +
-                str-replace(
-                    str-slice($string, $index + str-length($search)),
-                    $search,
-                    $replace
-                );
-    }
-
-    @return $string;
-}
-
-@function svg-url($svg){
-
-    // chunk up string in order to avoid "SystemStackError: stack level too deep"
-    $encoded:'';
-    $slice: 2000;
-    $index: 0;
-    $loops: ceil(str-length($svg) / $slice);
-
-    @for $i from 1 through $loops {
-        $chunk: str-slice($svg, $index, $index + $slice - 1);
-        $chunk: str-replace($chunk,'"','\'');
-        $chunk: str-replace($chunk,'<','%3C');
-        $chunk: str-replace($chunk,'>','%3E');
-        $chunk: str-replace($chunk,'&','%26');
-        $chunk: str-replace($chunk,'#','%23');
-        $encoded: #{$encoded}#{$chunk};
-        $index: $index + $slice;
-    }
-
-    @return url("data:image/svg+xml;charset=utf8,#{$encoded}");
+    @return $map;
 }

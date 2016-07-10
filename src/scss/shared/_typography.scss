@@ -1,31 +1,23 @@
-/* -----------------------------------------------------------------------------
-   Common font weights.
-   http://www.w3.org/TR/css3-fonts/#font-weight-prop
-
-   100 - Thin
-   200 - Extra Light (Ultra Light)
-   300 - Light
-   400 - Normal
-   500 - Medium
-   600 - Semi Bold (Demi Bold)
-   700 - Bold
-   800 - Extra Bold (Ultra Bold)
-   900 - Black (Heavy)
-   -------------------------------------------------------------------------- */
+// -----------------------------------------------------------------------------
+// Common font weights.
+// http://www.w3.org/TR/css3-fonts/#font-weight-prop
+//
+// 100 - Thin
+// 200 - Extra Light (Ultra Light)
+// 300 - Light
+// 400 - Normal
+// 500 - Medium
+// 600 - Semi Bold (Demi Bold)
+// 700 - Bold
+// 800 - Extra Bold (Ultra Bold)
+// 900 - Black (Heavy)
+// -----------------------------------------------------------------------------
 :root {
-    color: _color("text-primary");
-    font-family: _font("primary-font-family");
-    font-size: _font("primary-font-size");
-    line-height: _font("primary-line-height");
-    text-rendering: _font("text-primary-rendering");
-}
-
-:root {
-    color: _color("text-primary");
-    font-family: _font("primary-font-family");
-    font-size: _font("primary-font-size");
-    line-height: _font("primary-line-height");
-    text-rendering: _font("text-primary-rendering");
+    color: _("color", "text-primary");
+    font-family: _("font", "primary-font-family");
+    font-size: _("font", "primary-font-size");
+    line-height: _("font", "primary-line-height");
+    text-rendering: _("font", "text-primary-rendering");
 }
 
 h1, .h1,
@@ -34,20 +26,20 @@ h3, .h3,
 h4, .h4,
 h5, .h5,
 h6, .h6 {
-    color: _color("headline-primary");
-    font-family: _font("secondary-font-family");
+    color: _("color", "headline-primary");
+    font-family: _("font", "secondary-font-family");
     margin-top: 0;
     margin-bottom: 0;
 }
 
 h1, .h1 {
     font-size: 2rem;
-    line-height: _grid("vertical-base") * 2;
+    line-height: _("grid", "vertical-base") * 2;
 }
 
 h2, .h2 {
     font-size: 1.5rem;
-    line-height: _grid("vertical-base") * 1.5;
+    line-height: _("grid", "vertical-base") * 1.5;
 }
 
 h3, .h3 {
@@ -63,14 +55,6 @@ h5, .h5 {
 }
 
 p, .paragraph {
-    margin-top: _grid("vertical-base");
-    margin-bottom: _grid("vertical-base");
-}
-
-.text-center {
-    text-align: center;
-}
-
-.text-right {
-    text-align: right;
+    margin-top: _("grid", "vertical-base");
+    margin-bottom: _("grid", "vertical-base");
 }
