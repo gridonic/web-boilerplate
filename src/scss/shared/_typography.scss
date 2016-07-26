@@ -13,11 +13,14 @@
 // 900 - Black (Heavy)
 // -----------------------------------------------------------------------------
 :root {
+    font-size: 16px;
+}
+
+body {
     color: _("color", "text-primary");
-    font-family: _("font", "primary-font-family");
-    font-size: _("font", "primary-font-size");
-    line-height: _("font", "primary-line-height");
-    text-rendering: _("font", "text-primary-rendering");
+    font-family: _("font", "text-family");
+    line-height: _("font", "text-line-height");
+    text-rendering: _("font", "text-rendering");
 }
 
 h1, .h1,
@@ -26,8 +29,8 @@ h3, .h3,
 h4, .h4,
 h5, .h5,
 h6, .h6 {
-    color: _("color", "headline-primary");
-    font-family: _("font", "secondary-font-family");
+    color: _("color", "text-primary");
+    font-family: _("font", "headline-family");
     margin-top: 0;
     margin-bottom: 0;
 }
@@ -55,6 +58,12 @@ h5, .h5 {
 }
 
 p, .paragraph {
+    margin-top: _("grid", "vertical-base");
+    margin-bottom: _("grid", "vertical-base");
+}
+
+ul,
+ol {
     margin-top: _("grid", "vertical-base");
     margin-bottom: _("grid", "vertical-base");
 }
