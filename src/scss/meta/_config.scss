@@ -29,20 +29,15 @@ $config: map-merge(
     $config, (
         "color": map-merge(
             _("color"), (
-                "background-primary": _("color", "tuatara"),
-                "background-secondary": _("color", "alto"),
-                "background-tertiary": _("color", "white"),
-                "button-default-text": _("color", "black"),
-                "button-default": _("color", "silver"),
-                "button-primary": _("color", "tuatara"),
-                "button-primary-text": _("color", "white"),
-                "error-primary": _("color", "red-orange"),
-                "headline-primary": _("color", "tuatara"),
-                "success-primary": _("color", "japanese-laurel"),
-                "text-primary-disabled": _("color", "dusty-tuatara"),
-                "text-primary-inverted": _("color", "white"),
-                "text-primary": _("color", "black"),
-                "warning-primary": _("color", "saffron")
+            "brand-primary": _("color", "red-orange"),
+            "brand-success": _("color", "japanese-laurel"),
+            "brand-info": _("color", "denim"),
+            "brand-warning": _("color", "saffron"),
+            "background-primary": _("color", "white"),
+            "headline-primary": _("color", "black"),
+            "text-primary-inverted": _("color", "white"),
+            "text-primary": _("color", "black"),
+            "text-silent": _("color", "silver")
             )
         )
     )
@@ -55,11 +50,10 @@ $config: map-merge(
 $config: map-merge(
     $config, (
         "font": (
-            "primary-font-family": (Tahoma, Verdana, Segoe, sans-serif),
-            "primary-font-size": 16px,
-            "primary-line-height": 1.5rem,
-            "text-primary-rendering": optimizeLegibility,
-            "secondary-font-family": (Georgia, Times, Times New Roman, serif)
+            "text-family": (Tahoma, Verdana, Segoe, sans-serif),
+            "text-line-height": 1.5rem,
+            "text-rendering": optimizeLegibility,
+            "headline-family": (Georgia, Times, Times New Roman, serif)
         )
     )
 );
@@ -118,7 +112,7 @@ $config: map-merge(
 $config: map-merge(
     $config, (
         "grid": (
-            "vertical-base": _("font", "primary-line-height"),
+            "vertical-base": _("font", "text-line-height"),
             "total-columns": 12,
             "gutter-width": 1.5rem,  // 24px
             "max-width": 72.5rem     // 1160px
