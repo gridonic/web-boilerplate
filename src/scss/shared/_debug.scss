@@ -2,28 +2,32 @@
 // Global debugging styles.
 // -----------------------------------------------------------------------------
 .debug-mode {
+    $highlight-color: _("color", "brand-warning");
+    $grid-color: _("color", "black");
+
     position: relative;
 
     // baseline grid
     &::after {
         background-color: transparent;
-        background-image: linear-gradient(transparent calc(100% - 1px), rgba(#000, 0.05) 0%),
-                          linear-gradient(transparent calc(100% - 1px), rgba(#000, 0.05) 0%);
-        background-size: 1px _("grid", "vertical-base"),
-                         1px _("grid", "vertical-base") / 2;
-        bottom: 0;
-        content: "baseline grid (factor: #{_("grid", "vertical-base")})";
+        background-image: linear-gradient($highlight-color, $highlight-color),
+                          linear-gradient(transparent calc(100% - 1px), rgba($grid-color, 0.1) 0%),
+                          linear-gradient(transparent calc(50% - 1px), rgba($grid-color, 0.05) 50%, transparent calc(50% + 1px));
+        background-size: 100% _("grid", "vertical-base");
+        background-repeat: no-repeat, repeat, repeat;
+        content: "vertical rhythm grid (factor: #{_("grid", "vertical-base")})";
+        height: 100%;
         left: 0;
         position: absolute;
-        right: 0;
         text-indent: _("grid", "gutter-width") / 2;
         top: 0;
+        width: 100%;
         z-index: -1;
     }
 
     // breakpoints indicator
     &::before {
-        background: #fafaaa;
+        background-color: $highlight-color;
         color: #000;
         right: 0;
         padding: 0 _("grid", "gutter-width") / 2;
