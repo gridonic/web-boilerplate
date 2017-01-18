@@ -88,7 +88,10 @@ class Scripts extends Task {
                 this.async.waterfall([
 
                     // browserify this file and use babel as a transpiler
-                    (cb) => browserify(file).transform(
+                    (cb) => browserify(
+                        file,
+                        this.settings.browserify || {}
+                    ).transform(
                         babelify,
                         this.settings.babelify || {}
                     ).bundle(cb),
