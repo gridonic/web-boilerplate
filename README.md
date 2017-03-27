@@ -1,4 +1,8 @@
-![Ingredients of the web boilerplate](https://mzdr.github.io/web-boilerplate/ingredients.png)
+<h1 align="center">
+    <img src="https://mzdr.github.io/web-boilerplate/ingredients.png" alt="Ingredients of the web boilerplate" width="100%">
+    <a href="https://github.com/gridonic/web-boilerplate/releases/latest"><img src="https://img.shields.io/github/release/gridonic/web-boilerplate.svg?maxAge=3600" alt="Latest web boilerplate release"></a>
+    <img src="https://img.shields.io/badge/project-unmaintained-red.svg" alt="Unmaintained">
+</h1>
 
 Simple, fast and lightweight web boilerplate serving as our basis for developing webapps and websites. You'll get the following features:
 
@@ -33,23 +37,23 @@ Let us demonstrate a few use cases you might have:
 1. You want to **create a new web project** and **build it**. Therefore you run those commands in that order:
 
     ```shell
-webbp new my-epic-app  
-cd my-epic-app  
-webbp build  
+    webbp new my-epic-app  
+    cd my-epic-app  
+    webbp build  
     ```
 
 2. You have an **existing project** and start working on it. Any **changes** you make **will be built immediately**. Those lines will do the magic:
 
     ```shell
-cd your-existing-project
-webbp watch
+    cd your-existing-project
+    webbp watch
     ```
 
 3. You want to **show your project** to your client **without setting up complicated web servers**. You can use the **built in webserver** (by default its [Browsersync](https://www.browsersync.io/)) to quickly demonstrate your project. Just run:
 
     ```shell
-cd your-existing-project
-webbp server
+    cd your-existing-project
+    webbp server
     ```
 
 ## Overview
